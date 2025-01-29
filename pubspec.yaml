@@ -1,0 +1,72 @@
+name: game
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.1
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+  country_code_picker:
+  flutter_svg:
+  curved_navigation_bar: ^1.0.3
+  carousel_slider:
+  flutter_styled_toast:
+  flutter_bloc:
+  iconly:
+  provider:
+  socket_io_client: ^2.0.3+1
+  dio: ^5.4.0
+  just_audio:
+  shared_preferences:
+  fluttertoast:
+  add_to_cart_animation:
+  flutter_flip_card:
+  marquee:
+  shimmer:
+  lottie:
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+  fonts:
+    - family: SitkaSmall
+      fonts:
+        - asset: font/Sitka-Small.ttf
+
+
+  assets:
+    - assets/
+    - assets/images/
+    - font/
+    - assets/svg/
+    - assets/category/
+    - assets/win_go/
+    - assets/music/
+    - assets/andarbahar/
+    - assets/aviator/
+    - assets/chips/
+    - assets/dragontiger/
+    - assets/cards/
+    - assets/lottie/
+
