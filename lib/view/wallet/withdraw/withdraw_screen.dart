@@ -8,6 +8,7 @@ import 'package:game/res/shimmer.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/withdraw_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     final withdraw = Provider.of<WithdrawViewModel>(context);
+    final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
+
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -90,7 +93,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       width: width * 0.12,
                     ),
                     Text(
-                      "₹1000",
+                      "₹${profile?.withdrawBalance??"0.0"}",
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 22,
@@ -100,9 +103,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     SizedBox(
                       width: width * 0.05,
                     ),
-                    Image.asset(
-                      Assets.imagesTotalBal,
-                      scale: 1.4,
+                    InkWell(
+                      onTap: (){
+                        Provider.of<ProfileViewModel>(context).userProfileApi(context);
+                      },
+                      child: Image.asset(
+                        Assets.imagesTotalBal,
+                        scale: 1.4,
+                      ),
                     )
                   ],
                 ),

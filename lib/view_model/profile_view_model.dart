@@ -37,8 +37,6 @@ class ProfileViewModel with ChangeNotifier {
         onTap: (context){
           Navigator.pushNamed(context, RoutesName.withdrawHistoryScreen);
         }),
-
-
   ];
   List<Map<String, String>>elementListTwo=[
     {
@@ -82,7 +80,7 @@ class ProfileViewModel with ChangeNotifier {
   ];
   final _userProfileRepository = UserProfileRepository();
 
-  dynamic _balance = 0;
+  dynamic _balance = 0.0;
 
   dynamic get balance => _balance;
 
@@ -112,10 +110,12 @@ class ProfileViewModel with ChangeNotifier {
   Future<void> userProfileApi(context) async {
     UserViewModel userViewModal = UserViewModel();
     String? userId = await userViewModal.getUser();
-    _userProfileRepository.userProfileApi("28").then((value) {
-      if (value.success == 200) {
-        setBalance(value.data!.wallet);
+    _userProfileRepository.userProfileApi(userId).then((value) {
+      if (value.status == 200) {
+        // setBalance(value.data!.wallet!);
         setProfile(value);
+        print("aman");
+        print(value.data?.name);
       } else {
         if (kDebugMode) {
           print('value: ${value.message}');

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/view_model/services/splash_services.dart';
+import 'package:provider/provider.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -12,13 +14,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SplashServices splashServices = SplashServices();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 3),(){
-      Navigator.pushNamed(context, RoutesName.loginScreen);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final splashServices =
+      Provider.of<SplashServices>(context, listen: false);
+      splashServices.checkAuthentication(context);
     });
+
   }
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,6 @@ class UserViewModel  with ChangeNotifier{
 
   Future<bool> saveUser(String userId) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    // sp.setString('userId', userId);
     sp.setString('userId', userId);
     notifyListeners();
     return true;
@@ -13,7 +12,7 @@ class UserViewModel  with ChangeNotifier{
 
   Future<String?> getUser() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String? userid = sp.getString('28');
+    String? userid = sp.getString('userId');
     return userid;
   }
 

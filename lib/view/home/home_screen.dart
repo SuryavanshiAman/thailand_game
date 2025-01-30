@@ -27,7 +27,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
   }
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             children: [
               // Background with particles
-              Container(
+              SizedBox(
                 height: height * 0.28, // Adjust height to fit the content properly
                 child: Stack(
                   children: [

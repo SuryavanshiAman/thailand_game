@@ -197,11 +197,7 @@ class _GameAviatorState extends State<GameAviator>
                                 null
                             ? ''
                             : context
-                                .read<ProfileViewModel>()
-                                .profileData!
-                                .data!
-                                .wallet
-                                .toStringAsFixed(2),
+                                .read<ProfileViewModel>().profileData?.data?.wallet?.toStringAsFixed(2)??"",
                         style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.w900,
@@ -917,8 +913,7 @@ class _GameAviatorState extends State<GameAviator>
 
   void deductAmount() {
     int amountToDeduct = selectedAmount * value;
-    if (context.read<ProfileViewModel>().profileData!.data!.wallet >=
-        amountToDeduct) {
+    if (int.parse(context.read<ProfileViewModel>().profileData?.data?.wallet?.toString()??"") >= amountToDeduct) {
       setState(() {
         amount.text = (selectedAmount * value).toString();
       });
@@ -954,7 +949,7 @@ class _GameAviatorState extends State<GameAviator>
 
   void deductAmount1() {
     int amountToDeduct = selectedAmount1 * value1;
-    if (context.read<ProfileViewModel>().profileData!.data!.wallet >=
+    if (int.parse(context.read<ProfileViewModel>().profileData?.data?.wallet.toString()??"") >=
         amountToDeduct) {
       setState(() {
         amountTwo.text = (selectedAmount1 * value1).toString();
@@ -1039,7 +1034,7 @@ class _GameAviatorState extends State<GameAviator>
   void connectToServer() {
     _socket = IO.io(
       // ApiUrl.aviatorWebSocket,
-      context.read<ProfileViewModel>().profileData!.aviatorLink.toString(),
+      // context.read<ProfileViewModel>().profileData!.aviatorLink.toString(),
       IO.OptionBuilder().setTransports(['websocket']).build(),
     );
     _socket.on('connect', (_) {
@@ -1049,11 +1044,8 @@ class _GameAviatorState extends State<GameAviator>
       if (kDebugMode) {}
     });
     _socket.on(
-        context
-            .read<ProfileViewModel>()
-            .profileData!
-            .aviatorEventName
-            .toString(), (data) {
+        context.read<ProfileViewModel>().profileData?.data?.wallet?.toString()??"",
+            (data) {
       if (_isMounted) {
         setState(() {
           receiveData = jsonDecode(data);

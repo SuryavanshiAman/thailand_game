@@ -1,11 +1,16 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
+import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/utils/utils.dart';
+import 'package:game/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class EmailLogin extends StatefulWidget {
   const EmailLogin({super.key});
@@ -23,6 +28,7 @@ class _EmailLoginState extends State<EmailLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final login = Provider.of<AuthViewModel>(context);
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.all(8),
@@ -33,7 +39,7 @@ class _EmailLoginState extends State<EmailLogin> {
         Row(
           children: [
             SvgPicture.asset(Assets.svgEmail,
-                height: height*0.04,
+                height: height * 0.04,
                 colorFilter: ColorFilter.mode(
                   AppColor.white, // Apply the color here
                   BlendMode.srcIn,
@@ -62,14 +68,16 @@ class _EmailLoginState extends State<EmailLogin> {
           height: 55,
           borderSide: BorderSide(color: Colors.white),
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           width: width * 0.65,
-          maxLength: 10,
           filled: true,
           fillColor: AppColor.gray.withOpacity(0.5),
           border: Border.all(color: AppColor.gray.withOpacity(0.3)),
           borderRadius: BorderRadius.circular(15),
           fieldRadius: BorderRadius.circular(15),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9._%+-@]*$')), // Allows only valid email characters
+          ],
         ),
         SizedBox(
           height: height * 0.035,
@@ -77,7 +85,7 @@ class _EmailLoginState extends State<EmailLogin> {
         Row(
           children: [
             SvgPicture.asset(Assets.svgPassword,
-                height: height*0.04,
+                height: height * 0.04,
                 colorFilter: ColorFilter.mode(
                   AppColor.white, // Apply the color here
                   BlendMode.srcIn,
@@ -108,7 +116,7 @@ class _EmailLoginState extends State<EmailLogin> {
           height: 55,
           borderSide: BorderSide(color: Colors.white),
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           // width: width*0.65,
           maxLength: 10,
           filled: true,
@@ -134,56 +142,79 @@ class _EmailLoginState extends State<EmailLogin> {
         ),
         constantbutton(
           width: width,
-          onTap: () {  }, text: 'Login',),
+          onTap: () {
+            if (_emailController.text.isEmpty) {
+              Utils.setSnackBar("Please enter Phone no.", context);
+            } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(_emailController.text)) {
+              Utils.setSnackBar("You can only enter mail here", context);
+            }
+            else if (_passController.text.isEmpty) {
+              Utils.setSnackBar("Please enter your password", context);
+            } else if (_passController.text.length < 6) {
+              Utils.setSnackBar(
+                  "The password must be at least 6 digits long.", context);
+            } else {
+              Map data = {
+                "email": _emailController.text,
+                "password": _passController.text
+              };
+              login.authApi(data, context);
+            }
+          },
+          text: 'Login',
+        ),
         SizedBox(
           height: height * 0.03,
         ),
-        constantbutton(width: width,
-          onTap: () {  }, text: 'Register',),
+        constantbutton(
+          width: width,
+          onTap: () {
+            Navigator.pushNamed(context, RoutesName.registerScreen);
+          },
+          text: 'Register',
+        ),
         SizedBox(
           height: height * 0.03,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-Column(
-  children: [
-    SvgPicture.asset(Assets.svgPassword,
-        height: height*0.05,
-        colorFilter: ColorFilter.mode(
-          AppColor.white, // Apply the color here
-          BlendMode.srcIn,
-        )),
-    Text(
-      "Forgot password",
-      style: TextStyle(
-          color: AppColor.white,
-          fontSize: 16,
-          fontFamily: "SitkaSmall",
-          fontWeight: FontWeight.w600),
-    ),
-
-  ],
-),
-Column(
-  children: [
-    SvgPicture.asset(Assets.svgCustomer,
-        height: height*0.05,
-        colorFilter: ColorFilter.mode(
-          AppColor.white, // Apply the color here
-          BlendMode.color,
-        )),
-    Text(
-      "Customer service",
-      style: TextStyle(
-          color: AppColor.white,
-          fontSize: 16,
-          fontFamily: "SitkaSmall",
-          fontWeight: FontWeight.w600),
-    ),
-
-  ],
-),
+            Column(
+              children: [
+                SvgPicture.asset(Assets.svgPassword,
+                    height: height * 0.05,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.white, // Apply the color here
+                      BlendMode.srcIn,
+                    )),
+                Text(
+                  "Forgot password",
+                  style: TextStyle(
+                      color: AppColor.white,
+                      fontSize: 16,
+                      fontFamily: "SitkaSmall",
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                SvgPicture.asset(Assets.svgCustomer,
+                    height: height * 0.05,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.white, // Apply the color here
+                      BlendMode.color,
+                    )),
+                Text(
+                  "Customer service",
+                  style: TextStyle(
+                      color: AppColor.white,
+                      fontSize: 16,
+                      fontFamily: "SitkaSmall",
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
           ],
         )
       ],

@@ -183,7 +183,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   List<Widget> screens = [
     WalletScreen(),
     HomeScreen(),
-
     ProfileScreen(),
   ];
   @override

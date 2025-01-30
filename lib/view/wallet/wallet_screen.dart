@@ -11,7 +11,9 @@ import 'package:game/res/constantButton.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/profile_view_model.dart';
 import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -22,7 +24,18 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProfileViewModel>(context, listen: false)
+          .userProfileApi(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
+    print(profile?.wallet??"0.0");
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -38,7 +51,8 @@ class _WalletScreenState extends State<WalletScreen> {
           Column(
             children: [
               Container(
-                height: height * 0.25, // Adjust height to fit the content properly
+                height:
+                    height * 0.25, // Adjust height to fit the content properly
                 child: Stack(
                   children: [
                     Positioned.fill(
@@ -55,49 +69,50 @@ class _WalletScreenState extends State<WalletScreen> {
                         connectDots: false,
                       ),
                     ),
-                    Positioned.fill(child:  Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                        // color: AppColor.gray,
-                          color: AppColor.darkGray.withOpacity(0.5)),
-                      width: width,
-                      child: Column(
-                        children: [
-                          Icon(
-                            IconlyBroken.wallet,
-                            size: 50,
-                            color: AppColor.white,
-                          ),
-                          Text(
-                            "₹0.00",
-                            style: TextStyle(
-                                color: AppColor.white,
-                                fontFamily: "SitkaSmall",
-                                fontSize: 25),
-                          ),
-                          Text(
-                            "Total Balance",
-                            style: TextStyle(
-                                color: AppColor.white,
-                                fontFamily: "SitkaSmall",
-                                fontSize: 20),
-                          )
-                        ],
+                    Positioned.fill(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 15),
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        decoration: BoxDecoration(
+                            // color: AppColor.gray,
+                            color: AppColor.darkGray.withOpacity(0.5)),
+                        width: width,
+                        child: Column(
+                          children: [
+                            Icon(
+                              IconlyBroken.wallet,
+                              size: 50,
+                              color: AppColor.white,
+                            ),
+                            Text(
+                              "₹${profile?.totalBalance ?? "0.0"}",
+                              style: TextStyle(
+                                  color: AppColor.white,
+                                  fontFamily: "SitkaSmall",
+                                  fontSize: 25),
+                            ),
+                            Text(
+                              "Total Balance",
+                              style: TextStyle(
+                                  color: AppColor.white,
+                                  fontFamily: "SitkaSmall",
+                                  fontSize: 20),
+                            )
+                          ],
+                        ),
                       ),
-                    ),),
-                 // Ensuring SliderPage is within bounds
+                    ),
+                    // Ensuring SliderPage is within bounds
                   ],
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(10),
                 // height: height * 0.62,
                 width: width * 0.9,
                 decoration: BoxDecoration(
-                  // color: AppColor.darkGray,
+                    // color: AppColor.darkGray,
                     gradient: AppColor.appBarGradient,
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
@@ -106,18 +121,26 @@ class _WalletScreenState extends State<WalletScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         percentage(
-                          //main wallet/totalbalance*0.01
-                          //   (userData.mainWallet/(userData.totalWallet*0.01)).toStringAsFixed(2),
-                            10.toStringAsFixed(2),
-                            200.toStringAsFixed(2),
-                            'Main wallet'),
+                          (double.tryParse(profile?.wallet.toString() ?? "0") != null &&
+                              double.tryParse(profile?.totalBalance.toString() ?? "0") != null &&
+                              double.tryParse(profile?.totalBalance.toString() ?? "0") != 0
+                              ? (double.parse(profile!.wallet.toString()) / (double.parse(profile!.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
+                              : "0.00"), // Ensure result is a valid string
+                          (double.tryParse(profile?.wallet.toString() ?? "0")?.toStringAsFixed(2) ?? "0.00"),
+                          'Main wallet',
+                        ),
                         percentage(
-                          //thirdpartywallet/totalbalance*0.01
-                            0.01.toStringAsFixed(2),
-                            200.toStringAsFixed(2),
-                            '3rd party wallet'),
+                          (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0") != null &&
+                              double.tryParse(profile?.totalBalance.toString() ?? "0") != null &&
+                              double.tryParse(profile?.totalBalance.toString() ?? "0") != 0
+                              ? (double.parse(profile!.thirdPartyWallet.toString()) / (double.parse(profile!.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
+                              : "0.00"), // Ensure result is a valid string
+                          (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0")?.toStringAsFixed(2) ?? "0.00"),
+                          '3rd party wallet',
+                        ),
                       ],
                     ),
+
                     SizedBox(
                       height: height * 0.03,
                     ),
@@ -143,31 +166,34 @@ class _WalletScreenState extends State<WalletScreen> {
                         groups(
                           Assets.imagesDeposit,
                           'Deposit',
-                              () {
-                            Navigator.pushNamed(context, RoutesName.depositScreen);
+                          () {
+                            Navigator.pushNamed(
+                                context, RoutesName.depositScreen);
                           },
                         ),
                         groups(
                           Assets.imagesWithdraw,
                           'Withdrawal',
-                              () {
-                            Navigator.pushNamed(context, RoutesName.withdrawScreen);
+                          () {
+                            Navigator.pushNamed(
+                                context, RoutesName.withdrawScreen);
                           },
                         ),
                         groups(
                           Assets.imagesDepositHistory,
                           'Deposit\n history',
-                              () {
-                            Navigator.pushNamed(context, RoutesName.depositHistoryScreen);
-                              },
+                          () {
+                            Navigator.pushNamed(
+                                context, RoutesName.depositHistoryScreen);
+                          },
                         ),
                         groups(
                           Assets.imagesWithdrawHistory,
                           'Withdrawal\n     history',
-                              () {
-                                Navigator.pushNamed(context, RoutesName.withdrawHistoryScreen);
-
-                              },
+                          () {
+                            Navigator.pushNamed(
+                                context, RoutesName.withdrawHistoryScreen);
+                          },
                         ),
                       ],
                     )
@@ -176,7 +202,6 @@ class _WalletScreenState extends State<WalletScreen> {
               )
             ],
           ),
-
         ],
       ),
     );

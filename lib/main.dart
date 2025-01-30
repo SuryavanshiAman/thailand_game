@@ -9,8 +9,11 @@ import 'package:game/view/game/wingo/controller/win_go_controller.dart';
 import 'package:game/view/game/wingo/view_model/win_go_bet_view_model.dart';
 import 'package:game/view/game/wingo/view_model/win_go_pop_up_view_model.dart';
 import 'package:game/view/game/wingo/view_model/win_go_result_view_model.dart';
+import 'package:game/view_model/auth_view_model.dart';
+import 'package:game/view_model/avtar_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:game/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/routes/routes.dart';
@@ -18,11 +21,10 @@ import 'utils/routes/routes_name.dart';
 import 'view/game/wingo/view_model/win_go_game_his_view_model.dart';
 import 'view/game/wingo/view_model/win_go_my_his_view_model.dart';
 import 'view_model/game_view_model.dart';
+import 'view_model/services/splash_services.dart';
+import 'view_model/update_profile_view_model.dart';
 import 'view_model/withdraw_view_model.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
 void main() {
   runApp(
     MultiBlocProvider(
@@ -56,6 +58,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DepositViewModel()),
         ChangeNotifierProvider(create: (context) => WithdrawViewModel()),
         ChangeNotifierProvider(create: (context) => GameViewModel()),
+        ChangeNotifierProvider(create: (context) => UserViewModel()),
+        ChangeNotifierProvider(create: (context) => SplashServices()),
+        ChangeNotifierProvider(create: (context) => AuthViewModel()),
+        ChangeNotifierProvider(create: (context) => UpdateViewModel()),
+        ChangeNotifierProvider(create: (context) => AvtarViewModel()),
       ],
       child: Center(
         child: Container(

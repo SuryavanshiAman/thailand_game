@@ -12,6 +12,7 @@ import 'package:game/view/profile/about_us/about_us_screen.dart';
 import 'package:game/view/profile/feed_back_screen.dart';
 import 'package:game/view/profile/game_history_screen.dart';
 import 'package:game/view/profile/gift_screen.dart';
+import 'package:game/view/profile/setting_page/change_avtar_screen.dart';
 import 'package:game/view/profile/setting_page/change_login_password.dart';
 import 'package:game/view/profile/setting_page/nickname_screen.dart';
 import 'package:game/view/profile/setting_page/setting_screen.dart';
@@ -68,6 +69,8 @@ class Routers {
         return (context) =>  FeedBackScreen();
       case RoutesName.nickNameScreen:
         return (context) =>  NickNameScreen();
+      case RoutesName.changeAvtar:
+        return (context) =>  ChangeAvtar();
       default:
         return (context) => Scaffold(
           body: Center(

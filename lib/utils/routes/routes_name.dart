@@ -20,6 +20,7 @@ class RoutesName{
   static const String aboutUsScreen = '/aboutUsScreen';
   static const String feedBackScreen = '/feedBackScreen';
   static const String nickNameScreen = '/nickNameScreen';
+  static const String changeAvtar = '/changeAvtar';
 
 
 }

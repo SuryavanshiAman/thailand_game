@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'color-const.dart';
 
@@ -51,6 +52,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final bool outLineBorderEnabled;
   final BorderSide? borderSideFocus;
+  final   List<TextInputFormatter>?inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -98,6 +100,7 @@ class CustomTextField extends StatelessWidget {
     this.textInputAction,
     this.outLineBorderEnabled =false,
     this.borderSideFocus,
+    this.inputFormatters
   });
 
   @override
@@ -129,6 +132,7 @@ class CustomTextField extends StatelessWidget {
         obscureText: obscureText,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
+        inputFormatters: inputFormatters,
         style: style ?? TextStyle(
                   fontSize: fontSize ?? 15,
                   fontWeight: FontWeight.normal,

@@ -7,6 +7,9 @@ import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
+import 'package:game/utils/utils.dart';
+import 'package:game/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 import 'tab_page/email_login.dart';
 import 'tab_page/phone_number_login.dart';
@@ -21,6 +24,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String _selectedCountryCode = '+91';
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
   final TextEditingController _inviteController = TextEditingController();
@@ -29,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
+    final register=Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       body: Container(
@@ -37,7 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         child: ListView(
           shrinkWrap: true,
-          // physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(8),
           children: [
             SizedBox(height: height*0.1,),
@@ -97,7 +101,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Colors.black
                     ],
                   ),
-                  // image: DecorationImage(image: AssetImage(Assets.imagesBg),fit: BoxFit.fill)
               ),
             ),
             SizedBox(height: height*0.02,),
@@ -188,6 +191,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fieldRadius: BorderRadius.circular(15),
                 ),
               ],
+            ),
+            SizedBox(
+              height: height * 0.035,
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(Assets.svgEmail,
+                    height: height*0.04,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.white, // Apply the color here
+                      BlendMode.srcIn,
+                    )),
+                SizedBox(
+                  width: width * 0.03,
+                ),
+                Text(
+                  "Email",
+                  style: TextStyle(
+                      color: AppColor.white,
+                      fontSize: 16,
+                      fontFamily: "SitkaSmall",
+                      fontWeight: FontWeight.w600),
+                )
+              ],
+            ),
+            SizedBox(
+              height: height * 0.015,
+            ),
+            CustomTextField(
+              controller: _mailController,
+              label: "Enter your email",
+              hintColor: AppColor.lightGray,
+              hintSize: 16,
+              height: 55,
+              contentPadding:
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              filled: true,
+              borderSide: BorderSide(color: Colors.white),
+              fillColor: AppColor.gray.withOpacity(0.5),
+              border: Border.all(color: AppColor.gray.withOpacity(0.3)),
+              borderRadius: BorderRadius.circular(15),
+              fieldRadius: BorderRadius.circular(15),
             ),
             SizedBox(
               height: height * 0.035,
@@ -308,7 +353,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: height * 0.035,
             ),
-
             Row(
               children: [
                 SvgPicture.asset(Assets.svgInvitionCode,
@@ -423,7 +467,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: height * 0.035,
             ),
-            constantbutton(onTap: () {  }, text: 'Register',),
+            constantbutton(onTap: () {
+              if (_phoneController.text.isEmpty){
+                Utils.setSnackBar("Please enter your phone number ", context);
+              } else if(_phoneController.text.length<10){
+                Utils.setSnackBar("Please enter proper phone number ", context);
+              } else if (_mailController.text.isEmpty){
+                Utils.setSnackBar("Please enter your email", context);
+              } else if (
+              _passController.text.isEmpty
+              ){
+                Utils.setSnackBar("Password must ", context);
+              }  else if (
+              _passController.text.length<6
+              ){
+                Utils.setSnackBar("The password must be at least 6 digits long.", context);
+              }
+              else if (_confirmPassController.text.isEmpty){
+                Utils.setSnackBar("Re-enter  your password", context);
+              }  else if (_passController.text!=_confirmPassController.text){
+                Utils.setSnackBar("Your password is not same", context);
+              }
+              else if (!isChecked){
+                Utils.setSnackBar("Please agree privacy agreement  ", context);
+              }
+              else{
+                Map data={
+                  "email":_mailController.text,
+                  "mobile":_phoneController.text,
+                  "password": _passController.text,
+                  "confirm_password": _confirmPassController.text,
+                  "invite_code": _inviteController.text
+                };
+                register.registerApi(data, context);
+              }
+            }, text: 'Register',),
             SizedBox(
               height: height * 0.02,
             ),

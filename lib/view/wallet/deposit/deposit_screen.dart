@@ -8,6 +8,7 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:game/view_model/profile_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,7 @@ class _DepositScreenState extends State<DepositScreen> {
   @override
   Widget build(BuildContext context) {
     final deposit = Provider.of<DepositViewModel>(context);
+    final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -114,7 +116,7 @@ class _DepositScreenState extends State<DepositScreen> {
                       width: width * 0.12,
                     ),
                     Text(
-                      "₹1000",
+                      "₹${profile?.depositAmount??"0.0"}",
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 22,
@@ -332,23 +334,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                 ),
                               ),
                             ),
-                            // Positioned(
-                            //     top: 5,
-                            //     right: 5,
-                            //     child: _selectedItemIndex ==
-                            //                 indianAmount[index] ||
-                            //             _selectedItemIndex == usdAmount[index]
-                            //         ? Container(
-                            //             height: 12,
-                            //             width: 12,
-                            //             child: const CircleAvatar(
-                            //               child: Icon(
-                            //                 Icons.check_outlined,
-                            //                 size: 10,
-                            //               ),
-                            //             ),
-                            //           )
-                            //         : Container()),
+
                           ],
                         ),
                       );

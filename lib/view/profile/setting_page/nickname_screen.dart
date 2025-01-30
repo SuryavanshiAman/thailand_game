@@ -6,6 +6,8 @@ import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
+import 'package:game/view_model/update_profile_view_model.dart';
+import 'package:provider/provider.dart';
 
 
 class NickNameScreen extends StatefulWidget {
@@ -23,13 +25,12 @@ class _NickNameScreenState extends State<NickNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+final update=Provider.of<UpdateViewModel>(context);
     return Dialog(
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Center(
         child: ListView(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: height*0.2,),
             Container(
@@ -80,19 +81,39 @@ class _NickNameScreenState extends State<NickNameScreen> {
                         ),
                         SizedBox(height: height*0.02,),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                          padding: const EdgeInsets.all(12.0),
                           child: CustomTextField(
-                            fillColor: Colors.grey.withOpacity(0.2),
                             controller: nameCon,
-                            filled: true,
-                            focusColor: Colors.white,
-                            maxLines: 1,
                             label: "NancyMomoLand",
+                            hintColor: AppColor.lightGray,
+                            hintSize: 16,
+                            height: 55,
+                            borderSide: BorderSide(color: Colors.white),
+                            contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                            filled: true,
+                            fillColor: AppColor.gray.withOpacity(0.5),
+                            border: Border.all(color: AppColor.gray.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(15),
+                            fieldRadius: BorderRadius.circular(15),
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                        //   child: CustomTextField(
+                        //     fillColor: Colors.white,
+                        //     controller: nameCon,
+                        //     filled: true,
+                        //     focusColor: Colors.white,
+                        //     maxLines: 1,
+                        //     label: "NancyMomoLand",
+                        //   ),
+                        // ),
 
                         const Spacer(),
-                        constantbutton(onTap: () {  }, text: 'Submit',),
+                        constantbutton(onTap: () {
+                          update.updateImageApi("", nameCon.text, context);
+                        }, text: 'Submit',),
                         // AppBtn(
                         //   height: 50,
                         //   title: 'Submit',

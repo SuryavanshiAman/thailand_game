@@ -8,6 +8,8 @@ import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
+import 'package:game/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class PhoneNumberLogin extends StatefulWidget {
   const PhoneNumberLogin({super.key});
@@ -25,6 +27,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final login = Provider.of<AuthViewModel>(context);
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.all(8),
@@ -64,24 +67,24 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               height: height * 0.07,
               decoration: BoxDecoration(
                   color: AppColor.gray.withOpacity(0.5),
-                  border: Border(bottom: BorderSide(color:AppColor.white)),
+                  border: Border(bottom: BorderSide(color: AppColor.white)),
                   borderRadius: BorderRadius.circular(12)),
               child: Center(
                 child: CountryCodePicker(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
                   dialogSize: Size(350, 300),
-boxDecoration: BoxDecoration(
-  color: AppColor.lightGray,
-  borderRadius: BorderRadius.circular(10),
-  boxShadow: [
-    BoxShadow(
-      color:Colors.transparent,
-      blurRadius: 0,
-      offset: Offset(0, 0),
-    ),
-  ],
-),
+                  boxDecoration: BoxDecoration(
+                    color: AppColor.lightGray,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.transparent,
+                        blurRadius: 0,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
+                  ),
                   onChanged: (countryCode) {
                     setState(() {
                       _selectedCountryCode = countryCode.dialCode!;
@@ -227,17 +230,21 @@ boxDecoration: BoxDecoration(
         ),
         constantbutton(
           onTap: () {
-             if(_phoneController.text.isEmpty){
-              Utils.setSnackBar( "Please enter Phone no.", context);
-            }else if(_phoneController.text.length !=10){
+            if (_phoneController.text.isEmpty) {
+              Utils.setSnackBar("Please enter Phone no.", context);
+            } else if (_phoneController.text.length != 10) {
               Utils.setSnackBar("Please enter proper Phone no.", context);
-            }else if(_passController.text.isEmpty){
-               Utils.setSnackBar("Please enter your password", context);
-             }
-             else{
-
-              Navigator.pushNamed(context, RoutesName.bottomNavBar);
-              // showCustomSnackbar(context, "Register Successfully.", ContentType.success);
+            } else if (_passController.text.isEmpty) {
+              Utils.setSnackBar("Please enter your password", context);
+            } else if (_passController.text.length < 6) {
+              Utils.setSnackBar(
+                  "The password must be at least 6 digits long.", context);
+            } else {
+              Map data = {
+                "email": _phoneController.text,
+                "password": _passController.text
+              };
+              login.authApi(data, context);
             }
           },
           text: 'Login',

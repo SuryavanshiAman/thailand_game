@@ -22,21 +22,19 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _ProfileScreenState extends State<ProfileScreen>{
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    )..repeat(reverse: true);
+    Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
+
   }
 
   @override
   Widget build(BuildContext context) {
     final elementList = Provider.of<ProfileViewModel>(context);
+    final profile=elementList.profileData?.data;
+    print(profile?.name);
     List<GameModel> gameList = [
       GameModel(onTap: () {
         Navigator.pushNamed(context, RoutesName.notificationScreen);
@@ -119,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          profile?.name??""
                           "Nanacy Momoland",
                           style: TextStyle(
                               color: AppColor.white,
@@ -147,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: AppColor.white,
                                 ),
                                 Text(
-                                  "100143",
+                                 profile?.uId?? "420",
                                   style: TextStyle(
                                       color: AppColor.white,
                                       fontSize: 16,
@@ -192,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     Row(
                       children: [
                         Text(
-                          "₹0.00",
+                          "₹${profile?.wallet??"0.00"}",
                           style: TextStyle(
                               color: AppColor.white,
                               fontSize: 18,
@@ -201,10 +200,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                         SizedBox(
                           width: width * 0.03,
                         ),
-                        Icon(
-                          Icons.refresh,
-                          color: AppColor.lightGray,
-                        )
+                        InkWell(
+                            onTap: (){
+                              elementList.userProfileApi(context);
+                            },
+                            child: Image.asset(Assets.imagesTotalBal))
+                        // Icon(
+                        //   Icons.refresh,
+                        //   color: AppColor.lightGray,
+                        // )
                       ],
                     ),
                     Container(

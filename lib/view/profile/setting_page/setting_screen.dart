@@ -140,6 +140,7 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                 children: [
                                   InkWell(
                                     onTap: () {
+                                      Navigator.pushNamed(context, RoutesName.changeAvtar);
                                       // Navigator.push(
                                       //     context,
                                       //     MaterialPageRoute(
