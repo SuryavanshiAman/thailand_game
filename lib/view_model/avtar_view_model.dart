@@ -13,7 +13,7 @@ class AvtarViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> userProfileApi(context) async {
+  Future<void> avtarApi(context) async {
     _avtarRepository.avtarImageApi().then((value) {
       if (value.status == 200) {
         setAvtar(value);

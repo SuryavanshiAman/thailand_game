@@ -4,6 +4,8 @@ import 'package:game/generated/assets.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/avtar_view_model.dart';
+import 'package:game/view_model/update_profile_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart'as http;
 
@@ -19,10 +21,12 @@ class _ChangeAvtarState extends State<ChangeAvtar> {
   @override
   void initState() {
     super.initState();
+    Provider.of<AvtarViewModel>(context,listen: false).avtarApi(context);
   }
   @override
   Widget build(BuildContext context) {
-
+final avtar =Provider.of<AvtarViewModel>(context);
+final update=Provider.of<UpdateViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -54,15 +58,16 @@ class _ChangeAvtarState extends State<ChangeAvtar> {
             crossAxisSpacing: 5.0,
             mainAxisSpacing: 5.0,
           ),
-          itemCount: 3,
+          itemCount: avtar.avtarData?.data?.length??0,
           itemBuilder: (context, index) {
             final bool isSelected = index == selectedIndex;
-
+final data= avtar.avtarData?.data?[index];
             return GestureDetector(
               onTap: () {
                 setState(() {
                   selectedIndex = index;
                 });
+                update.updateImageApi(data?.id,"",context);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -78,8 +83,8 @@ class _ChangeAvtarState extends State<ChangeAvtar> {
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: AssetImage(Assets.imagesPeople)
-                                // NetworkImage(changeAvtar[index].image.toString(),
+                                image:
+                                NetworkImage(data?.image.toString()??"",)
                                 ))),
                       isSelected ?
                        Align(
@@ -98,6 +103,5 @@ class _ChangeAvtarState extends State<ChangeAvtar> {
   }
 
 
-  // List<ChangeAvtarModel> changeAvtar = [];
 }
 

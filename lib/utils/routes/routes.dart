@@ -8,6 +8,7 @@ import 'package:game/view/bottom_bar/bottom_bar_two/final_view.dart';
 import 'package:game/view/bottom_bar/bottom_nav_bar.dart';
 import 'package:game/view/home/home_screen.dart';
 import 'package:game/view/home/notification_screen.dart';
+import 'package:game/view/profile/about_us/about_us.dart';
 import 'package:game/view/profile/about_us/about_us_screen.dart';
 import 'package:game/view/profile/feed_back_screen.dart';
 import 'package:game/view/profile/game_history_screen.dart';
@@ -71,6 +72,8 @@ class Routers {
         return (context) =>  NickNameScreen();
       case RoutesName.changeAvtar:
         return (context) =>  ChangeAvtar();
+      case RoutesName.commonAboutPage:
+        return (context) =>  CommonAboutPage();
       default:
         return (context) => Scaffold(
           body: Center(

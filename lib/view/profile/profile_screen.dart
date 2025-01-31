@@ -94,7 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         AppColor.gray,
                         AppColor.black,
                       ],
-                      // stops: [0.1, 0.9,],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -107,7 +106,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage(Assets.imagesProfile),
+                      // backgroundImage: AssetImage(Assets.imagesProfile),
+                      backgroundImage: NetworkImage(profile?.image??""),
                     ),
                     SizedBox(
                       width: width * 0.03,

@@ -13,6 +13,9 @@ import 'package:game/res/custom_text_field.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/gift_card_view_model.dart';
+import 'package:game/view_model/gift_history_view_model.dart';
+import 'package:provider/provider.dart';
 
 class GiftScreen extends StatefulWidget {
   const GiftScreen({super.key});
@@ -29,10 +32,13 @@ class GiftScreenState extends State<GiftScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<GiftHistoryViewModel>(context,listen: false).giftHistoryApi(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final gift =Provider.of<GiftCardViewModel>(context);
+    final giftData =Provider.of<GiftHistoryViewModel>(context).giftHistoryData?.data;
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -50,7 +56,7 @@ class GiftScreenState extends State<GiftScreen> {
         children: [
           Column(
             children: [
-              Container(
+              SizedBox(
                 height: height * 0.3, // Adjust height to fit the content properly
                 child: Stack(
                   children: [
@@ -85,13 +91,11 @@ class GiftScreenState extends State<GiftScreen> {
                 height: 5,
               ),
               Container(
-                // ,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: AppColor.appBarGradient
                   ),
                   margin: const EdgeInsets.fromLTRB(15, 5, 15, 0),
-                  // height: height,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Column(
@@ -126,13 +130,11 @@ class GiftScreenState extends State<GiftScreen> {
                           controller: giftcode,
                           label: "Please enter gift code",
                           hintColor: AppColor.lightGray,
-
                           hintSize: 16,
                           height: 55,
                           borderSide: BorderSide(color: Colors.white),
                           contentPadding:
                           const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                          // width: width*0.65,
                           maxLength: 10,
                           filled: true,
                           fillColor: AppColor.gray.withOpacity(0.5),
@@ -144,6 +146,7 @@ class GiftScreenState extends State<GiftScreen> {
                         constantbutton(
                           text: 'Receive',
                           onTap: () {
+                            gift.giftCardApi(giftcode.text, context);
                           },
                         )
                       ],
@@ -173,7 +176,40 @@ class GiftScreenState extends State<GiftScreen> {
                       ],
                     ),
                     const SizedBox(height: 15,),
-
+                    Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: giftData?.length??0,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            final items=giftData?[index];
+                            return Container(
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("GiftCode",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text("Amount",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text("Date",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(items?.giftCode??"",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text(items?.amount.toString()??"",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text(items?.createdAt??"",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
 
                   ],
                 ),

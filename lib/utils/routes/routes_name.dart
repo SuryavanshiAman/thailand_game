@@ -21,6 +21,7 @@ class RoutesName{
   static const String feedBackScreen = '/feedBackScreen';
   static const String nickNameScreen = '/nickNameScreen';
   static const String changeAvtar = '/changeAvtar';
+  static const String commonAboutPage = '/commonAboutPage';
 
 
 }

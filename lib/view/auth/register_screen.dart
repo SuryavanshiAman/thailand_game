@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
@@ -467,29 +468,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: height * 0.035,
             ),
+            register.loading==false?
             constantbutton(onTap: () {
               if (_phoneController.text.isEmpty){
-                Utils.setSnackBar("Please enter your phone number ", context);
+                Utils.setSnackBar("Please enter your phone number ",AppColor.red, context);
               } else if(_phoneController.text.length<10){
-                Utils.setSnackBar("Please enter proper phone number ", context);
+                Utils.setSnackBar("Please enter proper phone number ",AppColor.red, context);
               } else if (_mailController.text.isEmpty){
-                Utils.setSnackBar("Please enter your email", context);
+                Utils.setSnackBar("Please enter your email",AppColor.red, context);
               } else if (
               _passController.text.isEmpty
               ){
-                Utils.setSnackBar("Password must ", context);
+                Utils.setSnackBar("Password must ",AppColor.red, context);
               }  else if (
               _passController.text.length<6
               ){
-                Utils.setSnackBar("The password must be at least 6 digits long.", context);
+                Utils.setSnackBar("The password must be at least 6 digits long.",AppColor.red, context);
               }
               else if (_confirmPassController.text.isEmpty){
-                Utils.setSnackBar("Re-enter  your password", context);
+                Utils.setSnackBar("Re-enter  your password",AppColor.red, context);
               }  else if (_passController.text!=_confirmPassController.text){
-                Utils.setSnackBar("Your password is not same", context);
+                Utils.setSnackBar("Your password is not same",AppColor.red, context);
               }
               else if (!isChecked){
-                Utils.setSnackBar("Please agree privacy agreement  ", context);
+                Utils.setSnackBar("Please agree privacy agreement",AppColor.red, context);
               }
               else{
                 Map data={
@@ -501,7 +503,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 };
                 register.registerApi(data, context);
               }
-            }, text: 'Register',),
+            }, text: 'Register',):CircularButton(),
             SizedBox(
               height: height * 0.02,
             ),

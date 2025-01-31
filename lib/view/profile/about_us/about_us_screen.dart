@@ -3,8 +3,11 @@ import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/text_widget.dart';
+import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/aboutus_view_model.dart';
+import 'package:provider/provider.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -16,12 +19,12 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final aboutus=Provider.of<AboutUsViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -69,7 +72,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   color: AppColor.white,
                 ),
                 trailing: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    aboutus.aboutUsApi("1",context);
+                  },
                   icon: const Icon(
                     Icons.arrow_forward_ios_sharp,
                     color: AppColor.lightGray,
@@ -95,7 +100,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   color: AppColor.white,
                 ),
                 trailing: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    aboutus.aboutUsApi("2",context);
+                  },
                   icon: const Icon(
                     Icons.arrow_forward_ios_sharp,
                     color: AppColor.lightGray,

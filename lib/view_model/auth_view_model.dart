@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:game/res/color-const.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/user_view_model.dart';
@@ -27,11 +28,11 @@ class AuthViewModel with ChangeNotifier {
         setLoading(false);
         userPref.saveUser(value['user_id'].toString());
         Navigator.pushReplacementNamed(context, RoutesName.bottomNavBar);
-        Utils.setSnackBar(value['message'], context);
+        Utils.setSnackBar(value['message'],AppColor.green, context);
       }
       else {
         setLoading(false);
-        Utils.setSnackBar(value['message'], context);
+        Utils.setSnackBar(value['message'],AppColor.red, context);
       }
     }).onError((error, stackTrace) {
       setLoading(false);
@@ -49,11 +50,11 @@ class AuthViewModel with ChangeNotifier {
         setLoading(false);
         userPref.saveUser(value['user_id'].toString());
         Navigator.pushReplacementNamed(context, RoutesName.bottomNavBar);
-        Utils.setSnackBar(value['message'], context);
+        Utils.setSnackBar(value['message'],AppColor.green ,context);
       }
       else {
         setLoading(false);
-        Utils.setSnackBar(value['message'], context);
+        Utils.setSnackBar(value['message'],AppColor.red, context);
       }
     }).onError((error, stackTrace) {
       setLoading(false);

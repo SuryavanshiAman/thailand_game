@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/wingo/controller/win_go_controller.dart';
 import 'package:game/view/game/wingo/repo/win_go_bet_repo.dart';
@@ -45,11 +46,11 @@ class WinGoBetViewModel with ChangeNotifier {
         Navigator.pop(context);
         Provider.of<ProfileViewModel>(context, listen: false).userProfileApi(context);
         Utils.setSnackBar(
-            value['message'].toString(), context, );
+            value['message'].toString(),AppColor.green, context, );
       } else {
         setLoading(false);
         Utils.setSnackBar(
-            value['message'].toString(), context, );
+            value['message'].toString(),AppColor.red, context, );
       }
     }).onError((error, stackTrace) {
       setLoading(false);

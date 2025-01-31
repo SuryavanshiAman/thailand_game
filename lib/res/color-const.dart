@@ -17,6 +17,7 @@ class AppColor{
  static const Color orange= Colors.orange;
  static const Color darkBlue= Color(0xff030c23);
  static const lightMarron = Color(0xFF2c0f52);
+ static const green = Colors.green;
 
  static const LinearGradient appBarGradient = LinearGradient(
   colors: [

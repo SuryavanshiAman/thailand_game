@@ -112,7 +112,6 @@ class ProfileViewModel with ChangeNotifier {
     String? userId = await userViewModal.getUser();
     _userProfileRepository.userProfileApi(userId).then((value) {
       if (value.status == 200) {
-        // setBalance(value.data!.wallet!);
         setProfile(value);
         print("aman");
         print(value.data?.name);

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
+import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/update_profile_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,17 @@ class NickNameScreen extends StatefulWidget {
 class _NickNameScreenState extends State<NickNameScreen> {
 
   TextEditingController nameCon = TextEditingController();
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  final profile= Provider.of<ProfileViewModel>(context,listen: false);
+     profile.userProfileApi(context);
+     setState(() {
+       nameCon.text= profile.profileData?.data?.name;
+     });
 
+  }
   @override
   Widget build(BuildContext context) {
 final update=Provider.of<UpdateViewModel>(context);
@@ -111,20 +123,10 @@ final update=Provider.of<UpdateViewModel>(context);
                         // ),
 
                         const Spacer(),
-                        constantbutton(onTap: () {
+                        update.loading==false?  constantbutton(onTap: () {
                           update.updateImageApi("", nameCon.text, context);
-                        }, text: 'Submit',),
-                        // AppBtn(
-                        //   height: 50,
-                        //   title: 'Submit',
-                        //   fontSize: 20,
-                        //   titleColor: AppColors.primaryTextColor,
-                        //   hideBorder: true,
-                        //   onTap: () {
-                        //     avtarChangeApi(nameCon.text);
-                        //   },
-                        //   gradient: AppColors.loginSecondryGrad,
-                        // ),
+                        }, text: 'Submit',):CircularButton(),
+
                         SizedBox(height: height*0.02,)
                       ],
                     ),

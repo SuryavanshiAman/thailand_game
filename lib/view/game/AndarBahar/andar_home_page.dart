@@ -9,6 +9,7 @@ import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/app_colors.dart';
+import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/AndarBahar/constant/app_assets.dart';
 import 'package:game/view/game/AndarBahar/constant/image_toast_wingo.dart';
@@ -196,7 +197,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
         wallet = (wallet - amountToDeduct).toDouble();
       });
     } else {
-      Utils.setSnackBar('Insufficient funds', context, );
+      Utils.setSnackBar('Insufficient funds',AppColor.red, context, );
     }
   }
 
@@ -609,13 +610,13 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
                                           wallet == 0
                                               ? Utils
                                               .setSnackBar(
-                                              'Please Recharge',
+                                              'Please Recharge',AppColor.red,
                                               context,
                                               )
                                               : wallet < list[index]
                                               ? Utils
                                               .setSnackBar(
-                                              'Low Balance',
+                                              'Low Balance',AppColor.red,
                                               context,
                                              )
                                               : Future.delayed(
@@ -1192,11 +1193,11 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
       } else {
         // Error response
         String errorMessage = data['message'] ?? 'An error occurred';
-        Utils.setSnackBar(errorMessage, context);
+        Utils.setSnackBar(errorMessage,AppColor.red, context);
       }
     } catch (e) {
       // Handle unexpected errors
-      Utils.setSnackBar('Failed to place bet: $e', context);
+      Utils.setSnackBar('Failed to place bet: $e',AppColor.red, context);
       if (kDebugMode) {
         print('Error occurred: $e');
       }

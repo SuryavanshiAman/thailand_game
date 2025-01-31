@@ -65,7 +65,7 @@ class _WinGoWalletState extends State<WinGoWallet> {
               InkWell(
                 onTap: () {
                   userProfileViewModel.userProfileApi(context);
-                  Utils.setSnackBar('Wallet refresh ✔', context,);
+                  Utils.setSnackBar('Wallet refresh ✔',AppColor.white, context,);
 
                 },
                 child: Image.asset(Assets.imagesTotalBal, height: 30,color: AppColor.white,),

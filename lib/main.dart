@@ -12,6 +12,7 @@ import 'package:game/view/game/wingo/view_model/win_go_result_view_model.dart';
 import 'package:game/view_model/auth_view_model.dart';
 import 'package:game/view_model/avtar_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:game/view_model/gift_card_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,12 @@ import 'utils/routes/routes.dart';
 import 'utils/routes/routes_name.dart';
 import 'view/game/wingo/view_model/win_go_game_his_view_model.dart';
 import 'view/game/wingo/view_model/win_go_my_his_view_model.dart';
+import 'view_model/aboutus_view_model.dart';
+import 'view_model/edit_password_view_model.dart';
+import 'view_model/feed_back_view_model.dart';
 import 'view_model/game_view_model.dart';
+import 'view_model/gift_history_view_model.dart';
+import 'view_model/notification_view_model.dart';
 import 'view_model/services/splash_services.dart';
 import 'view_model/update_profile_view_model.dart';
 import 'view_model/withdraw_view_model.dart';
@@ -45,7 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     height=MediaQuery.of(context).size.height;
-    width=kIsWeb?400:MediaQuery.of(context).size.width;
+    width=kIsWeb?400:MediaQuery.of(context,).size.width;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => WinGoController()),
@@ -63,6 +69,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthViewModel()),
         ChangeNotifierProvider(create: (context) => UpdateViewModel()),
         ChangeNotifierProvider(create: (context) => AvtarViewModel()),
+        ChangeNotifierProvider(create: (context) => EditPasswordViewModel()),
+        ChangeNotifierProvider(create: (context) => NotificationViewModel()),
+        ChangeNotifierProvider(create: (context) => AboutUsViewModel()),
+        ChangeNotifierProvider(create: (context) => GiftCardViewModel()),
+        ChangeNotifierProvider(create: (context) => GiftHistoryViewModel()),
+        ChangeNotifierProvider(create: (context) => FeedBackViewModel()),
       ],
       child: Center(
         child: Container(

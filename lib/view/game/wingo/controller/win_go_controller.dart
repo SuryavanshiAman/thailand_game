@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:game/res/color-const.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -309,7 +310,7 @@ class WinGoController with ChangeNotifier {
   bool isPlayAllowed(int time, int status, context) {
     if ((status == 1 && time <= 5) || status == 2) {
       if (kDebugMode) {
-        Utils.setSnackBar("No more bet", context, );
+        Utils.setSnackBar("No more bet",AppColor.red, context, );
       }
       return false;
     }

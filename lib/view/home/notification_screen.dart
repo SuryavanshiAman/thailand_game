@@ -5,6 +5,8 @@ import 'package:game/res/color-const.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/notification_view_model.dart';
+import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -15,7 +17,13 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<NotificationViewModel>(context,listen: false).notificationApi(context);
+  }
+  @override
   Widget build(BuildContext context) {
+    final notification = Provider.of<NotificationViewModel>(context).notificationData?.data;
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar:  GradientAppBar(
@@ -30,10 +38,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
         padding: EdgeInsets.all(10),
         children: [
           ListView.builder(
-              itemCount:3,
+              itemCount:notification?.length??0,
               // items.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index){
+                final data= notification?[index];
                 return Card(
                   elevation: 2,
                   child: Container(
@@ -66,27 +75,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             children: [
                               Image.asset(Assets.imagesProNotification,scale: 1.5,color: AppColor.white,),
                               SizedBox(width: width*0.02,),
-                              textWidget(text:"Login notification",
-                                  // items[index].name.toString(),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColor.white
+                              Container(width: width*0.75,
+                                child: textWidget(text:data?.name??"",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColor.white
+                                ),
                               ),
                               const Spacer(),
-                              // Image.asset(Assets.iconsDeleat,scale: 1.5,),
                             ],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child:  textWidget(text:"Your account has just been logged in at 2025-01-24 01:34:58. If you have any questions, please contact online customer service for consultation! I wish you happy gaming and lots of profits",
-                                // items[index].name.toString(),
+                            child:  textWidget(text:data?.disc??"",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: AppColor.lightGray
-
                             ),
                           ),
-
                         ],
                       ),
                     ),

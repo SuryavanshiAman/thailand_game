@@ -1,48 +1,46 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:game/repo/update_profile.dart';
+import 'package:game/repo/feed_back_repo.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/user_view_model.dart';
 
-class UpdateViewModel with ChangeNotifier {
-  final _updateRepo = UpdateProfileRepository();
+class FeedBackViewModel with ChangeNotifier {
+  final _feedBAckRepo = FeedBackRepo();
 
   bool _loading = false;
 
   bool get loading => _loading;
+
 
   setLoading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-  Future<void> updateImageApi(dynamic imgId ,dynamic name, context) async {
+  Future<void> feedBackApi(dynamic feedBack, context) async {
+    UserViewModel userViewModal = UserViewModel();
+    String? userId = await userViewModal.getUser();
     setLoading(true);
-    UserViewModel userViewModel = UserViewModel();
-    String? userId = await userViewModel.getUser();
-    print("ggggg$name");
     Map data={
-      "id":userId,
-      "image_id": imgId ,
-      "name":name
+      "userid" : userId,
+      "feedback" : feedBack
     };
-    print(data);
-    _updateRepo.updateApi(data).then((value) {
+    _feedBAckRepo.feedBackApi(data).then((value) {
       if (value['status'] == 200) {
         setLoading(false);
         Navigator.pushReplacementNamed(context, RoutesName.bottomNavBar);
-        Utils.setSnackBar(value['message'],AppColor.green, context);
+        Utils.setSnackBar(value['message'], AppColor.green, context);
       }
       else {
         setLoading(false);
-        Utils.setSnackBar(value['message'],AppColor.red, context);
+        Utils.setSnackBar(value['message'], AppColor.red, context);
       }
     }).onError((error, stackTrace) {
       setLoading(false);
       if (kDebugMode) {
-        print('updateApi: $error');
+        print('feedBackApi: $error');
       }
     });
   }

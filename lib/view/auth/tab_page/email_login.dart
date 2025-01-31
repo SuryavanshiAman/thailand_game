@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
@@ -140,19 +141,20 @@ class _EmailLoginState extends State<EmailLogin> {
         SizedBox(
           height: height * 0.04,
         ),
+        login.loading==false?
         constantbutton(
           width: width,
           onTap: () {
             if (_emailController.text.isEmpty) {
-              Utils.setSnackBar("Please enter Phone no.", context);
+              Utils.setSnackBar("Please enter Phone no.",AppColor.red, context);
             } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(_emailController.text)) {
-              Utils.setSnackBar("You can only enter mail here", context);
+              Utils.setSnackBar("You can only enter mail here",AppColor.red, context);
             }
             else if (_passController.text.isEmpty) {
-              Utils.setSnackBar("Please enter your password", context);
+              Utils.setSnackBar("Please enter your password",AppColor.red, context);
             } else if (_passController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.", context);
+                  "The password must be at least 6 digits long.",AppColor.red, context);
             } else {
               Map data = {
                 "email": _emailController.text,
@@ -162,7 +164,7 @@ class _EmailLoginState extends State<EmailLogin> {
             }
           },
           text: 'Login',
-        ),
+        ):CircularButton(),
         SizedBox(
           height: height * 0.03,
         ),

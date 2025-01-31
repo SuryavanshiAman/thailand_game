@@ -919,7 +919,7 @@ class _GameAviatorState extends State<GameAviator>
       });
       context.read<ProfileViewModel>().profileData!.data!.wallet;
     } else {
-      Utils.setSnackBar('Insufficient funds', context);
+      Utils.setSnackBar('Insufficient funds',AppColor.red, context);
     }
   }
 
@@ -956,7 +956,7 @@ class _GameAviatorState extends State<GameAviator>
       });
       context.read<ProfileViewModel>().profileData!.data!.wallet;
     } else {
-      Utils.setSnackBar('Insufficient funds', context);
+      Utils.setSnackBar('Insufficient funds',AppColor.red, context);
     }
   }
 
@@ -1514,10 +1514,10 @@ class _GameAviatorState extends State<GameAviator>
                         });
                         if (amount.text.isEmpty) {
                           Utils.setSnackBar(
-                              'Select Amount First..!', context);
+                              'Select Amount First..!',AppColor.red, context);
                         } else if (amount.text == '0') {
                           Utils.setSnackBar(
-                              'Select Amount First..!', context);
+                              'Select Amount First..!',AppColor.red, context);
                         } else if (context
                                 .read<ProfileViewModel>()
                                 .profileData!
@@ -1525,7 +1525,7 @@ class _GameAviatorState extends State<GameAviator>
                                 .wallet ==
                             0) {
                           Utils.setSnackBar(
-                              'Please recharge first', context);
+                              'Please recharge first',AppColor.red, context);
                         } else {
                           addBet(
                               amount.text,
@@ -1942,10 +1942,10 @@ class _GameAviatorState extends State<GameAviator>
                         });
                         if (amountTwo.text.isEmpty) {
                           Utils.setSnackBar(
-                              'Select Amount First..!', context);
+                              'Select Amount First..!',AppColor.red, context);
                         } else if (amountTwo.text == '0') {
                           Utils.setSnackBar(
-                              'Select Amount First..!', context);
+                              'Select Amount First..!',AppColor.red, context);
                         } else if (context
                                 .read<ProfileViewModel>()
                                 .profileData!
@@ -1953,7 +1953,7 @@ class _GameAviatorState extends State<GameAviator>
                                 .wallet ==
                             0) {
                           Utils.setSnackBar(
-                              'Please recharge first', context);
+                              'Please recharge first',AppColor.red, context);
                         } else {
                           addBet(
                               amountTwo.text,
@@ -2344,9 +2344,9 @@ class _GameAviatorState extends State<GameAviator>
         setState(() {
           autoBetCashOut = true;
         });
-        Utils.setSnackBar(data['message'], context);
+        Utils.setSnackBar(data['message'],AppColor.green, context);
       } else {
-        Utils.setSnackBar(data['message'], context);
+        Utils.setSnackBar(data['message'],AppColor.red, context);
       }
     }
   }
@@ -2379,9 +2379,9 @@ class _GameAviatorState extends State<GameAviator>
     Provider.of<ProfileViewModel>(context, listen: false);
     if (data["status"] == 200) {
       profileViewModel.userProfileApi(context);
-      Utils.setSnackBar(data['message'], context);
+      Utils.setSnackBar(data['message'],AppColor.green, context);
     } else {
-      Utils.setSnackBar(data['message'], context);
+      Utils.setSnackBar(data['message'],AppColor.red, context);
     }
   }
 
@@ -2437,9 +2437,9 @@ class _GameAviatorState extends State<GameAviator>
     final resData = jsonDecode(response.body);
     if (resData["status"] == 200) {
       context.read<ProfileViewModel>().userProfileApi(context);
-      Utils.setSnackBar(resData['message'], context);
+      Utils.setSnackBar(resData['message'],AppColor.green, context);
     } else {
-      Utils.setSnackBar(resData['message'], context);
+      Utils.setSnackBar(resData['message'],AppColor.red, context);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/wingo/model/win_go_result_model.dart';
 import 'package:game/view/game/wingo/repo/win_go_result_repo.dart';
@@ -47,7 +48,7 @@ class WinGoResultViewModel with ChangeNotifier {
       } else {
         setLoading(false);
         Utils.setSnackBar(
-            value.message.toString(), context);
+            value.message.toString(),AppColor.red, context);
       }
     }).onError((error, stackTrace) {
       setLoading(false);

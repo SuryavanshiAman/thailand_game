@@ -8,20 +8,22 @@ import 'routes/routes_name.dart';
 
 class Utils {
 
-  static setSnackBar(String msg, BuildContext context) {
+  static setSnackBar(String msg,Color color, BuildContext context) {
     showToastWidget(
       Container(
+        margin: EdgeInsets.only(top: 30),
         width: width*0.8,
         padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),
         decoration: BoxDecoration(
-          color: AppColor.gray.withOpacity(0.7),
+          color: color.withOpacity(0.7),
           borderRadius: BorderRadius.circular(10.0),
         ),
         child:   Text(
           msg,
-          style: const TextStyle(
-            color: Colors.white,
+          style:  TextStyle(
+            color:AppColor.white,
             fontSize: 16.0,
+            fontWeight: FontWeight.w600
           ),
         ),
       ),
@@ -30,7 +32,7 @@ class Utils {
       reverseAnimation: StyledToastAnimation.slideToTop,
       position: StyledToastPosition.top,
       animDuration: const Duration(milliseconds: 300),
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
       curve: Curves.elasticOut,
       reverseCurve: Curves.linear,
     );
