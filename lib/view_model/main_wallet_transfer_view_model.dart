@@ -1,28 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:game/generated/assets.dart';
-import 'package:game/repo/withdraw_repo.dart';
+import 'package:game/repo/main_wallet_transfer_repo.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/user_view_model.dart';
 
-
-class WithdrawViewModel with ChangeNotifier{
-  final List<Map<String, dynamic>> withdrawOptions = [
-    {
-      'title': 'BANK CARD',
-      'image': Assets.imagesBankCard,
-      'bgColor': Colors.black,
-    },
-    {
-      'title': 'USDT',
-      'image': Assets.imagesUsdt,
-      'bgColor': Colors.black,
-      'badge': '+2%',
-    },
-  ];
-  final _withdrawRepo = WithdrawRepo();
+class MainWalletTransferViewModel with ChangeNotifier {
+  final _mainWalletRepo = MainWalletTransferRepo();
 
   bool _loading = false;
 
@@ -34,18 +19,11 @@ class WithdrawViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> withdrawApi(dynamic amount,dynamic usdtAmount, dynamic type, context) async {
+  Future<void> mainWalletTransferApi(context) async {
     UserViewModel userViewModal = UserViewModel();
     String? userId = await userViewModal.getUser();
     setLoading(true);
-    Map data={
-      "userid": userId,
-      "amount": amount,
-      "usdt_amount":usdtAmount,
-      "type": type
-    };
-    print(data);
-    _withdrawRepo.withdrawApi(data).then((value) {
+    _mainWalletRepo.mainWalletTransferApi(userId).then((value) {
       if (value['status'] == 200) {
         setLoading(false);
         Navigator.pushReplacementNamed(context, RoutesName.bottomNavBar);
@@ -58,7 +36,7 @@ class WithdrawViewModel with ChangeNotifier{
     }).onError((error, stackTrace) {
       setLoading(false);
       if (kDebugMode) {
-        print('withdrawApi: $error');
+        print('editPasswordApi: $error');
       }
     });
   }

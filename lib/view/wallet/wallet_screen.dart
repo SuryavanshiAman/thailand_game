@@ -11,6 +11,7 @@ import 'package:game/res/constantButton.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/main_wallet_transfer_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
+    final walletTransfer = Provider.of<MainWalletTransferViewModel>(context);
     print(profile?.wallet??"0.0");
     return Scaffold(
       backgroundColor: AppColor.black,
@@ -133,7 +135,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0") != null &&
                               double.tryParse(profile?.totalBalance.toString() ?? "0") != null &&
                               double.tryParse(profile?.totalBalance.toString() ?? "0") != 0
-                              ? (double.parse(profile!.thirdPartyWallet.toString()) / (double.parse(profile!.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
+                              ? (double.parse(profile!.thirdPartyWallet.toString()) / (double.parse(profile.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
                               : "0.00"), // Ensure result is a valid string
                           (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0")?.toStringAsFixed(2) ?? "0.00"),
                           '3rd party wallet',
@@ -153,6 +155,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           fontFamily: "SitkaSmall",
                           color: AppColor.white),
                       onTap: () {
+                        walletTransfer.mainWalletTransferApi(context);
                         // mainWalletTransfer(context);
                       },
                     ),

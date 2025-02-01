@@ -22,6 +22,7 @@ class RoutesName{
   static const String nickNameScreen = '/nickNameScreen';
   static const String changeAvtar = '/changeAvtar';
   static const String commonAboutPage = '/commonAboutPage';
+  static const String chooseBankScreen = '/chooseBankScreen';
 
 
 }

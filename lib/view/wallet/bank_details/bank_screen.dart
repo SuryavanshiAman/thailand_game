@@ -4,8 +4,13 @@ import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
+import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/add_bank_view_model.dart';
+import 'package:game/view_model/choose_bank_view_model.dart';
+import 'package:game/view_model/view_bank_view_model.dart';
+import 'package:provider/provider.dart';
 
 class BankScreen extends StatefulWidget {
   const BankScreen({super.key});
@@ -20,8 +25,32 @@ class _BankScreenState extends State<BankScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _ifcController = TextEditingController();
+
+  @override
+  void initState() {
+    Provider.of<ViewBankViewModel>(context, listen: false).bankViewApi(context);
+    super.initState();
+    acDetail();
+  }
+  acDetail() {
+    final bankDetail =
+        Provider.of<ViewBankViewModel>(context, listen: false)
+            .bankData?.data;
+    _nameController.text =
+    bankDetail == null ? '' : bankDetail.name.toString();
+    _accountController.text =
+    bankDetail == null ? '' : bankDetail.accountNum.toString();
+    _phoneController.text =
+    bankDetail == null ? '' : bankDetail.phoneNo.toString();
+    _mailController.text =
+    bankDetail == null ? '' : bankDetail.email.toString();
+    _ifcController.text =
+    bankDetail == null ? '' : bankDetail.ifscCode.toString();
+  }
   @override
   Widget build(BuildContext context) {
+    final bankName = Provider.of<ChooseBankViewModel>(context);
+    final addBank = Provider.of<AddBankViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -72,22 +101,27 @@ class _BankScreenState extends State<BankScreen> {
           ),
 
           SizedBox(height: 8),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: Color(0xFF1E1E1E),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Please select a bank',
-                  style: TextStyle(color: AppColor.white, fontSize: 16),
-                ),
-                Icon(Icons.arrow_forward_ios, color:AppColor.white, size: 18),
-              ],
+          InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, RoutesName.chooseBankScreen);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    bankName.bankName=="null"||bankName.bankName.isEmpty?'Please select a bank':bankName.bankName,
+                    style: TextStyle(color: AppColor.white, fontSize: 16),
+                  ),
+                  Icon(Icons.arrow_forward_ios, color:AppColor.white, size: 18),
+                ],
+              ),
             ),
           ),
           SizedBox(height: height*0.03),
@@ -194,7 +228,9 @@ class _BankScreenState extends State<BankScreen> {
             prefix: Icon(Icons.currency_rupee, color: AppColor.white),
           ),
           SizedBox(height: height*0.03),
-          constantbutton(onTap: () {  }, text: 'Save',),
+          constantbutton(onTap: () {
+            addBank.addBankApi(bankName.bankName, _nameController.text, _accountController.text, _phoneController.text, _mailController.text, _ifcController.text, context);
+          }, text: 'Save',),
         ],
       ),
     );

@@ -22,6 +22,7 @@ import 'package:game/view/wallet/bank_details/usdt_address.dart';
 import 'package:game/view/wallet/deposit/deposit_history_screen.dart';
 import 'package:game/view/wallet/deposit/deposit_screen.dart';
 import 'package:game/view/wallet/transaction_history_screen.dart';
+import 'package:game/view/wallet/withdraw/choose_bank_screen.dart';
 import 'package:game/view/wallet/withdraw/withdraw_history_screen.dart';
 import 'package:game/view/wallet/withdraw/withdraw_screen.dart';
 
@@ -74,6 +75,8 @@ class Routers {
         return (context) =>  ChangeAvtar();
       case RoutesName.commonAboutPage:
         return (context) =>  CommonAboutPage();
+      case RoutesName.chooseBankScreen:
+        return (context) =>  ChooseBankScreen();
       default:
         return (context) => Scaffold(
           body: Center(

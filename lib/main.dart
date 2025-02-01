@@ -22,13 +22,18 @@ import 'utils/routes/routes_name.dart';
 import 'view/game/wingo/view_model/win_go_game_his_view_model.dart';
 import 'view/game/wingo/view_model/win_go_my_his_view_model.dart';
 import 'view_model/aboutus_view_model.dart';
+import 'view_model/add_bank_view_model.dart';
+import 'view_model/choose_bank_view_model.dart';
 import 'view_model/edit_password_view_model.dart';
 import 'view_model/feed_back_view_model.dart';
 import 'view_model/game_view_model.dart';
 import 'view_model/gift_history_view_model.dart';
+import 'view_model/main_wallet_transfer_view_model.dart';
 import 'view_model/notification_view_model.dart';
+import 'view_model/payment_limit_view_model.dart';
 import 'view_model/services/splash_services.dart';
 import 'view_model/update_profile_view_model.dart';
+import 'view_model/view_bank_view_model.dart';
 import 'view_model/withdraw_view_model.dart';
 
 void main() {
@@ -75,6 +80,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => GiftCardViewModel()),
         ChangeNotifierProvider(create: (context) => GiftHistoryViewModel()),
         ChangeNotifierProvider(create: (context) => FeedBackViewModel()),
+        ChangeNotifierProvider(create: (context) => MainWalletTransferViewModel()),
+        ChangeNotifierProvider(create: (context) => ChooseBankViewModel()),
+        ChangeNotifierProvider(create: (context) => AddBankViewModel()),
+        ChangeNotifierProvider(create: (context) => ViewBankViewModel()),
+        ChangeNotifierProvider(create: (context) => PaymentLimitViewModel()),
       ],
       child: Center(
         child: Container(

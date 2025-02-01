@@ -13,4 +13,13 @@ class ApiUrl{
   static const String giftCardsApi = '${baseUrl}giftcards';
   static const String giftHistoryApi = '${baseUrl}Gifthistory/';
   static const String feedbackApi = '${baseUrl}feedback';
+  static const String mainWalletTransfer = '${baseUrl}wallettransfer/';
+  static const String depositApi = '${baseUrl}wallettransfer/';
+  static const String depositHistoryApi = '${baseUrl}wallettransfer/';
+  static const String withdrawApi = '${baseUrl}withdrawal';
+  static const String withdrawHistoryApi = '${baseUrl}wallettransfer/';
+  static const String bankNameApi = '${baseUrl}bankname';
+  static const String addBankApi = '${baseUrl}addbank';
+  static const String viewBankApi = '${baseUrl}viewbank/';
+  static const String paymentLimitApi = '${baseUrl}getPaymentLimits';
 }

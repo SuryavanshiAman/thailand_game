@@ -8,6 +8,7 @@ import 'package:game/res/shimmer.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/payment_limit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/withdraw_view_model.dart';
 import 'package:iconly/iconly.dart';
@@ -23,10 +24,30 @@ class WithdrawScreen extends StatefulWidget {
 class _WithdrawScreenState extends State<WithdrawScreen> {
   int selectedIndex = 0;
   final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _usdtController = TextEditingController();
+  final TextEditingController _convertedController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<PaymentLimitViewModel>(context,listen: false).paymentLimitApi(context);
+    // _usdtController.addListener(_updateConvertedAmount);
+  }
+  void _updateConvertedAmount(String value) {
+    final paymentLimit = Provider.of<PaymentLimitViewModel>(context,listen: false).limitData?.data;
+
+    double amount = double.tryParse(_usdtController.text) ?? 0.0;
+    double convertedAmount = amount * (paymentLimit?.withdrawConversionRate ?? 1);
+setState(() {
+  _convertedController.text = convertedAmount.toStringAsFixed(2);
+
+});
+  }
   @override
   Widget build(BuildContext context) {
     final withdraw = Provider.of<WithdrawViewModel>(context);
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
+    final withdrawApi = Provider.of<WithdrawViewModel>(context);
 
     return Scaffold(
       backgroundColor: AppColor.black,
@@ -282,10 +303,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 selectedIndex == 1
                     ? SizedBox(height: height * 0.02)
                     : Container(),
+                selectedIndex == 1?
                 CustomTextField(
-                  controller: _amountController,
+                  controller: _usdtController,
                   keyboardType: TextInputType.number,
-                  label: "Enter the amount",
+                  label: "Enter the amount ",
                   hintColor: AppColor.lightGray,
                   hintSize: 16,
                   height: 55,
@@ -299,11 +321,38 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   borderRadius: BorderRadius.circular(15),
                   fieldRadius: BorderRadius.circular(15),
                   prefix: Icon(Icons.currency_rupee, color: AppColor.white),
+                  onChanged:(value){
+                    print("Aman:$value");
+                    setState(() {
+                      _updateConvertedAmount(value);
+
+                      print(_convertedController.text);
+                    });
+                  } ,
+                ):
+                CustomTextField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  label: "Enter the amount",
+                  hintColor: AppColor.lightGray,
+                  hintSize: 16,
+                  height: 55,
+                  borderSide: BorderSide(color: Colors.white),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  width: width,
+                  filled: true,
+                  fillColor: AppColor.gray.withOpacity(0.5),
+                  border: Border.all(color: AppColor.gray.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(15),
+                  fieldRadius: BorderRadius.circular(15),
+                  prefix: Icon(Icons.currency_rupee, color: AppColor.white),
+
                 ),
                 SizedBox(height: height * 0.02),
                 selectedIndex == 1
                     ? CustomTextField(
-                        controller: _amountController,
+                        controller: _convertedController,
                         keyboardType: TextInputType.number,
                         label: "Enter USDT amount",
                         hintColor: AppColor.lightGray,
@@ -390,7 +439,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       ),
                 selectedIndex == 1 ? SizedBox(height: 16) : Container(),
                 SizedBox(height: height * 0.02),
-                constantbutton(width: width, onTap: () {}, text: "Withdraw"),
+                constantbutton(width: width, onTap: () {
+                  withdrawApi.withdrawApi(selectedIndex==0?_amountController.text:_usdtController.text, _convertedController.text, selectedIndex, context);
+                }, text: "Withdraw"),
                 SizedBox(height: height * 0.03),
                 // Withdrawal Instructions
                 Container(
