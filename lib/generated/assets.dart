@@ -187,6 +187,7 @@ class Assets {
   static const String fontSitkaSmall = 'font/Sitka-Small.ttf';
   static const String imagesAboutUs = 'assets/images/about_us.png';
   static const String imagesAddAccount = 'assets/images/add_account.png';
+  static const String imagesAll = 'assets/images/all.png';
   static const String imagesAppBg = 'assets/images/app_bg.png';
   static const String imagesBank = 'assets/images/bank.png';
   static const String imagesBankCard = 'assets/images/bank_card.png';

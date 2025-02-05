@@ -2,13 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game/main.dart';
+import 'package:game/model/transaction_history_model.dart';
+import 'package:game/model/transaction_model.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/filter_date-formate.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
-import 'package:game/view_model/deposit_view_model.dart';
+import 'package:game/view_model/transaction_history_view_model.dart';
+import 'package:game/view_model/transaction_type_view_model.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -34,8 +38,15 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
     );
   }
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<TransactionTypeViewModel>(context,listen: false).transactionTypeApi(context);
+    Provider.of<TransactionHistoryViewModel>(context,listen: false).transactionApi("","",context);
+  }
+  @override
   Widget build(BuildContext context) {
-    final deposit = Provider.of<DepositViewModel>(context);
+    final history = Provider.of<TransactionHistoryViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -122,8 +133,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                             setState(() {
                               _selectedDate = selectedDate;
                             });
-                            // depositHistory();
-                            // commissionDetailsApi();
+                            history.transactionApi("", DateFormat('yyy-MM-dd').format(selectedDate), context);
                             if (kDebugMode) {
                               print('Selected Date: $selectedDate');
                               print('object');
@@ -137,25 +147,35 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               ],
             ),
           ),
-          // SizedBox(height: height*0.1,),
-          // Center(
-          //   child: SizedBox(
-          //     width: 250,
-          //     height: 250,
-          //     child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
-          //   ),
-          //   // ),
-          // ),
-          Column(
-            children: deposit.transactionsHistory
-                .map((transaction) => withdrawCard(transaction, context))
-                .toList(),
+          history.transactionData!.data!.isNotEmpty?
+          SizedBox(
+            height: height*0.75,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: history.transactionData?.data?.length??0,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, int index) {
+                final data =history.transactionData?.data?[index];
+                return withdrawCard(data!,context);
+              },
+            ),
+          ):
+          Padding(
+            padding:  EdgeInsets.only(top: height*0.15),
+            child: Center(
+              child: SizedBox(
+                  width: 250,
+                  height: 250,
+                  child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
+                  ),
+            ),
           ),
+
         ],
       ),
     );
   }
-  Widget withdrawCard(Map<String, String> transaction, BuildContext context) {
+  Widget withdrawCard(Transaction data, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10,top: 10),
       padding: const EdgeInsets.all(12),
@@ -193,9 +213,9 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Detail",typeName, AppColors.whiteColor),
-          buildRow("Time", transaction["time"]!, AppColors.whiteColor),
-          buildRow("balance","10",  Colors.green),
+          buildRow("Detail",data.description.toString(), AppColors.whiteColor),
+          buildRow("Time", data.createdAt!, AppColors.whiteColor),
+          buildRow("balance",data.amount.toString(),  Colors.green),
 
         ],
       ),
@@ -220,7 +240,8 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
     );
   }
   Widget allTransactionType(BuildContext context, void Function(void Function()) setModalState) {
-    final deposit = Provider.of<DepositViewModel>(context);
+    final type = Provider.of<TransactionTypeViewModel>(context,listen: false);
+    final history = Provider.of<TransactionHistoryViewModel>(context,listen: false);
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -266,7 +287,8 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {}); // Update main screen
+                      setState(() {
+                      }); // Update main screen
                       Navigator.pop(context);
                     },
                     child: textWidget(
@@ -284,16 +306,16 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             child: ListView.builder(
               padding: EdgeInsets.only(top: height * 0.03),
               shrinkWrap: true,
-              itemCount: deposit.withdrawType.length,
+              itemCount: type.transactionTypeData?.data?.length??0,
               itemBuilder: (BuildContext context, int index) {
-                final type = deposit.withdrawType[index];
+                final transaction = type.transactionTypeData?.data?[index];
                 return InkWell(
                   onTap: () {
-                    setModalState(() { // Use setModalState to update selection inside the bottom sheet
+                    setModalState(() {
                       selectedId = index;
-                      typeName = type.toString();
+                      typeName = transaction?.name.toString()??"";
                     });
-
+                    history.transactionApi(transaction?.id, "", context);
                     if (kDebugMode) {
                       print(selectedId);
                     }
@@ -302,7 +324,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     children: [
                       Center(
                         child: Text(
-                          type,
+                          transaction?.name??"",
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 16,

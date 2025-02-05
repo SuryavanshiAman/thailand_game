@@ -31,7 +31,6 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
     // TODO: implement initState
     super.initState();
     Provider.of<PaymentLimitViewModel>(context,listen: false).paymentLimitApi(context);
-    // _usdtController.addListener(_updateConvertedAmount);
   }
   void _updateConvertedAmount(String value) {
     final paymentLimit = Provider.of<PaymentLimitViewModel>(context,listen: false).limitData?.data;
@@ -45,7 +44,6 @@ setState(() {
   }
   @override
   Widget build(BuildContext context) {
-    final withdraw = Provider.of<WithdrawViewModel>(context);
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
     final withdrawApi = Provider.of<WithdrawViewModel>(context);
 
@@ -149,9 +147,9 @@ setState(() {
                 mainAxisSpacing: 16,
                 childAspectRatio: 1.7,
               ),
-              itemCount: withdraw.withdrawOptions.length,
+              itemCount: withdrawApi.withdrawOptions.length,
               itemBuilder: (context, index) {
-                final option = withdraw.withdrawOptions[index];
+                final option = withdrawApi.withdrawOptions[index];
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -162,7 +160,6 @@ setState(() {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          // color: selectedIndex==index?AppColor.black.withOpacity(0.3):null,
                           border: Border.all(
                               color: selectedIndex != index
                                   ? AppColor.gray
@@ -322,11 +319,8 @@ setState(() {
                   fieldRadius: BorderRadius.circular(15),
                   prefix: Icon(Icons.currency_rupee, color: AppColor.white),
                   onChanged:(value){
-                    print("Aman:$value");
                     setState(() {
                       _updateConvertedAmount(value);
-
-                      print(_convertedController.text);
                     });
                   } ,
                 ):

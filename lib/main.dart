@@ -32,8 +32,11 @@ import 'view_model/main_wallet_transfer_view_model.dart';
 import 'view_model/notification_view_model.dart';
 import 'view_model/payment_limit_view_model.dart';
 import 'view_model/services/splash_services.dart';
+import 'view_model/transaction_history_view_model.dart';
+import 'view_model/transaction_type_view_model.dart';
 import 'view_model/update_profile_view_model.dart';
 import 'view_model/view_bank_view_model.dart';
+import 'view_model/withdraw_history_view_model.dart';
 import 'view_model/withdraw_view_model.dart';
 
 void main() {
@@ -85,6 +88,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AddBankViewModel()),
         ChangeNotifierProvider(create: (context) => ViewBankViewModel()),
         ChangeNotifierProvider(create: (context) => PaymentLimitViewModel()),
+        ChangeNotifierProvider(create: (context) => WithdrawHistoryViewModel()),
+        ChangeNotifierProvider(create: (context) => TransactionTypeViewModel()),
+        ChangeNotifierProvider(create: (context) => TransactionHistoryViewModel()),
       ],
       child: Center(
         child: Container(

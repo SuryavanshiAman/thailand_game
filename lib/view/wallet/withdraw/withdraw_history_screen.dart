@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game/main.dart';
+import 'package:game/model/withdraw_history_model.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/filter_date-formate.dart';
@@ -9,6 +10,9 @@ import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:game/view_model/withdraw_history_view_model.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 
@@ -33,8 +37,14 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
     );
   }
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     Provider.of<WithdrawHistoryViewModel>(context,listen: false).withdrawHistoryApi("","","",context);
+  }
+  @override
   Widget build(BuildContext context) {
-    final deposit = Provider.of<DepositViewModel>(context);
+    final withdraw = Provider.of<WithdrawHistoryViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -54,16 +64,17 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             child: ListView.builder(
                 shrinkWrap: true,
                 controller: _scrollController,
-                itemCount: deposit.paymentOptions.length,
+                itemCount: withdraw.paymentOptions.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final items=deposit.paymentOptions[index];
+                  final items=withdraw.paymentOptions[index];
                   return GestureDetector(
                     onTap: () {
                       setState(() {
                         selectedCatIndex = index;
                       });
                       scrollToIndex(index);
+                      withdraw.withdrawHistoryApi(selectedCatIndex,"","",context);
                     },
                     child: Container(
                       margin: const EdgeInsets.all(5),
@@ -93,7 +104,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
-                            image: AssetImage('${items['image']}'),
+                            image: AssetImage('${items['image']}',),
                             height: 25,
 
                           ),
@@ -181,13 +192,10 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                             color: AppColors.primaryTextColor),
                         FilterDateFormat(
                           onDateSelected: (DateTime selectedDate) {
-
-
                             setState(() {
                               _selectedDate = selectedDate;
                             });
-                            // depositHistory();
-                            // commissionDetailsApi();
+                            withdraw.withdrawHistoryApi("", "", _selectedDate, context);
                             if (kDebugMode) {
                               print('Selected Date: $selectedDate');
                               print('object');
@@ -201,16 +209,32 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
               ],
             ),
           ),
-          Column(
-            children: deposit.transactionsHistory
-                .map((transaction) => withdrawCard(transaction, context))
-                .toList(),
-          ),
+          withdraw.withdrawHistoryData!.data!.isNotEmpty ?  SizedBox(
+            height: height*0.65,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: withdraw.withdrawHistoryData?.data?.length??0,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, int index) {
+                final data =withdraw.withdrawHistoryData?.data?[index];
+                return  withdrawCard(data!,context);
+              },
+            ),
+          ): Padding(
+            padding:  EdgeInsets.only(top: height*0.15),
+            child: Center(
+              child: SizedBox(
+                width: 250,
+                height: 250,
+                child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
+              ),
+            ),
+          ) ,
         ],
       ),
     );
   }
-  Widget withdrawCard(Map<String, String> transaction, BuildContext context) {
+  Widget withdrawCard( Data data, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10,top: 10),
       padding: const EdgeInsets.all(12),
@@ -231,7 +255,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                "Completed",
+                typeName,
                 style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
@@ -257,16 +281,18 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Balance", transaction["balance"]!, Colors.green),
-          buildRow("Type", transaction["type"]!, Colors.white),
-          buildRow("Time", transaction["time"]!, Colors.white),
-          buildRow("Order number", transaction["orderNumber"]!, Colors.white),
+          buildRow("Balance", data.amount??"", Colors.green),
+          data.type!=1? buildRow("USDT Balance", data.usdtAmount??"", Colors.green):Container(),
+          buildRow("Type", data.type==1?"INR":"USDT", Colors.white),
+          buildRow("Time",DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
+          buildRow("Order number", data.orderId??"", Colors.white),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: transaction["orderNumber"]!));
+                  Clipboard.setData(ClipboardData(text: data.orderId??""));
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Copied Order Number!")),
                   );
@@ -299,6 +325,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
   }
   Widget allTransactionType(BuildContext context, void Function(void Function()) setModalState) {
     final deposit = Provider.of<DepositViewModel>(context);
+    final withdraw = Provider.of<WithdrawHistoryViewModel>(context,listen: false);
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -344,7 +371,9 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {}); // Update main screen
+                      setState(() {
+                        withdraw.withdrawHistoryApi("",selectedId,"",context);
+                      }); // Update main screen
                       Navigator.pop(context);
                     },
                     child: textWidget(
@@ -370,6 +399,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                     setModalState(() { // Use setModalState to update selection inside the bottom sheet
                       selectedId = index;
                       typeName = type.toString();
+                      withdraw.withdrawHistoryApi("",selectedId,"",context);
                     });
 
                     if (kDebugMode) {

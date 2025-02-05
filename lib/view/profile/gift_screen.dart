@@ -135,7 +135,6 @@ class GiftScreenState extends State<GiftScreen> {
                           borderSide: BorderSide(color: Colors.white),
                           contentPadding:
                           const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                          maxLength: 10,
                           filled: true,
                           fillColor: AppColor.gray.withOpacity(0.5),
                           border: Border.all(color: AppColor.gray.withOpacity(0.3)),
@@ -185,6 +184,9 @@ class GiftScreenState extends State<GiftScreen> {
                             final items=giftData?[index];
                             return Container(
                               padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: AppColor.white))
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

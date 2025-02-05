@@ -10,7 +10,7 @@ class FeedBackRepo {
   Future<dynamic> feedBackApi(dynamic data) async {
     try {
       dynamic response =
-      await _apiServices.getPostApiResponse(ApiUrl.editPasswordApi, data);
+      await _apiServices.getPostApiResponse(ApiUrl.feedbackApi, data);
       return response;
     } catch (e) {
       if (kDebugMode) {
