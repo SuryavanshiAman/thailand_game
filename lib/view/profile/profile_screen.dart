@@ -10,7 +10,9 @@ import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/utils/utils.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:game/view_model/user_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,6 +25,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>{
+  UserViewModel userViewModel=UserViewModel();
   @override
   void initState() {
     super.initState();
@@ -43,9 +46,12 @@ class _ProfileScreenState extends State<ProfileScreen>{
         Navigator.pushNamed(context, RoutesName.giftScreen);
 
       }),
-      GameModel(onTap: () {}),
+      GameModel(onTap: () {Navigator.pushNamed(context, RoutesName.languageScreen);}),
     ];
     List<GameModel> setting = [
+      GameModel(onTap: () {
+        Navigator.pushNamed(context, RoutesName.referEarn);
+      }),
       GameModel(onTap: () {
         Navigator.pushNamed(context, RoutesName.settingPageNew);
       }),
@@ -56,8 +62,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
       GameModel(onTap: () {
         Navigator.pushNamed(context, RoutesName.notificationScreen);
       }),
-      GameModel(onTap: () {}),
-      GameModel(onTap: () {}),
+      GameModel(onTap: () {
+        Navigator.pushNamed(context, RoutesName.customerCareService);
+
+      }),
       GameModel(onTap: () {
         Navigator.pushNamed(context, RoutesName.aboutUsScreen);
       }),
@@ -191,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     Row(
                       children: [
                         Text(
-                          "₹${profile?.wallet??"0.00"}",
+                          "🪙${profile?.wallet??"0.00"}",
                           style: TextStyle(
                               color: AppColor.white,
                               fontSize: 18,
@@ -202,7 +210,9 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         ),
                         InkWell(
                             onTap: (){
-                              elementList.userProfileApi(context);
+                              elementList.userProfileApi(context).then((_){
+                                Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                              });
                             },
                             child: Image.asset(Assets.imagesTotalBal))
                         // Icon(
@@ -455,7 +465,9 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           width: width * 0.35,
                           child: Text(
                             data['title'].toString(),
+                            textAlign: TextAlign.center,
                             style: TextStyle(
+
                                 color: AppColor.white,
                                 fontSize: 12,
                                 fontFamily: "SitkaSmall",
@@ -471,10 +483,11 @@ class _ProfileScreenState extends State<ProfileScreen>{
             height: height * 0.03,
           ),
           constantbutton(
-            
             width: width,
               onTap: () {
-                Navigator.pushReplacementNamed(context, RoutesName.loginScreen);
+              Utils.showLogOutConfirmation(context);
+                // userViewModel.remove();
+                // Navigator.pushReplacementNamed(context, RoutesName.loginScreen);
               },
               text: "Logout"),
           SizedBox(

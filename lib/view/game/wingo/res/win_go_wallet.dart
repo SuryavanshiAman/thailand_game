@@ -87,7 +87,9 @@ class _WinGoWalletState extends State<WinGoWallet> {
                },
                text: "Deposit",
                style:TextStyle(fontWeight:  FontWeight.bold,
-               fontSize: 18,),
+               fontSize: 18,
+               color: AppColor.white
+               ),
              ),
 
              constantbutton(
@@ -99,7 +101,7 @@ class _WinGoWalletState extends State<WinGoWallet> {
                  //     MaterialPageRoute(
                  //         builder: (context) =>const Withdraw()));
                },
-               text: "Withdraw", style:TextStyle(fontWeight:  FontWeight.bold,
+               text: "Withdraw", style:TextStyle(fontWeight:  FontWeight.bold,color: AppColor.white,
                fontSize: 18,),
              ),
            ],

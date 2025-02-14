@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/api_url.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/AndarBahar/constant/app_assets.dart';
 import 'package:game/view/game/AndarBahar/constant/image_toast_wingo.dart';
-import 'package:game/view/game/Aviator/res/api_url.dart';
 // import 'package:game/view/game/Aviator/res/api_url.dart';
+// // import 'package:game/view/game/Aviator/res/api_url.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/Aviator/res/image_tost.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
@@ -219,9 +220,8 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    wallet =100;
-        // double.parse(context.read<ProfileViewModel>().profileData!.data!.wallet.toString());
-    // wallet = context.read<ProfileViewModel>().totalWallet();
+    wallet = double.parse(context.read<ProfileViewModel>().profileData!.data!.wallet.toString());
+    // wallet = context.read<ProfileViewModel>()..profileData!.data!.wallet;
   }
 
   @override
@@ -802,7 +802,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
               ),
               Padding(
                 padding:
-                EdgeInsets.only(top: height * 0.75, left: width * 0.14),
+                EdgeInsets.only(top: height * 0.7, left: width * 0.14),
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Column(
@@ -1183,7 +1183,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
       var data = jsonDecode(response.body);
 
       // Handle the response
-      if (response.statusCode == 200 && data["status"] == 200) {
+      if ( data["status"] == 200) {
         // Success response
         ImageToast.show(
           imagePath: AppAssets.bettingplaceds,
@@ -1265,7 +1265,8 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
         throw Exception(
             "Failed to load data. Status code: ${response.statusCode}");
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw Exception("Failed to load data. $e");
     }
   }
@@ -1277,7 +1278,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
     String? userId = await userViewModal.getUser();
     print("Aman:$userId");
     final response = await http.get(
-      Uri.parse('${ApiUrl.game_win}28&game_id=$gameid&games_no=$gamesNo'),
+      Uri.parse('${ApiUrl.game_win}$userId&game_id=$gameid&games_no=$gamesNo'),
     );
     var data = jsonDecode(response.body);
     if (data["status"] == 200) {

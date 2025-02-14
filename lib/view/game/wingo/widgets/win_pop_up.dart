@@ -131,7 +131,7 @@ class WinPopUpPage extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                     ),
                     textWidget(
-                      text: "₹$winAmount",
+                      text: "🪙$winAmount",
                       fontSize: 18,
                       color: Colors.indigo.shade900,
                       fontWeight: FontWeight.w900,

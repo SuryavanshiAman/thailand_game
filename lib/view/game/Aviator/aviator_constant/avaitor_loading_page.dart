@@ -52,7 +52,7 @@ class _AvaitorLoadingPageState extends State<AvaitorLoadingPage> {
             children: [
               Image.asset(Assets.aviatorAviatorText, height: height * 0.035),
               Text(
-                " is a verifiably 100% Fomoplay",
+                " is a verifiably 100% Xgamblur",
                 style: TextStyle(fontSize: width * 0.04),
               ),
             ],

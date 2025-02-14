@@ -10,11 +10,11 @@ import 'package:game/view_model/user_view_model.dart';
 
 class WithdrawViewModel with ChangeNotifier{
   final List<Map<String, dynamic>> withdrawOptions = [
-    {
-      'title': 'BANK CARD',
-      'image': Assets.imagesBankCard,
-      'bgColor': Colors.black,
-    },
+    // {
+    //   'title': 'BANK CARD',
+    //   'image': Assets.imagesBankCard,
+    //   'bgColor': Colors.black,
+    // },
     {
       'title': 'USDT',
       'image': Assets.imagesUsdt,
@@ -34,7 +34,7 @@ class WithdrawViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> withdrawApi(dynamic amount,dynamic usdtAmount, dynamic type, context) async {
+  Future<void> withdrawApi(dynamic amount,dynamic usdtAmount, dynamic type,dynamic id, context) async {
     UserViewModel userViewModal = UserViewModel();
     String? userId = await userViewModal.getUser();
     setLoading(true);
@@ -42,7 +42,8 @@ class WithdrawViewModel with ChangeNotifier{
       "userid": userId,
       "amount": amount,
       "usdt_amount":usdtAmount,
-      "type": type
+      "type": type,
+      "id":id
     };
     print(data);
     _withdrawRepo.withdrawApi(data).then((value) {

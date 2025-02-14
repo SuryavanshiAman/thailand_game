@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:game/view/game/Aviator/view_model/aviator_history_view_model.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class AviatorHistory extends StatefulWidget {
@@ -35,24 +36,13 @@ class _AviatorHistoryState extends State<AviatorHistory> {
     final aviHisViewModel = Provider.of<AviatorHistoryViewModel>(context);
     if (aviHisViewModel.aviatorHistoryModel == null ||
         aviHisViewModel.aviatorHistoryModel!.status == 400) {
-      return const SizedBox(
-        height: 100,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.calendar_month_outlined,
-              size: 50,
-              color: Colors.grey,
-            ),
-            Text('No Data Found Today',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-          ],
+      return    Center(
+        child: SizedBox(
+          width: 250,
+          height: 250,
+          child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
         ),
+        // ),
       );
     } else {
       return Padding(
@@ -161,8 +151,8 @@ class _AviatorHistoryState extends State<AviatorHistory> {
                               width: width * 0.3,
                               child: Text(
                                   res.cashoutAmount == null
-                                      ? '₹ 0.0'
-                                      : '₹ ${res.cashoutAmount}',
+                                      ? '🪙 0.0'
+                                      : '🪙 ${res.cashoutAmount}',
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 12))),
                         ],

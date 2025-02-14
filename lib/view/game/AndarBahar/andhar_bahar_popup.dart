@@ -1,378 +1,538 @@
-// import 'dart:convert';
-// import 'package:fomoplay/constant_pages/constant_color.dart';
-// import 'package:fomoplay/constant_pages/no_found_data.dart';
-// import 'package:fomoplay/game_modal/wingo_betting_history.dart';
-// import 'package:fomoplay/main.dart';
-// import 'package:fomoplay/res/api_urls.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:shared_preferences/shared_preferences.dart';
-//
-//
-//
-// class AndharBaharPopUpPage extends StatefulWidget {
-//   final String gameId;
-//   const AndharBaharPopUpPage({super.key, required this.gameId});
-//
-//   @override
-//   State<AndharBaharPopUpPage> createState() => _AndharBaharPopUpPageState();
-// }
-//
-// class _AndharBaharPopUpPageState extends State<AndharBaharPopUpPage> {
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     gameHistory();
-//   }
-//
-//   int limitResult = 0;
-//   int pageNumber = 1;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Material(
-//       color: Colors.transparent,
-//       child: Center(
-//         child: Container(
-//           height: height * 0.8,
-//           width: width,
-//           color: const Color(0xff495b65),
-//           child: Center(
-//             child: Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: ListView(
-//                 shrinkWrap: true,
-//                 physics: const NeverScrollableScrollPhysics(),
-//                 children: [
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: [
-//                       const Text(
-//                         'GAME HISTORY',
-//                         style: TextStyle(
-//                           fontSize: 18,
-//                           color: Colors.white,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       IconButton(
-//                         onPressed: () {
-//                           Navigator.pop(context);
-//                         },
-//                         icon: const Icon(
-//                           Icons.cancel_outlined,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   const Divider(
-//                     color: Colors.white,
-//                   ),
-//                   SizedBox(
-//                     height: height,
-//                     width: width,
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(8.0),
-//                       child: Column(
-//                         children: [
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                             children: [
-//                               SizedBox(
-//                                 width: width * 0.25,
-//                                 child: const Center(
-//                                   child: Text(
-//                                     'Time',
-//                                     style: TextStyle(
-//                                       fontSize: 15,
-//                                       color: Colors.white,
-//                                       fontWeight: FontWeight.bold,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: width * 0.15,
-//                                 child: const Center(
-//                                   child: Text(
-//                                     'Bet',
-//                                     style: TextStyle(
-//                                       fontSize: 15,
-//                                       color: Colors.white,
-//                                       fontWeight: FontWeight.bold,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: width * 0.2,
-//                                 child: const Center(
-//                                   child: Text(
-//                                     'Amount',
-//                                     style: TextStyle(
-//                                       fontSize: 15,
-//                                       color: Colors.white,
-//                                       fontWeight: FontWeight.bold,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: width * 0.18,
-//                                 child: const Text(
-//                                   'Win/loss',
-//                                   style: TextStyle(
-//                                     fontSize: 15,
-//                                     color: Colors.white,
-//                                     fontWeight: FontWeight.bold,
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           const Divider(
-//                             color: Colors.white,
-//                           ),
-//                           responseStatusCode == 400
-//                               ? const NoFoundData()
-//                               : itemsDataHistory.isEmpty
-//                                   ? const Center(
-//                                       child: CircularProgressIndicator())
-//                                   : SizedBox(
-//                                       height: height * 0.55,
-//                                       child: ListView.builder(
-//                                           shrinkWrap: true,
-//                                           physics: const ScrollPhysics(),
-//                                           itemCount: itemsDataHistory.length,
-//                                           itemBuilder: (context, index) {
-//                                             return Column(
-//                                               children: [
-//                                                 Padding(
-//                                                   padding: const EdgeInsets.all(2.0),
-//                                                   child: Container(
-//                                                     height: height * 0.05,
-//                                                     width: width,
-//                                                     decoration: BoxDecoration(
-//                                                       color: const Color(0xff394c54),
-//                                                       borderRadius: BorderRadius.circular(5),
-//                                                     ),
-//                                                     child: Row(
-//                                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                                                       children: [
-//                                                         SizedBox(
-//                                                           width: width * 0.25,
-//                                                           child: Center(
-//                                                             child: Text(
-//                                                               itemsDataHistory[
-//                                                                       index]
-//                                                                   .updatedAt
-//                                                                   .toString(),
-//                                                               style:
-//                                                                   const TextStyle(
-//                                                                 fontSize: 10,
-//                                                                 color: Colors
-//                                                                     .white,
-//                                                                 fontWeight:
-//                                                                     FontWeight
-//                                                                         .bold,
-//                                                               ),
-//                                                             ),
-//                                                           ),
-//                                                         ),
-//                                                         SizedBox(
-//                                                           width: width * 0.15,
-//                                                           child: Center(
-//                                                             child: Text(
-//                                                               "${itemsDataHistory[index].amount}.00₹",
-//                                                               style: TextStyle(
-//                                                                 fontSize: 12,
-//                                                                 color: int.parse(itemsDataHistory[index]
-//                                                                             .winAmount
-//                                                                             .toString()) >
-//                                                                         int.parse(itemsDataHistory[index]
-//                                                                             .amount
-//                                                                             .toString())
-//                                                                     ? Colors
-//                                                                         .green
-//                                                                     : Colors
-//                                                                         .white,
-//                                                                 fontWeight:
-//                                                                     FontWeight
-//                                                                         .bold,
-//                                                               ),
-//                                                             ),
-//                                                           ),
-//                                                         ),
-//                                                         SizedBox(
-//                                                           width: width * 0.2,
-//                                                           child: Center(
-//                                                             child: Text(
-//                                                               "+${itemsDataHistory[index].winAmount}.00₹",
-//                                                               style: TextStyle(
-//                                                                 fontSize: 12,
-//                                                                 color: int.parse(itemsDataHistory[index]
-//                                                                             .winAmount
-//                                                                             .toString()) >
-//                                                                         int.parse(itemsDataHistory[index]
-//                                                                             .amount
-//                                                                             .toString())
-//                                                                     ? Colors
-//                                                                         .green
-//                                                                     : Colors
-//                                                                         .white,
-//                                                                 fontWeight:
-//                                                                     FontWeight
-//                                                                         .bold,
-//                                                               ),
-//                                                             ),
-//                                                           ),
-//                                                         ),
-//                                                         SizedBox(
-//                                                           width: width * 0.18,
-//                                                           child: Center(
-//                                                             child: Text(
-//                                                               itemsDataHistory[index].status==0?'Pending':
-//                                                               itemsDataHistory[index].status==1?'Win':'Lose',
-//                                                               style: TextStyle(
-//                                                                 fontSize: 12,
-//                                                                 color: int.parse(itemsDataHistory[index]
-//                                                                             .winAmount
-//                                                                             .toString()) >
-//                                                                         int.parse(itemsDataHistory[index]
-//                                                                             .amount
-//                                                                             .toString())
-//                                                                     ? Colors
-//                                                                         .green
-//                                                                     : Colors
-//                                                                         .white,
-//                                                                 fontWeight:
-//                                                                     FontWeight
-//                                                                         .bold,
-//                                                               ),
-//                                                             ),
-//                                                           ),
-//                                                         ),
-//                                                       ],
-//                                                     ),
-//                                                   ),
-//                                                 ),
-//                                               ],
-//                                             );
-//                                           }),
-//                                     ),
-//                           SizedBox(
-//                             height: height * 0.01,
-//                           ),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               GestureDetector(
-//                                 onTap: limitResult == 0
-//                                     ? () {}
-//                                     : () {
-//                                         setState(() {
-//                                           pageNumber--;
-//                                           limitResult = limitResult - 10;
-//                                           offsetResult = offsetResult - 10;
-//                                         });
-//                                         setState(() {});
-//                                         gameHistory();
-//                                       },
-//                                 child: Container(
-//                                   height: height * 0.06,
-//                                   width: width * 0.10,
-//                                   decoration: BoxDecoration(
-//                                     color: const Color(0xff394c54),
-//                                     borderRadius: BorderRadius.circular(10),
-//                                   ),
-//                                   child: const Icon(
-//                                     Icons.navigate_before,
-//                                     color: Colors.white,
-//                                   ),
-//                                 ),
-//                               ),
-//                               const SizedBox(width: 16),
-//                               Text(
-//                                 '$pageNumber/${itemsDataHistory.length}',
-//                                 style: const TextStyle(fontSize: 13,
-//                                   fontWeight: FontWeight.w600,
-//                                   color: AppColor.primaryTextColor,),
-//                                 maxLines: 1,
-//                               ),
-//                               const SizedBox(width: 16),
-//                               GestureDetector(
-//                                 onTap: () {
-//                                   setState(() {
-//                                     limitResult = limitResult + 10;
-//                                     offsetResult = offsetResult + 10;
-//                                     pageNumber++;
-//                                   });
-//                                   setState(() {});
-//                                   gameHistory();
-//                                 },
-//                                 child: Container(
-//                                   height: height * 0.06,
-//                                   width: width * 0.10,
-//                                   decoration: BoxDecoration(
-//                                     color: const Color(0xff394c54),
-//                                     borderRadius: BorderRadius.circular(10),
-//                                   ),
-//                                   child: const Icon(Icons.navigate_next,
-//                                       color: Colors.white),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   ///
-//
-//   int offsetResult = 0;
-//
-//   int? responseStatusCode;
-//   List<BettingHistoryModel> itemsDataHistory = [];
-//   Future<void> gameHistory() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     final userId = prefs.getInt("userId");
-//     final response = await http.get(Uri.parse("${ApiUrl.gameHistory}${widget.gameId}&userid=$userId"));
-//     setState(() {
-//       responseStatusCode = response.statusCode;
-//     });
-//     if (response.statusCode == 200) {
-//       final List<dynamic> responseData = json.decode(response.body)['data'];
-//       setState(() {
-//         itemsDataHistory = responseData.map((item) => BettingHistoryModel.fromJson(item)).toList();
-//       });
-//       if (kDebugMode) {
-//         print(responseData);
-//         print("${ApiUrl.gameHistory}${widget.gameId}&userid=$userId");
-//         print('swherwe789;');
-//
-//       }
-//
-//     } else if (response.statusCode == 400) {
-//
-//     } else {
-//       setState(() {
-//         itemsDataHistory = [];
-//       });
-//       throw Exception('Failed to load data');
-//     }
-//   }
-//
-// }
-//
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:game/generated/assets.dart';
+import 'package:game/main.dart';
+import 'package:game/res/api_url.dart';
+import 'package:game/res/app_colors.dart';
+import 'package:game/res/color-const.dart';
+import 'package:game/view/game/Aviator/model/betting_history_model.dart';
+import 'package:game/view_model/user_view_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+class AndharBaharPopUpPage extends StatefulWidget {
+  final String gameid;
+  const AndharBaharPopUpPage({super.key, required this.gameid});
+
+  @override
+  State<AndharBaharPopUpPage> createState() => _AndharBaharPopUpPageState();
+}
+
+class _AndharBaharPopUpPageState extends State<AndharBaharPopUpPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    gameHistory();
+  }
+
+  int limitResult = 0;
+  int pageNumber = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        responseStatusCode == 400
+            ?   Center(
+    child: SizedBox(
+      width: 250,
+      height: 250,
+      child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
+    ),
+    // ),
+          )
+            : itemsDataHistory.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          physics: const ScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: itemsDataHistory.length,
+          itemBuilder: (context, index) {
+            List<Color> colors;
+
+            if (itemsDataHistory[index].number == 1) {
+              colors = [
+                const Color(0xFF56d5e5),
+                const Color(0xFF56d5e5),
+              ];
+            } else if (itemsDataHistory[index].number == 2) {
+              colors = [Colors.red, Colors.red];
+            } else {
+              colors = [Colors.green, Colors.green];
+            }
+
+            return ExpansionTile(
+              leading: Container(
+                  height: height * 0.06,
+                  width: width * 0.12,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      // color: Colors.grey
+                      gradient: LinearGradient(
+                          stops: const [0.5, 0.5],
+                          colors: colors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Image.asset(
+                      // 1 dragon
+                      // 2 tiger
+
+                      itemsDataHistory[index].number == 1
+                          ? Assets.andarbaharA
+                          : itemsDataHistory[index].number == 2
+                          ? Assets.andarbaharB
+                          : Assets.dragontigerIcDtTie,
+                    ),
+                  )),
+              title: Text(
+                itemsDataHistory[index].gamesNo.toString(),
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white),
+              ),
+              subtitle: Text(
+                  itemsDataHistory[index].createdAt.toString(),
+                  style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.grey)),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: height * 0.042,
+                    width: width * 0.2,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color:
+                            itemsDataHistory[index].status ==
+                                0
+                                ? Colors.orange
+                                : itemsDataHistory[index]
+                                .status ==
+                                2
+                                ? Colors.red
+                                : Colors.green)),
+                    child: Center(
+                      child: Text(
+                        itemsDataHistory[index].status == 2
+                            ? 'Failed'
+                            : itemsDataHistory[index].status == 0
+                            ? 'Pending'
+                            : 'Succeed',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color:
+                            itemsDataHistory[index].status ==
+                                0
+                                ? Colors.orange
+                                : itemsDataHistory[index]
+                                .status ==
+                                2
+                                ? Colors.red
+                                : Colors.green),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    itemsDataHistory[index].status == 0
+                        ? '--'
+                        : itemsDataHistory[index].status == 2
+                        ? '- 🪙${itemsDataHistory[index].amount.toStringAsFixed(2)}'
+                        : '+ 🪙${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: itemsDataHistory[index].status == 0
+                            ? Colors.orange
+                            : itemsDataHistory[index].status == 2
+                            ? Colors.red
+                            : Colors.green),
+                  ),
+                ],
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Details',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          )),
+                      const SizedBox(height: 8.0),
+                      Container(
+                        height: height * 0.08,
+                        width: width,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(10),
+                            color: AppColors.firstColor),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.start,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'order number',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                itemsDataHistory[index]
+                                    .orderId
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      historyDetails(
+                          'Period',
+                          itemsDataHistory[index]
+                              .gamesNo
+                              .toString(),
+                          Colors.white),
+                      historyDetails(
+                          'Purchase amount',
+                          itemsDataHistory[index]
+                              .amount
+                              .toString(),
+                          Colors.white),
+                      historyDetails(
+                          'Amount after tax',
+                          itemsDataHistory[index]
+                              .tradeAmount
+                              .toString(),
+                          Colors.red),
+                      historyDetails(
+                          'Tax',
+                          itemsDataHistory[index]
+                              .commission
+                              .toString(),
+                          Colors.white),
+                      historyWinDetails(
+                          'Result',
+                          itemsDataHistory[index].winNumber ==
+                              null
+                              ? '--'
+                              : '${itemsDataHistory[index].winNumber}, ',
+                          itemsDataHistory[index].winNumber == 1
+                              ? "Dragon"
+                              : itemsDataHistory[index]
+                              .winNumber ==
+                              2
+                              ? "Tiger"
+                              : "Tie",
+                          Colors.white,
+                          itemsDataHistory[index].winNumber == 1
+                              ? const Color(0xff56d5e5)
+                              : itemsDataHistory[index]
+                              .winNumber ==
+                              2
+                              ? Colors.red
+                              : Colors.green),
+                      historyDetails(
+                          'Select',
+                          itemsDataHistory[index].number == 1
+                              ? 'Dragon'
+                              : itemsDataHistory[index].number ==
+                              2
+                              ? 'Tiger'
+                              : "Tie",
+                          Colors.white),
+                      historyDetails(
+                          'Status',
+                          itemsDataHistory[index].status == 0
+                              ? 'Unpaid'
+                              : itemsDataHistory[index].status ==
+                              2
+                              ? 'Failed'
+                              : 'Succeed',
+                          itemsDataHistory[index].status == 0
+                              ? Colors.white
+                              : itemsDataHistory[index].status ==
+                              2
+                              ? Colors.red
+                              : Colors.green),
+                      historyDetails(
+                          'Win/Loss',
+                          itemsDataHistory[index].status == 0
+                              ? '--'
+                              : '🪙${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
+                          itemsDataHistory[index].status == 0
+                              ? Colors.white
+                              : itemsDataHistory[index].status ==
+                              2
+                              ? Colors.red
+                              : Colors.green),
+                      historyDetails(
+                          'Order time',
+                          itemsDataHistory[index]
+                              .createdAt
+                              .toString(),
+                          Colors.white),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: limitResult == 0
+                  ? () {}
+                  : () {
+                setState(() {
+                  pageNumber--;
+                  limitResult = limitResult - 10;
+                  offsetResult = offsetResult - 10;
+                });
+                setState(() {});
+                gameHistory();
+              },
+              child: Container(
+                height: height * 0.06,
+                width: width * 0.10,
+                decoration: BoxDecoration(
+                  gradient: AppColors.loginSecondryGrad,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.navigate_before,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              '$pageNumber/${itemsDataHistory.length}',
+              maxLines: 1,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryTextColor,
+              ),
+            ),
+            const SizedBox(width: 16),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  limitResult = limitResult + 10;
+                  offsetResult = offsetResult + 10;
+                  pageNumber++;
+                });
+                setState(() {});
+                gameHistory();
+              },
+              child: Container(
+                height: height * 0.06,
+                width: width * 0.10,
+                decoration: BoxDecoration(
+                  gradient: AppColors.loginSecondryGrad,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.navigate_next, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  ///
+  historyDetails(String title, String subtitle, Color subColor) {
+    return Column(
+      children: [
+        const SizedBox(height: 8.0),
+        Container(
+          height: height * 0.05,
+          width: width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.firstColor),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: subColor),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  historyWinDetails(String title, String subtitle, String subtitle1,
+      Color subColor, Color subColor1) {
+    return Column(
+      children: [
+        const SizedBox(height: 8.0),
+        Container(
+          height: height * 0.05,
+          width: width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.firstColor),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: subColor),
+                    ),
+                    Text(
+                      subtitle1,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: subColor1),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  int offsetResult = 0;
+
+  int? responseStatusCode;
+  List<BettingHistoryModel> itemsDataHistory = [];
+  Future<void> gameHistory() async {
+    try {
+      // Fetch userId
+      UserViewModel userViewModal = UserViewModel();
+      String? userId = await userViewModal.getUser();
+
+      // Prepare the API request
+      final response = await http.post(
+        Uri.parse(ApiUrl.gameHistory),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "game_id": widget.gameid.toString(),
+          "userid": userId ?? '',
+          "limit": "10",
+          // "offset": offset // Uncomment if offset is required
+        }),
+      );
+
+      // Handle the response
+      setState(() {
+        responseStatusCode = response.statusCode;
+      });
+
+      if (response.statusCode == 200) {
+        // Parse the response data
+        final List<dynamic> responseData = json.decode(response.body)['data'];
+        setState(() {
+          itemsDataHistory = responseData
+              .map((item) => BettingHistoryModel.fromJson(item))
+              .toList();
+        });
+
+        if (kDebugMode) {
+          print('Response Data: $responseData');
+          print('API URL: ${ApiUrl.gameHistory}');
+          print('Request successful.');
+        }
+      } else if (response.statusCode == 400) {
+        // Handle specific client error
+        if (kDebugMode) {
+          print('Error 400: Bad Request.');
+        }
+      } else {
+        // Handle other response errors
+        setState(() {
+          itemsDataHistory = [];
+        });
+        if (kDebugMode) {
+          print('Error ${response.statusCode}: ${response.reasonPhrase}');
+        }
+      }
+    } catch (e) {
+      // Handle unexpected errors
+      setState(() {
+        itemsDataHistory = [];
+      });
+      if (kDebugMode) {
+        print('Exception occurred: $e');
+      }
+    }
+  }
+
+}
+

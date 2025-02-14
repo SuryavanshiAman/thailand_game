@@ -4,7 +4,9 @@ import 'package:game/repo/main_wallet_transfer_repo.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
+import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MainWalletTransferViewModel with ChangeNotifier {
   final _mainWalletRepo = MainWalletTransferRepo();
@@ -26,7 +28,7 @@ class MainWalletTransferViewModel with ChangeNotifier {
     _mainWalletRepo.mainWalletTransferApi(userId).then((value) {
       if (value['status'] == 200) {
         setLoading(false);
-        Navigator.pushReplacementNamed(context, RoutesName.bottomNavBar);
+        Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
         Utils.setSnackBar(value['message'], AppColor.green, context);
       }
       else {

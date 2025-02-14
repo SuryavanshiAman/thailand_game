@@ -54,6 +54,10 @@ class ProfileViewModel with ChangeNotifier {
   ];
   List<Map<String, String>>elementListThree=[
     {
+      "images":Assets.svgReffer,
+      "title":"Refer",
+    },
+    {
       "images":Assets.svgSetting,
       "title":"Settings",
     },
@@ -69,10 +73,10 @@ class ProfileViewModel with ChangeNotifier {
       "images":Assets.svgCustomer,
       "title":"Customer Service",
     },
-    {
-      "images":Assets.svgBigGuide,
-      "title":"Beginner's Guide",
-    },
+    // {
+    //   "images":Assets.svgBigGuide,
+    //   "title":"Beginner's Guide",
+    // },
     {
       "images":Assets.svgAboutus,
       "title":"About us",

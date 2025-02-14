@@ -193,7 +193,9 @@ class Assets {
   static const String imagesBankCard = 'assets/images/bank_card.png';
   static const String imagesBg = 'assets/images/bg.png';
   static const String imagesCardImage = 'assets/images/card_image.png';
+  static const String imagesCopy = 'assets/images/copy.png';
   static const String imagesCustomer = 'assets/images/customer.png';
+  static const String imagesCustomerBg = 'assets/images/customerBg.png';
   static const String imagesDeposit = 'assets/images/deposit.png';
   static const String imagesDepositHistory = 'assets/images/deposit_history.png';
   static const String imagesDialogNickname = 'assets/images/dialogNickname.png';
@@ -208,6 +210,7 @@ class Assets {
   static const String imagesIfscCode = 'assets/images/ifsc_code.png';
   static const String imagesInfo = 'assets/images/info.png';
   static const String imagesLanguage = 'assets/images/language.png';
+  static const String imagesLogOut = 'assets/images/log_out.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesNotification = 'assets/images/notification.png';
   static const String imagesPeople = 'assets/images/people.png';
@@ -215,6 +218,7 @@ class Assets {
   static const String imagesPrivacy = 'assets/images/privacy.png';
   static const String imagesProNotification = 'assets/images/pro_notification.png';
   static const String imagesProfile = 'assets/images/profile.png';
+  static const String imagesReferearn = 'assets/images/referearn.png';
   static const String imagesRisk = 'assets/images/risk.png';
   static const String imagesService = 'assets/images/service.png';
   static const String imagesSetting = 'assets/images/setting.png';
@@ -247,6 +251,7 @@ class Assets {
   static const String svgNotification = 'assets/svg/notification.svg';
   static const String svgPassword = 'assets/svg/password.svg';
   static const String svgPhone = 'assets/svg/phone.svg';
+  static const String svgReffer = 'assets/svg/reffer.svg';
   static const String svgSetting = 'assets/svg/setting.svg';
   static const String svgTransHistory = 'assets/svg/trans_history.svg';
   static const String winGo0 = 'assets/win_go/0.png';

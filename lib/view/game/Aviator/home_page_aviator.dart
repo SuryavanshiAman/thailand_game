@@ -6,13 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/api_url.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/res/audio.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/Aviator/aviator_constant/avaaitor_painter.dart';
 import 'package:game/view/game/Aviator/aviator_constant/avaitor_loading_page.dart';
-import 'package:game/view/game/Aviator/res/api_url.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/Aviator/res/marquee.dart';
 import 'package:game/view/game/Aviator/widget/aviator_history.dart';
@@ -189,15 +189,13 @@ class _GameAviatorState extends State<GameAviator>
                         width: width * 0.04,
                       ),
                       Text(
-                        context
-                                    .read<ProfileViewModel>()
+                        context.read<ProfileViewModel>()
                                     .profileData!
                                     .data!
                                     .wallet ==
                                 null
                             ? ''
-                            : context
-                                .read<ProfileViewModel>().profileData?.data?.wallet?.toStringAsFixed(2)??"",
+                            : context.read<ProfileViewModel>().profileData?.data?.wallet??"".toString(),
                         style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.w900,
@@ -207,7 +205,7 @@ class _GameAviatorState extends State<GameAviator>
                         width: width * 0.02,
                       ),
                       const Text(
-                        '₹',
+                        '🪙',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
@@ -671,7 +669,7 @@ class _GameAviatorState extends State<GameAviator>
                                               Container(
                                                 alignment: Alignment.center,
                                                 width: width * 0.3,
-                                                child: const Text("Bet,₹ X",
+                                                child: const Text("Bet,🪙 X",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 12,
@@ -682,7 +680,7 @@ class _GameAviatorState extends State<GameAviator>
                                                 alignment:
                                                     Alignment.centerRight,
                                                 width: width * 0.3,
-                                                child: const Text("Cash out, ₹",
+                                                child: const Text("Cash out, 🪙",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 12,
@@ -912,12 +910,17 @@ class _GameAviatorState extends State<GameAviator>
   }
 
   void deductAmount() {
-    int amountToDeduct = selectedAmount * value;
-    if (int.parse(context.read<ProfileViewModel>().profileData?.data?.wallet?.toString()??"") >= amountToDeduct) {
+    double amountToDeduct = (selectedAmount * value).toDouble();
+
+    final profile = Provider.of<ProfileViewModel>(context,listen: false).profileData?.data?.wallet;
+    print("rrrrr:${profile}");
+    print(amountToDeduct);
+    if (double.parse(profile.toString()??"0") >= amountToDeduct) {
       setState(() {
         amount.text = (selectedAmount * value).toString();
       });
-      context.read<ProfileViewModel>().profileData!.data!.wallet;
+      // context.read<ProfileViewModel>().profileData!.data!.wallet;
+      print("OOOOOO:${context.read<ProfileViewModel>().profileData!.data!.wallet}");
     } else {
       Utils.setSnackBar('Insufficient funds',AppColor.red, context);
     }
@@ -948,13 +951,14 @@ class _GameAviatorState extends State<GameAviator>
   }
 
   void deductAmount1() {
-    int amountToDeduct = selectedAmount1 * value1;
-    if (int.parse(context.read<ProfileViewModel>().profileData?.data?.wallet.toString()??"") >=
+    double amountToDeduct = (selectedAmount1 * value1).toDouble();
+    if (double.parse(context.read<ProfileViewModel>().profileData?.data?.wallet.toString()??"") >=
         amountToDeduct) {
       setState(() {
         amountTwo.text = (selectedAmount1 * value1).toString();
       });
       context.read<ProfileViewModel>().profileData!.data!.wallet;
+      print("OOOOOO:${context.read<ProfileViewModel>().profileData!.data!.wallet}");
     } else {
       Utils.setSnackBar('Insufficient funds',AppColor.red, context);
     }
@@ -1033,18 +1037,21 @@ class _GameAviatorState extends State<GameAviator>
 
   void connectToServer() {
     _socket = IO.io(
-      // ApiUrl.aviatorWebSocket,
-      // context.read<ProfileViewModel>().profileData!.aviatorLink.toString(),
+      context.read<ProfileViewModel>().profileData!.aviatorLink.toString(),
       IO.OptionBuilder().setTransports(['websocket']).build(),
     );
     _socket.on('connect', (_) {
-      if (kDebugMode) {}
+      if (kDebugMode) {
+        print("😓😓😓");
+      }
     });
     _socket.onConnectError((data) {
-      if (kDebugMode) {}
+      if (kDebugMode) {
+        print("😓😓😓");
+      }
     });
     _socket.on(
-        context.read<ProfileViewModel>().profileData?.data?.wallet?.toString()??"",
+        context.read<ProfileViewModel>().profileData?.aviatorEventName.toString()??"",
             (data) {
       if (_isMounted) {
         setState(() {
@@ -1474,7 +1481,9 @@ class _GameAviatorState extends State<GameAviator>
                                 setState(() {
                                   selectedAmount = list[index];
                                 });
+                                // print(selectedAmount);
                                 selectAmount(selectedAmount);
+                                print(selectedAmount);
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -1508,22 +1517,17 @@ class _GameAviatorState extends State<GameAviator>
                   InkWell(
                       onTap: () {
                         //
-                        setState(() {
+                        context.read<ProfileViewModel>().profileData!.data!.wallet != "0"? setState(() {
                           bet = true;
                           changeColor = "0";
-                        });
+                        }):null;
                         if (amount.text.isEmpty) {
                           Utils.setSnackBar(
                               'Select Amount First..!',AppColor.red, context);
                         } else if (amount.text == '0') {
                           Utils.setSnackBar(
                               'Select Amount First..!',AppColor.red, context);
-                        } else if (context
-                                .read<ProfileViewModel>()
-                                .profileData!
-                                .data!
-                                .wallet ==
-                            0) {
+                        } else if (context.read<ProfileViewModel>().profileData!.data!.wallet == "0") {
                           Utils.setSnackBar(
                               'Please recharge first',AppColor.red, context);
                         } else {
@@ -1559,7 +1563,7 @@ class _GameAviatorState extends State<GameAviator>
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            Text("${amount.text}.00₹",
+                            Text("${amount.text}.00🪙",
                                 style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -1567,12 +1571,7 @@ class _GameAviatorState extends State<GameAviator>
                           ],
                         ),
                       ))
-                else if (betData1['period'].toString() != '' &&
-                        (int.parse(betData1['period'].toString()) ==
-                                int.parse(receiveData['period'].toString()) &&
-                            receiveData['status'] < 1) ||
-                    (int.parse(betData1['period'].toString()) ==
-                        int.parse(receiveData['period'].toString()) + 1))
+                else if (betData1['period'].toString() != '' && (int.parse(betData1['period'].toString()) == int.parse(receiveData['period'].toString()) && receiveData['status'] < 1) ||(int.parse(betData1['period'].toString()) == int.parse(receiveData['period'].toString()) + 1))
                   InkWell(
                       onTap: () {
                         cancelBet('1');
@@ -1936,10 +1935,10 @@ class _GameAviatorState extends State<GameAviator>
                   InkWell(
                       onTap: () {
                         //
-                        setState(() {
+                        context.read<ProfileViewModel>().profileData!.data!.wallet != "0"  ?   setState(() {
                           betTwo = true;
                           changeColorTwo = "0";
-                        });
+                        }):null;
                         if (amountTwo.text.isEmpty) {
                           Utils.setSnackBar(
                               'Select Amount First..!',AppColor.red, context);
@@ -1951,7 +1950,7 @@ class _GameAviatorState extends State<GameAviator>
                                 .profileData!
                                 .data!
                                 .wallet ==
-                            0) {
+                            "0") {
                           Utils.setSnackBar(
                               'Please recharge first',AppColor.red, context);
                         } else {
@@ -1987,7 +1986,7 @@ class _GameAviatorState extends State<GameAviator>
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            Text("${amountTwo.text}.00₹",
+                            Text("${amountTwo.text}.00🪙",
                                 style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -2325,9 +2324,9 @@ class _GameAviatorState extends State<GameAviator>
       };
       String jsonData = jsonEncode(data2);
       String encodedData = base64.encode(utf8.encode(jsonData));
-
+print("Cashout :${ApiUrl.aviatorBetCashOut+encodedData}");
       final response =
-          await http.post(Uri.parse(AviatorApiUrl.aviatorBetCashOut+encodedData),
+          await http.post(Uri.parse(ApiUrl.aviatorBetCashOut+encodedData),
               headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
               },
@@ -2350,7 +2349,7 @@ class _GameAviatorState extends State<GameAviator>
       }
     }
   }
-
+var msg;
   Future cancelBet(String betNo) async {
     if (betNo == '1') {
       setState(() {
@@ -2372,8 +2371,9 @@ class _GameAviatorState extends State<GameAviator>
     UserViewModel userViewModel = UserViewModel();
     String? userid = await userViewModel.getUser();
     int gameNo = receiveData['period'];
+    print('Cancel bete :${ApiUrl.aviatorBetCancel}$userid&game_sr_num=$gameNo&number=$betNo');
     final response = await http.get(Uri.parse(
-        '${AviatorApiUrl.aviatorBetCancel}$userid&game_sr_num=$gameNo&number=$betNo'));
+        '${ApiUrl.aviatorBetCancel}$userid&game_sr_num=$gameNo&number=$betNo'));
     final data = jsonDecode(response.body);
     final profileViewModel =
     Provider.of<ProfileViewModel>(context, listen: false);
@@ -2381,6 +2381,10 @@ class _GameAviatorState extends State<GameAviator>
       profileViewModel.userProfileApi(context);
       Utils.setSnackBar(data['message'],AppColor.green, context);
     } else {
+setState(() {
+  msg=data['message'];
+});
+print("Anurag:${data['message']}");
       Utils.setSnackBar(data['message'],AppColor.red, context);
     }
   }
@@ -2431,9 +2435,19 @@ class _GameAviatorState extends State<GameAviator>
         });
       }
     }
-
-    final response = await http.get(Uri.parse(
-        '${AviatorApiUrl.aviatorBet}28&number=$betNo&amount=$amount&game_id=5&game_sr_num=$perios'));
+print('Dhakelu:${ApiUrl.aviatorBet}$userid&number=$betNo&amount=$amount&game_id=5&game_sr_num=$perios');
+    final response = await http.post(Uri.parse(ApiUrl.aviatorBet),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "uid":userid,
+          "number" : betNo,
+          "amount" :amount,
+          "game_id" : "5",
+          "game_sr_num" : perios
+        })
+    );
     final resData = jsonDecode(response.body);
     if (resData["status"] == 200) {
       context.read<ProfileViewModel>().userProfileApi(context);
@@ -2484,7 +2498,7 @@ class _GameAviatorState extends State<GameAviator>
   List<ResultHistoryModel> number = [];
   Future<void> resultHistory() async {
     context.read<ProfileViewModel>().userProfileApi(context);
-    const url = AviatorApiUrl.aviatorResult;
+    const url = ApiUrl.aviatorResult;
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body)['data'];

@@ -110,18 +110,6 @@ final update=Provider.of<UpdateViewModel>(context);
                             fieldRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                        //   child: CustomTextField(
-                        //     fillColor: Colors.white,
-                        //     controller: nameCon,
-                        //     filled: true,
-                        //     focusColor: Colors.white,
-                        //     maxLines: 1,
-                        //     label: "NancyMomoLand",
-                        //   ),
-                        // ),
-
                         const Spacer(),
                         update.loading==false?  constantbutton(onTap: () {
                           update.updateImageApi("", nameCon.text, context);
@@ -144,32 +132,4 @@ final update=Provider.of<UpdateViewModel>(context);
       ),
     );
   }
-  // BaseApiHelper baseApiHelper = BaseApiHelper();
-  //
-  // UserViewProvider userProvider = UserViewProvider();
-  // avtarChangeApi( String nickname) async {
-  //   UserModel user = await userProvider.getUser();
-  //   String token = user.id.toString();
-  //   final response = await http.post(
-  //     Uri.parse(ApiUrl.UpdateAvtarApi),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       "id": token,
-  //       "username": nickname,
-  //     }),
-  //   );
-  //   var data = jsonDecode(response.body);
-  //   print(data);
-  //   if (data["status"] == 200) {
-  //     context.read<ProfileProvider>().fetchProfileData();
-  //     Navigator.pop(context);
-  //     return Utils.flushBarSuccessMessage(data['message'], context, Colors.black);
-  //   } else if (data["status"] == 401) {
-  //     Utils.flushBarErrorMessage(data['message'], context, Colors.black);
-  //   } else {
-  //     Utils.flushBarErrorMessage(data['message'], context, Colors.black);
-  //   }
-  // }
 }

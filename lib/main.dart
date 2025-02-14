@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game/language/english.dart';
+import 'package:game/language/hindi.dart';
+import 'package:game/language/thai.dart';
 import 'package:game/res/app_constant.dart';
 import 'package:game/test.dart';
 import 'package:game/view/auth/splash_screen.dart';
@@ -13,17 +16,27 @@ import 'package:game/view_model/auth_view_model.dart';
 import 'package:game/view_model/avtar_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/gift_card_view_model.dart';
+import 'package:game/view_model/jili_game_launcher_view_model.dart';
+import 'package:game/view_model/pay_usdt_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:game/view_model/update_jili_to_user_wallet_view_model.dart';
+import 'package:game/view_model/usdt_deposit_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/internacionalization.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_name.dart';
+import 'view/game/Aviator/view_model/aviator_history_view_model.dart';
 import 'view/game/wingo/view_model/win_go_game_his_view_model.dart';
 import 'view/game/wingo/view_model/win_go_my_his_view_model.dart';
 import 'view_model/aboutus_view_model.dart';
 import 'view_model/add_bank_view_model.dart';
+import 'view_model/all_game_list_view_model.dart';
 import 'view_model/choose_bank_view_model.dart';
+import 'view_model/customer_service_view_model.dart';
+import 'view_model/deposit_history_view_model.dart';
 import 'view_model/edit_password_view_model.dart';
 import 'view_model/feed_back_view_model.dart';
 import 'view_model/game_view_model.dart';
@@ -34,7 +47,10 @@ import 'view_model/payment_limit_view_model.dart';
 import 'view_model/services/splash_services.dart';
 import 'view_model/transaction_history_view_model.dart';
 import 'view_model/transaction_type_view_model.dart';
+import 'view_model/update_jili_wallet_view_model.dart';
 import 'view_model/update_profile_view_model.dart';
+import 'view_model/usdt_bank_address_view_model.dart';
+import 'view_model/usdt_view_bank_view_model.dart';
 import 'view_model/view_bank_view_model.dart';
 import 'view_model/withdraw_history_view_model.dart';
 import 'view_model/withdraw_view_model.dart';
@@ -91,13 +107,27 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => WithdrawHistoryViewModel()),
         ChangeNotifierProvider(create: (context) => TransactionTypeViewModel()),
         ChangeNotifierProvider(create: (context) => TransactionHistoryViewModel()),
+        ChangeNotifierProvider(create: (context) => AllGameListViewModel()),
+        ChangeNotifierProvider(create: (context) => JiliGameLauncherViewModel()),
+        ChangeNotifierProvider(create: (context) => AviatorHistoryViewModel()),
+        ChangeNotifierProvider(create: (context) => UsdtDepositViewModel()),
+        ChangeNotifierProvider(create: (context) => PayUsdtViewModel()),
+        ChangeNotifierProvider(create: (context) => CustomerServiceViewModel()),
+        ChangeNotifierProvider(create: (context) => UsdtBankViewModel()),
+        ChangeNotifierProvider(create: (context) => USdtViewBankViewModel()),
+        ChangeNotifierProvider(create: (context) => DepositHistoryViewModel()),
+        ChangeNotifierProvider(create: (context) => UpdateJiliToUserWalletViewModel()),
+        ChangeNotifierProvider(create: (context) => UpdateJiliWalletViewModel()),
       ],
       child: Center(
         child: Container(
           constraints: BoxConstraints(
               maxWidth: width
           ),
-          child: MaterialApp(
+          child: GetMaterialApp(
+            translations: LocaleTranslations(),
+            locale: const Locale('en', 'US'), // Set the default locale
+            fallbackLocale: const Locale('en''US'),
             debugShowCheckedModeBanner: false,
             title:AppConstants.appName,
             initialRoute: RoutesName.splashScreen,
@@ -116,6 +146,15 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+class LocaleTranslations extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+    'en_US': LocaleStringEn().keys['en_US']!,
+    'hi_IN': LocaleStringHi().keys['hi_IN']!,
+    'th_TH': LocaleStringTh().keys['th_TH']!,
+
+  };
 }
 double height=0.0;
 double width=0.0;

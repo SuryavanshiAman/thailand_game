@@ -209,7 +209,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
               ],
             ),
           ),
-          withdraw.withdrawHistoryData!.data!.isNotEmpty ?  SizedBox(
+          withdraw.withdrawHistoryData?.data!=null&&  withdraw.withdrawHistoryData!.data!.isNotEmpty ?  SizedBox(
             height: height*0.65,
             child: ListView.builder(
               shrinkWrap: true,
@@ -255,7 +255,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                typeName,
+                data.status.toString()=="1"?"Processing":data.status.toString()=="2"?"Completed":"Rejected",
                 style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
@@ -281,31 +281,42 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Balance", data.amount??"", Colors.green),
-          data.type!=1? buildRow("USDT Balance", data.usdtAmount??"", Colors.green):Container(),
-          buildRow("Type", data.type==1?"INR":"USDT", Colors.white),
+          buildRow("Coin", data.amount.toString()??"", Colors.green),
+          data.type!=1? buildRow("USDT Balance", data.usdtAmount.toString()??"", Colors.green):Container(),
+          buildRow("Type","USDT", Colors.white),
+          // buildRow("Type", data.type==1?"INR":"USDT", Colors.white),
           buildRow("Time",DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
-          buildRow("Order number", data.orderId??"", Colors.white),
+          buildRow("Order number", data.orderId??"", Colors.white,icon:Icons.copy,onIconPressed: (){
+    Clipboard.setData(ClipboardData(text:  data.orderId?.toString()??""));
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text("Copied Order Number!")),
+    );
+    }),
+          data.reason!=null?  buildRow("Reason", data.reason?.toString()??"", Colors.white,):Container(),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: data.orderId??""));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Copied Order Number!")),
-                  );
-                },
-                icon: Icon(Icons.copy, color: Colors.white, size: 18),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
-  Widget buildRow(String title, String value, Color valueColor) {
+  // Widget buildRow(String title, String value, Color valueColor) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 4),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           "$title  ",
+  //           style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+  //         ),
+  //         Text(
+  //           value,
+  //           style: TextStyle(color: valueColor, fontSize: 14),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget buildRow(String title, String value, Color valueColor, {IconData? icon, VoidCallback? onIconPressed}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -315,14 +326,31 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             "$title  ",
             style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          Text(
-            value,
-            style: TextStyle(color: valueColor, fontSize: 14),
+          Spacer(),
+          Container(
+            alignment: Alignment.centerRight,
+            // color: AppColor.red,
+            width: width*0.5,
+            child: Text(
+              value,
+              style: TextStyle(color: valueColor, fontSize: 14),
+            ),
           ),
+          if (icon != null && onIconPressed != null) ...[
+            SizedBox(
+              width: width*0.07,
+              height: height*0.03,
+              child: IconButton(
+                icon: Icon(icon, color: Colors.white, size: 16),
+                onPressed: onIconPressed,
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
+
   Widget allTransactionType(BuildContext context, void Function(void Function()) setModalState) {
     final deposit = Provider.of<DepositViewModel>(context);
     final withdraw = Provider.of<WithdrawHistoryViewModel>(context,listen: false);

@@ -11,8 +11,7 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view/profile/setting_page/nickname_screen.dart';
-import 'package:iconly/iconly.dart';
-import 'package:provider/provider.dart';
+
 
 class SettingPageNew extends StatefulWidget {
   const SettingPageNew({super.key});

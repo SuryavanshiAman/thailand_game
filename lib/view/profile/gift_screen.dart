@@ -7,6 +7,7 @@ import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/bubble_animation/Particles.dart';
 import 'package:game/res/bubble_animation/particle_engine.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
@@ -142,12 +143,12 @@ class GiftScreenState extends State<GiftScreen> {
                           fieldRadius: BorderRadius.circular(15),
                         ),
                         SizedBox(height: height*0.03,),
-                        constantbutton(
+                        gift.loading==false?  constantbutton(
                           text: 'Receive',
                           onTap: () {
                             gift.giftCardApi(giftcode.text, context);
                           },
-                        )
+                        ):CircularButton()
                       ],
                     ),
                   )),

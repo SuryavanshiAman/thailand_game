@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:game/main.dart';
 import 'package:game/res/bubble_animation/Particles.dart';
@@ -7,9 +6,12 @@ import 'package:game/res/bubble_animation/particle_engine.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/utils/utils.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view/home/slider_page.dart';
+import 'package:game/view_model/jili_game_launcher_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:game/view_model/update_jili_to_user_wallet_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +26,27 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver  {
   @override
   void initState() {
     super.initState();
     Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
+    WidgetsBinding.instance.addObserver(this);
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // Observer remove karein
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final jiliApi=Provider.of<JiliGameLauncherViewModel>(context,listen: false);
+
+    if (state == AppLifecycleState.resumed&&jiliApi.isGameLaunched==true) {
+Provider.of<UpdateJiliToUserWalletViewModel>(context,listen: false).updateJilliToUserWalletApi(context);
+jiliApi.setIsGameLaunched(false);
+    }
   }
   int selectedIndex=1;
   @override
@@ -37,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColor.black,
       appBar:
       GradientAppBar(
-        title: Text("Phoenix Game",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+        title: Text("Xgamblur",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
         actions: [
           InkWell(
               onTap: (){

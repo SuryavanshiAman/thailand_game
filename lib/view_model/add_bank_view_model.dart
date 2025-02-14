@@ -45,7 +45,7 @@ class AddBankViewModel with ChangeNotifier {
     }).onError((error, stackTrace) {
       setLoading(false);
       if (kDebugMode) {
-        print('editPasswordApi: $error');
+        print('updateJilliToUserWalletApi: $error');
       }
     });
   }

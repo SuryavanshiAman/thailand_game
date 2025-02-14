@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:game/main.dart';
+import 'package:game/res/api_url.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/view/game/AndarBahar/andarBaharModel/bet_history_con.dart';
-import 'package:game/view/game/Aviator/res/api_url.dart';
+// import 'package:game/view/game/Aviator/res/api_url.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart'as http;
@@ -112,7 +113,7 @@ class GameHistoryPageState extends State<GameHistoryPage> {
                                         ),
                                       ),
                                       Text(
-                                        '₹${itemsData[index].amount}',
+                                        '🪙${itemsData[index].amount}',
                                         style:  const TextStyle(
                                           color: AppColors.textColor2,
                                           fontSize: 10,
@@ -316,7 +317,7 @@ class GameHistoryPageState extends State<GameHistoryPage> {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getInt("userId").toString();
 
-    final response = await http.get(Uri.parse("${ApiUrl.gameHistory}$gameIds&userid=$userId"));
+    final response = await http.get(Uri.parse("${ApiUrl.winGoMyBetHis}$gameIds&userid=$userId"));
     setState(() {
       responseStatusCode = response.statusCode;
     });

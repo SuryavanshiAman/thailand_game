@@ -27,13 +27,25 @@ class WinGoPopUpViewModel with ChangeNotifier {
 
   Future<void> winAmountApi(context, String gameId, dynamic period) async {
     setLoadingGameWin(true);
+    print(
+      "😊😊😊"
+    );
     UserViewModel userViewModal = UserViewModel();
     String? userId = await userViewModal.getUser();
     _winGoPopUpRepo.winAmountApi(userId, gameId, period).then((value) {
+      print(
+          "😊😊😊🤡🤡"
+      );
       if (value.status == 200) {
+        print(
+            "😊😊😊🤡🤡"
+        );
         setLoadingGameWin(false);
         setWinAmountData(value, context);
         if (value.data!.win != 0) {
+          print(
+              "🤣🤣🤣🤣"
+          );
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -49,6 +61,9 @@ class WinGoPopUpViewModel with ChangeNotifier {
           Provider.of<ProfileViewModel>(context, listen: false).userProfileApi(context);
 
         } else {
+          print(
+              "🙉🙉🙉🙉"
+          );
           showDialog(
             context: context,
             builder: (BuildContext context) {

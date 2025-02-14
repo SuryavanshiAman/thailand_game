@@ -8,8 +8,13 @@ import 'package:game/res/filter_date-formate.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/deposit_history_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+
+import '../../../model/deposit_model.dart';
 
 class DepositHistoryScreen extends StatefulWidget {
   const DepositHistoryScreen({super.key});
@@ -31,10 +36,16 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
       curve: Curves.easeInOut,
     );
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<DepositHistoryViewModel>(context,listen: false).depositHistoryApi("", "", "", context);
+  }
   @override
   Widget build(BuildContext context) {
     final deposit = Provider.of<DepositViewModel>(context);
+    final depositHistory = Provider.of<DepositHistoryViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -184,6 +195,7 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
                             setState(() {
                               _selectedDate = selectedDate;
                             });
+                            depositHistory.depositHistoryApi("", "", selectedDate, context);
                             // depositHistory();
                             // commissionDetailsApi();
                             if (kDebugMode) {
@@ -199,16 +211,33 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
               ],
             ),
           ),
-          Column(
-            children: deposit.transactionsHistory
-                .map((transaction) => depositCard(transaction, context))
-                .toList(),
-          ),
+          depositHistory.depositHistoryData?.data!=null&& depositHistory.depositHistoryData!.data!.isNotEmpty ?   SizedBox(
+            height: height*0.65,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: depositHistory.depositHistoryData?.data?.length??0,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, int index) {
+                final data =depositHistory.depositHistoryData?.data?[index];
+                return  depositCard(data!,context);
+              },
+            ),
+          ) :Padding(
+            padding:  EdgeInsets.only(top: height*0.15),
+            child: Center(
+              child: SizedBox(
+                width: 250,
+                height: 250,
+                child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
+              ),
+            ),
+          )
+
         ],
       ),
     );
   }
-  Widget depositCard(Map<String, String> transaction, BuildContext context) {
+  Widget depositCard(Data data, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10,top: 10),
       padding: const EdgeInsets.all(12),
@@ -229,7 +258,7 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                "To be paid",
+                data.status.toString()=="1"?"To be Paid":data.status.toString()=="2"?"Completed":"Rejected",
                 style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
@@ -255,48 +284,63 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Balance", transaction["balance"]!, Colors.green),
-          buildRow("Type", transaction["type"]!, Colors.white),
-          buildRow("Time", transaction["time"]!, Colors.white),
-          buildRow("Order number", transaction["orderNumber"]!, Colors.white),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: transaction["orderNumber"]!));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Copied Order Number!")),
-                  );
-                },
-                icon: Icon(Icons.copy, color: Colors.white, size: 18),
-              ),
-            ],
-          ),
+          buildRow("Coin", data.amount.toString()??"", Colors.green),
+          buildRow("USDT Balance", data.usdtAmount.toString()??"", Colors.green),
+          buildRow("Type","USDT", Colors.white),
+          // buildRow("Type", data.type!=1?"INR":"USDT", Colors.white),
+          buildRow("Time", DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
+          buildRow("Order number", data.orderNumer?.toString()??"", Colors.white,icon:Icons.copy,onIconPressed: (){
+            Clipboard.setData(ClipboardData(text:  data.orderNumer?.toString()??""));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Copied Order Number!")),
+            );
+          }),
+          data.reason!=null?  buildRow("Reason", data.reason?.toString()??"", Colors.white,):Container(),
+
         ],
       ),
     );
   }
-  Widget buildRow(String title, String value, Color valueColor) {
+  Widget buildRow(String title, String value, Color valueColor, {IconData? icon, VoidCallback? onIconPressed}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             "$title  ",
             style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          Text(
-            value,
-            style: TextStyle(color: valueColor, fontSize: 14),
+Spacer(),
+          Container(
+            alignment: Alignment.centerRight,
+            width: width*0.5,
+            child: Text(
+              value,
+              style: TextStyle(color: valueColor, fontSize: 14),
+            ),
           ),
+          if (icon != null && onIconPressed != null) ...[
+            Container(
+              // color: AppColor.red,
+              width: width*0.07,
+              height: height*0.03,
+              child: IconButton(
+                icon: Icon(icon, color: Colors.white, size: 16),
+                onPressed: onIconPressed,
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
+
   Widget allTransactionType(BuildContext context, void Function(void Function()) setModalState) {
     final deposit = Provider.of<DepositViewModel>(context);
+    final depositHistory = Provider.of<DepositHistoryViewModel>(context);
+
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -368,6 +412,7 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
                     setModalState(() { // Use setModalState to update selection inside the bottom sheet
                       selectedId = index;
                       typeName = type.toString();
+                      depositHistory.depositHistoryApi("", selectedId, "", context);
                     });
 
                     if (kDebugMode) {

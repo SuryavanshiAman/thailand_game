@@ -13,14 +13,18 @@ import 'package:game/view/profile/about_us/about_us_screen.dart';
 import 'package:game/view/profile/feed_back_screen.dart';
 import 'package:game/view/profile/game_history_screen.dart';
 import 'package:game/view/profile/gift_screen.dart';
+import 'package:game/view/profile/language_screen.dart';
+import 'package:game/view/profile/refer_screen.dart';
 import 'package:game/view/profile/setting_page/change_avtar_screen.dart';
 import 'package:game/view/profile/setting_page/change_login_password.dart';
+import 'package:game/view/profile/setting_page/customer_service_screen.dart';
 import 'package:game/view/profile/setting_page/nickname_screen.dart';
 import 'package:game/view/profile/setting_page/setting_screen.dart';
 import 'package:game/view/wallet/bank_details/bank_screen.dart';
 import 'package:game/view/wallet/bank_details/usdt_address.dart';
 import 'package:game/view/wallet/deposit/deposit_history_screen.dart';
 import 'package:game/view/wallet/deposit/deposit_screen.dart';
+import 'package:game/view/wallet/deposit/usdt_deposit_screen.dart';
 import 'package:game/view/wallet/transaction_history_screen.dart';
 import 'package:game/view/wallet/withdraw/choose_bank_screen.dart';
 import 'package:game/view/wallet/withdraw/withdraw_history_screen.dart';
@@ -77,6 +81,14 @@ class Routers {
         return (context) =>  CommonAboutPage();
       case RoutesName.chooseBankScreen:
         return (context) =>  ChooseBankScreen();
+      case RoutesName.customerCareService:
+        return (context) =>  CustomerCareService();
+      case RoutesName.usdtDepositScreen:
+        return (context) =>  UsdtDepositScreen();
+      case RoutesName.referEarn:
+        return (context) =>  ReferEarn();
+      case RoutesName.languageScreen:
+        return (context) =>  LanguageScreen();
       default:
         return (context) => Scaffold(
           body: Center(

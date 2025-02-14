@@ -7,8 +7,13 @@ import 'package:game/res/app_colors.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/filter_date-formate.dart';
 import 'package:game/res/text_widget.dart';
+import 'package:game/view/game/AndarBahar/andhar_bahar_popup.dart';
+import 'package:game/view/game/AndarBahar/constant/andar_bahar_history.dart';
+import 'package:game/view/game/AndarBahar/constant/game_history.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
+import 'package:game/view/game/Aviator/widget/aviator_history.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view/game/wingo/widgets/my_history.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/game_view_model.dart';
 import 'package:lottie/lottie.dart';
@@ -23,7 +28,7 @@ class GameHistoryScreen extends StatefulWidget {
 }
 
 class _GameHistoryScreenState extends State<GameHistoryScreen> {
-  int? selectedCatIndex;
+  int selectedCatIndex=0;
   int selectedId = 0;
   String typeName = 'All';
   DateTime? _selectedDate;
@@ -108,106 +113,10 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                   );
                 }),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10),
-                        ),
-                      ),
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(
-                          builder: (context, setModalState) { // setModalState to refresh bottom sheet
-                            return allTransactionType(context, setModalState);
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: height * 0.08,
-                    width: width * 0.45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: AppColor.darkGray,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: width*0.3,
-                            child: textWidget(
-                              text: typeName,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 12,
-                              color: AppColors.dividerColor,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: AppColors.dividerColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: height*0.08,
-                    width: width * 0.45,
-                    decoration: BoxDecoration(
-                        color: AppColor.darkGray,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        textWidget(
-                            text:   _selectedDate==null?'Select date':
-                            '   ${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}',
-                            fontSize: 18,
-                            color: AppColors.primaryTextColor),
-                        FilterDateFormat(
-                          onDateSelected: (DateTime selectedDate) {
 
-
-                            setState(() {
-                              _selectedDate = selectedDate;
-                            });
-                            // depositHistory();
-                            // commissionDetailsApi();
-                            if (kDebugMode) {
-                              print('Selected Date: $selectedDate');
-                              print('object');
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          selectedCatIndex==0?  WingoMyHis(): selectedCatIndex==1?AndharBaharPopUpPage(gameid:"13"):AviatorHistory(),
           SizedBox(height: height*0.1,),
-          Center(
-            child: SizedBox(
-              width: 250,
-              height: 250,
-              child: Lottie.asset('assets/lottie/no_data.json',fit: BoxFit.fill,),
-            ),
-            // ),
-          ),
+
         ],
       ),
     );
@@ -273,43 +182,7 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
               ),
             ),
           ),
-          // Expanded(
-          //   child: ListView.builder(
-          //     padding: EdgeInsets.only(top: height * 0.03),
-          //     shrinkWrap: true,
-          //     itemCount: deposit.withdrawType.length,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       final type = deposit.withdrawType[index];
-          //       return InkWell(
-          //         onTap: () {
-          //           setModalState(() { // Use setModalState to update selection inside the bottom sheet
-          //             selectedId = index;
-          //             typeName = type.toString();
-          //           });
-          //
-          //           if (kDebugMode) {
-          //             print(selectedId);
-          //           }
-          //         },
-          //         child: Column(
-          //           children: [
-          //             Center(
-          //               child: Text(
-          //                 type,
-          //                 style: TextStyle(
-          //                   fontWeight: FontWeight.w900,
-          //                   fontSize: 16,
-          //                   color: selectedId == index ? Colors.blue : AppColor.white,
-          //                 ),
-          //               ),
-          //             ),
-          //             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
+
           GridView.builder(
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),

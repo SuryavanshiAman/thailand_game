@@ -397,7 +397,7 @@ class ImageToastWingo {
         ),
         ),
         Text(
-         '₹$subtext2',
+         '🪙$subtext2',
           style: TextStyle(
             fontSize: 25,
             color: Colors.indigo.shade900,

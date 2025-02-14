@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
@@ -69,7 +70,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                   color: AppColor.white,
                   fontSize: 16)),
           Lottie.asset(Assets.lottieFeedBack, height: height * 0.25),
-          constantbutton(
+          feedBack.loading==false?  constantbutton(
             onTap: () {
               if (_feedBackController.text.isEmpty) {
                 Utils.setSnackBar(
@@ -79,7 +80,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
               }
             },
             text: 'Submit',
-          )
+          ):CircularButton()
         ],
       ),
     );

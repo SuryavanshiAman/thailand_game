@@ -3,11 +3,14 @@ import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
+import 'package:game/res/custom_text_field.dart';
 import 'package:game/res/shimmer.dart';
 import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/utils/utils.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:game/view_model/payment_limit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +23,13 @@ class DepositScreen extends StatefulWidget {
 }
 
 class _DepositScreenState extends State<DepositScreen> {
-  int selectedIndex = 0;
+  int selectedIndex = 3;
   int selectedIndexTwo = 0;
-  int type = 0;
-  TextEditingController amount = TextEditingController();
+  int type = 3;
+  final TextEditingController _usdtController = TextEditingController();
+
+  TextEditingController amountCont = TextEditingController();
+  final TextEditingController _convertedController = TextEditingController();
   int _selectedItemIndex =
       10; // Initialize with a value that won't match any index
   bool _isButtonEnabled = false;
@@ -32,7 +38,8 @@ class _DepositScreenState extends State<DepositScreen> {
   void _handleTextChange() {
     setState(() {
       _selectedItemIndex = 10; // Reset selected index
-      _isButtonEnabled = amount.text.isNotEmpty;
+      _isButtonEnabled = amountCont.text.isNotEmpty;
+      _isButtonEnabled = _usdtController.text.isNotEmpty;
     });
   }
 
@@ -40,13 +47,26 @@ class _DepositScreenState extends State<DepositScreen> {
     print(index);
     setState(() {
       _selectedItemIndex = type == 3 ? usdAmount[index] : indianAmount[index];
-      amount.text = type == 3
-          ? usdAmount[index].toString()
-          : indianAmount[index].toString(); // Update TextFormField text
+      amountCont.text = type == 3 ? usdAmount[index].toString() : indianAmount[index].toString(); // Update TextFormField text
+      _usdtController.text = type == 3 ? usdAmount[index].toString() : indianAmount[index].toString(); // Update TextFormField text
       _isButtonEnabled = true;
     });
   }
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<PaymentLimitViewModel>(context,listen: false).paymentLimitApi(context);
+  }
+  void _updateConvertedAmount(String value) {
+    final paymentLimit = Provider.of<PaymentLimitViewModel>(context,listen: false).limitData?.data;
 
+    double amount = double.tryParse(_usdtController.text) ?? 0.0;
+    double convertedAmount = amount * (paymentLimit?.depositConversionRate ?? 1);
+    setState(() {
+      _convertedController.text = convertedAmount.toStringAsFixed(2);
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final deposit = Provider.of<DepositViewModel>(context);
@@ -116,7 +136,7 @@ class _DepositScreenState extends State<DepositScreen> {
                       width: width * 0.12,
                     ),
                     Text(
-                      "₹${profile?.depositAmount??"0.0"}",
+                      "🪙${profile?.depositAmount??"0.0"}",
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 22,
@@ -126,9 +146,17 @@ class _DepositScreenState extends State<DepositScreen> {
                     SizedBox(
                       width: width * 0.05,
                     ),
-                    Image.asset(
-                      Assets.imagesTotalBal,
-                      scale: 1.4,
+                    InkWell(
+                      onTap: (){
+                        Provider.of<ProfileViewModel>(context,listen: false)
+                            .userProfileApi(context).then((_){
+                          Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                        });
+                      },
+                      child: Image.asset(
+                        Assets.imagesTotalBal,
+                        scale: 1.4,
+                      ),
                     )
                   ],
                 ),
@@ -136,9 +164,10 @@ class _DepositScreenState extends State<DepositScreen> {
             ),
           ),
           Container(
-            height: height * 0.3,
-            margin: EdgeInsets.only(top: height * 0.025),
+            // height: height * 0.3,
+            margin: EdgeInsets.only(top: height * 0.025,bottom: height*0.03),
             child: GridView.builder(
+              shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -152,8 +181,8 @@ class _DepositScreenState extends State<DepositScreen> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectedIndex = index;
-                      type=index;
+                      // selectedIndex = index;
+                      // type=index;
                     });
                   },
                   child: Stack(
@@ -292,6 +321,7 @@ class _DepositScreenState extends State<DepositScreen> {
                           setState(() {
                             selectedIndexTwo = index;
                             _handleListItemSelected(index);
+                            _updateConvertedAmount(usdAmount[index].toString());
                           });
 
                         },
@@ -321,7 +351,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                 child: Text(
                                   type == 3
                                       ? '\$ ${usdAmount[index]}'
-                                      : '₹  ${indianAmount[index]}',
+                                      : '🪙  ${indianAmount[index]}',
                                   style: TextStyle(
                                       color: _selectedItemIndex ==
                                                   indianAmount[index] ||
@@ -342,54 +372,138 @@ class _DepositScreenState extends State<DepositScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                Card(
-                  elevation: 5,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                  child: TextField(
-                    controller: amount,
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    style: const TextStyle(
-                        color: AppColor.black, fontWeight: FontWeight.w600),
-                    onChanged: (text) {
-                      _handleTextChange();
-                    },
-                    decoration: InputDecoration(
-                        // filled: true,
-                        //   fillColor:lightGray,
-                        prefixIcon: SizedBox(
-                          width: 70,
-                          child: Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              Icon(
-                                type != 3
-                                    ? Icons.currency_rupee
-                                    : Icons.currency_exchange,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                  height: 30, color: Colors.grey, width: 2)
-                            ],
-                          ),
-                        ),
-                        hintText: "Enter Amount",
-                        helperStyle: TextStyle(
-                            fontSize: 10, color: Colors.grey.shade200),
-                        border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: AppColor.gray),
-                          borderRadius: BorderRadius.circular(25),
-                        )),
-                    cursorColor: Colors.grey,
+                // Card(
+                //   elevation: 5,
+                //   shape: const RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.all(Radius.circular(25))),
+                //   child: TextField(
+                //     controller: amountCont,
+                //     textAlign: TextAlign.start,
+                //     keyboardType: TextInputType.number,
+                //     style: const TextStyle(
+                //         color: AppColor.black, fontWeight: FontWeight.w600),
+                //     onChanged: (text) {
+                //       _handleTextChange();
+                //     },
+                //     decoration: InputDecoration(
+                //         // filled: true,
+                //         //   fillColor:lightGray,
+                //         prefixIcon: SizedBox(
+                //           width: 70,
+                //           child: Row(
+                //             children: [
+                //               const SizedBox(width: 10),
+                //               Icon(
+                //                 type != 3
+                //                     ? Icons.currency_rupee
+                //                     : Icons.currency_exchange,
+                //                 color: Colors.grey,
+                //               ),
+                //               const SizedBox(width: 10),
+                //               Container(
+                //                   height: 30, color: Colors.grey, width: 2)
+                //             ],
+                //           ),
+                //         ),
+                //         hintText: "Enter Amount",
+                //         helperStyle: TextStyle(
+                //             fontSize: 10, color: Colors.grey.shade200),
+                //         border: OutlineInputBorder(
+                //           borderSide: const BorderSide(color: AppColor.gray),
+                //           borderRadius: BorderRadius.circular(25),
+                //         )),
+                //     cursorColor: Colors.grey,
+                //   ),
+                // ),
+                selectedIndex == 3
+                    ? CustomTextField(
+                  controller:_usdtController ,
+                  keyboardType: TextInputType.number,
+                  label: "Enter USDT amount",
+                  hintColor: AppColor.lightGray,
+                  hintSize: 16,
+                  height: 55,
+                  borderSide: BorderSide(color: Colors.white),
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 15, vertical: 15),
+                  width: width,
+                  filled: true,
+                  fillColor: AppColor.gray.withOpacity(0.5),
+                  border:
+                  Border.all(color: AppColor.gray.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(15),
+                  fieldRadius: BorderRadius.circular(15),
+                  prefix: Image.asset(
+                    Assets.imagesUsdt,
+                    scale: 2.3,
                   ),
+                  onChanged:(value){
+                    setState(() {
+                      _updateConvertedAmount(value);
+                    });
+                  } ,
+                )
+                    : Container(),
+                const SizedBox(
+                  height: 16,
+                ),
+                selectedIndex == 3?
+                CustomTextField(
+readOnly: true,
+                  controller: _convertedController,
+                  keyboardType: TextInputType.number,
+                  label: "INR amount ",
+                  hintColor: AppColor.lightGray,
+                  hintSize: 16,
+                  height: 55,
+                  borderSide: BorderSide(color: Colors.white),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  width: width,
+                  filled: true,
+                  fillColor: AppColor.gray.withOpacity(0.5),
+                  border: Border.all(color: AppColor.gray.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(15),
+                  fieldRadius: BorderRadius.circular(15),
+                  prefix: Icon(Icons.currency_rupee, color: AppColor.white),
+
+                ):
+                CustomTextField(
+                  controller: amountCont,
+                  keyboardType: TextInputType.number,
+                  label: "Enter the amount",
+                  hintColor: AppColor.lightGray,
+                  hintSize: 16,
+                  height: 55,
+                  borderSide: BorderSide(color: Colors.white),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  width: width,
+                  filled: true,
+                  fillColor: AppColor.gray.withOpacity(0.5),
+                  border: Border.all(color: AppColor.gray.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(15),
+                  fieldRadius: BorderRadius.circular(15),
+                  prefix: Icon(Icons.currency_rupee, color: AppColor.white),
+
                 ),
                 const SizedBox(
                   height: 16,
                 ),
+
+
                 constantbutton(
-                    width: width * 0.8, onTap: () {}, text: "Deposit"),
+                    width: width * 0.8, onTap: () {
+                      if (_usdtController.text.isEmpty){
+                        Utils.setSnackBar("Please enter the usdt amount", AppColor.red, context);
+                      }else{
+                        selectedIndex==3?Navigator.pushNamed(context, RoutesName.usdtDepositScreen,arguments: {
+                          "amount":_convertedController.text,
+                          "usdt":_usdtController.text
+                        }):null;
+                      }
+
+                }, text: "Deposit"),
               ],
             ),
           ),

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/circular_button.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
 import 'package:game/res/shimmer.dart';
 import 'package:game/utils/routes/routes_name.dart';
+import 'package:game/utils/utils.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/payment_limit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:game/view_model/usdt_view_bank_view_model.dart';
 import 'package:game/view_model/withdraw_view_model.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +25,7 @@ class WithdrawScreen extends StatefulWidget {
 }
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
-  int selectedIndex = 0;
+  int selectedIndex = 1;
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _usdtController = TextEditingController();
   final TextEditingController _convertedController = TextEditingController();
@@ -30,22 +33,32 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<PaymentLimitViewModel>(context,listen: false).paymentLimitApi(context);
+    Provider.of<PaymentLimitViewModel>(context, listen: false)
+        .paymentLimitApi(context);
+    Provider.of<USdtViewBankViewModel>(context, listen: false)
+        .usdtBankViewApi(context);
   }
+
   void _updateConvertedAmount(String value) {
-    final paymentLimit = Provider.of<PaymentLimitViewModel>(context,listen: false).limitData?.data;
+    final paymentLimit =
+        Provider.of<PaymentLimitViewModel>(context, listen: false)
+            .limitData
+            ?.data;
 
     double amount = double.tryParse(_usdtController.text) ?? 0.0;
-    double convertedAmount = amount * (paymentLimit?.withdrawConversionRate ?? 1);
-setState(() {
-  _convertedController.text = convertedAmount.toStringAsFixed(2);
-
-});
+    double convertedAmount =
+        amount * (paymentLimit?.withdrawConversionRate ?? 1);
+    setState(() {
+      _convertedController.text = convertedAmount.toStringAsFixed(2);
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
     final withdrawApi = Provider.of<WithdrawViewModel>(context);
+    final usdtData =
+        Provider.of<USdtViewBankViewModel>(context).usdtBankData?.data;
 
     return Scaffold(
       backgroundColor: AppColor.black,
@@ -58,7 +71,7 @@ setState(() {
         ),
         actions: [
           InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, RoutesName.withdrawHistoryScreen);
             },
             child: Text(
@@ -112,7 +125,7 @@ setState(() {
                       width: width * 0.12,
                     ),
                     Text(
-                      "₹${profile?.withdrawBalance??"0.0"}",
+                      "🪙${profile?.wallet ?? "0.0"}",
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 22,
@@ -123,8 +136,11 @@ setState(() {
                       width: width * 0.05,
                     ),
                     InkWell(
-                      onTap: (){
-                        Provider.of<ProfileViewModel>(context).userProfileApi(context);
+                      onTap: () {
+                        Provider.of<ProfileViewModel>(context,listen: false)
+                            .userProfileApi(context).then((_){
+                          Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                        });
                       },
                       child: Image.asset(
                         Assets.imagesTotalBal,
@@ -153,7 +169,7 @@ setState(() {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectedIndex = index;
+                      // selectedIndex = index;
                     });
                   },
                   child: Stack(
@@ -206,8 +222,8 @@ setState(() {
                       ),
                       Shimmer.fromColors(
                         period: Duration(seconds: 6),
-                        baseColor:Colors.transparent,
-                        highlightColor:AppColor.white.withOpacity(0.3),
+                        baseColor: Colors.transparent,
+                        highlightColor: AppColor.white.withOpacity(0.3),
                         child: Container(
                           // margin: EdgeInsets.only(top: height*0.02),
                           height: height * 0.12,
@@ -215,8 +231,7 @@ setState(() {
                           decoration: const BoxDecoration(
                             color: Colors
                                 .blue, // Replace with your secondary color
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
                       ),
@@ -227,9 +242,10 @@ setState(() {
             ),
           ),
           InkWell(
-            onTap: (){
-              selectedIndex==0?
-              Navigator.pushNamed(context, RoutesName.bankScreen):Navigator.pushNamed(context, RoutesName.usdtAddress);
+            onTap: () {
+              // selectedIndex == 0
+              //     ? Navigator.pushNamed(context, RoutesName.bankScreen)
+              usdtData == null? Navigator.pushNamed(context, RoutesName.usdtAddress):null;
             },
             child: Container(
               width: double.infinity,
@@ -239,22 +255,43 @@ setState(() {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    Assets.imagesAddAccount,
-                    scale: 3,
-                  ),
+                  usdtData == null
+                      ? Center(
+                          child: Image.asset(
+                            Assets.imagesAddAccount,
+                            scale: 3,
+                          ),
+                        )
+                      : Text(
+                          "Name:${usdtData?.name ?? ""}",
+                          style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: 16,
+                              fontFamily: "SitkaSmall"),
+                        ),
                   // Icon(Icons.add_box_outlined, color: Colors.grey, size: 50),
                   SizedBox(height: 10),
-                  Text(
-                    selectedIndex != 1
-                        ? 'Add a bank account number'
-                        : "Add address",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontFamily: "SitkaSmall"),
-                  ),
+                  usdtData == null
+                      ? Center(
+                          child: Text(
+                            selectedIndex != 1
+                                ? 'Add a bank account number'
+                                : "Add address",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontFamily: "SitkaSmall"),
+                          ),
+                        )
+                      : Text(
+                          "USDT Address:${usdtData?.usdtAddress ?? ""}",
+                          style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: 16,
+                              fontFamily: "SitkaSmall"),
+                        ),
                 ],
               ),
             ),
@@ -300,53 +337,9 @@ setState(() {
                 selectedIndex == 1
                     ? SizedBox(height: height * 0.02)
                     : Container(),
-                selectedIndex == 1?
-                CustomTextField(
-                  controller: _usdtController,
-                  keyboardType: TextInputType.number,
-                  label: "Enter the amount ",
-                  hintColor: AppColor.lightGray,
-                  hintSize: 16,
-                  height: 55,
-                  borderSide: BorderSide(color: Colors.white),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  width: width,
-                  filled: true,
-                  fillColor: AppColor.gray.withOpacity(0.5),
-                  border: Border.all(color: AppColor.gray.withOpacity(0.3)),
-                  borderRadius: BorderRadius.circular(15),
-                  fieldRadius: BorderRadius.circular(15),
-                  prefix: Icon(Icons.currency_rupee, color: AppColor.white),
-                  onChanged:(value){
-                    setState(() {
-                      _updateConvertedAmount(value);
-                    });
-                  } ,
-                ):
-                CustomTextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  label: "Enter the amount",
-                  hintColor: AppColor.lightGray,
-                  hintSize: 16,
-                  height: 55,
-                  borderSide: BorderSide(color: Colors.white),
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  width: width,
-                  filled: true,
-                  fillColor: AppColor.gray.withOpacity(0.5),
-                  border: Border.all(color: AppColor.gray.withOpacity(0.3)),
-                  borderRadius: BorderRadius.circular(15),
-                  fieldRadius: BorderRadius.circular(15),
-                  prefix: Icon(Icons.currency_rupee, color: AppColor.white),
-
-                ),
-                SizedBox(height: height * 0.02),
                 selectedIndex == 1
                     ? CustomTextField(
-                        controller: _convertedController,
+                        controller: _usdtController,
                         keyboardType: TextInputType.number,
                         label: "Enter USDT amount",
                         hintColor: AppColor.lightGray,
@@ -366,8 +359,57 @@ setState(() {
                           Assets.imagesUsdt,
                           scale: 2.3,
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            _updateConvertedAmount(value);
+                          });
+                        },
                       )
                     : Container(),
+                SizedBox(height: height * 0.02),
+                selectedIndex == 1
+                    ? CustomTextField(
+                        readOnly: true,
+                        controller: _convertedController,
+                        keyboardType: TextInputType.number,
+                        label: "INR  amount ",
+                        hintColor: AppColor.lightGray,
+                        hintSize: 16,
+                        height: 55,
+                        borderSide: BorderSide(color: Colors.white),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        width: width,
+                        filled: true,
+                        fillColor: AppColor.gray.withOpacity(0.5),
+                        border:
+                            Border.all(color: AppColor.gray.withOpacity(0.3)),
+                        borderRadius: BorderRadius.circular(15),
+                        fieldRadius: BorderRadius.circular(15),
+                        prefix:
+                            Icon(Icons.currency_rupee, color: AppColor.white),
+                      )
+                    : CustomTextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        label: "Enter the amount",
+                        hintColor: AppColor.lightGray,
+                        hintSize: 16,
+                        height: 55,
+                        borderSide: BorderSide(color: Colors.white),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        width: width,
+                        filled: true,
+                        fillColor: AppColor.gray.withOpacity(0.5),
+                        border:
+                            Border.all(color: AppColor.gray.withOpacity(0.3)),
+                        borderRadius: BorderRadius.circular(15),
+                        fieldRadius: BorderRadius.circular(15),
+                        prefix:
+                            Icon(Icons.currency_rupee, color: AppColor.white),
+                      ),
+
                 selectedIndex == 1
                     ? SizedBox(height: height * 0.02)
                     : Container(),
@@ -375,15 +417,15 @@ setState(() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Withdrawable balance ₹0.00',
+                      'Withdrawable balance 🪙${profile?.wallet ?? "0.0"}',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 12,
                           fontFamily: "SitkaSmall"),
                     ),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 3),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColor.gray),
                         gradient: LinearGradient(
@@ -422,7 +464,7 @@ setState(() {
                                 fontFamily: "SitkaSmall"),
                           ),
                           Text(
-                            '₹0.00',
+                            '🪙0.00',
                             style: TextStyle(
                               color: Colors.amber,
                               fontSize: 18,
@@ -433,11 +475,24 @@ setState(() {
                       ),
                 selectedIndex == 1 ? SizedBox(height: 16) : Container(),
                 SizedBox(height: height * 0.02),
-                constantbutton(width: width, onTap: () {
-                  withdrawApi.withdrawApi(selectedIndex==0?_amountController.text:_usdtController.text, _convertedController.text, selectedIndex, context);
-                }, text: "Withdraw"),
+                withdrawApi.loading==false?  constantbutton(
+                    width: width,
+                    onTap: () {
+                      if (_usdtController.text.isEmpty) {
+                        Utils.setSnackBar("Please enter the usdt amount",
+                            AppColor.red, context);
+                      } else {
+                        withdrawApi.withdrawApi(
+                            selectedIndex == 0
+                                ? _amountController.text
+                                :_convertedController.text,
+                            _usdtController.text,
+                            selectedIndex,usdtData?.id??"",
+                            context);
+                      }
+                    },
+                    text: "Withdraw"):CircularButton(),
                 SizedBox(height: height * 0.03),
-                // Withdrawal Instructions
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(16),
@@ -449,16 +504,16 @@ setState(() {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InstructionItem(
-                        text: 'Need to bet ₹0.00 to be able to withdraw',
+                        text: 'Need to bet 🪙0.00 to be able to withdraw',
                       ),
                       InstructionItem(
                         text: 'Withdraw time 00:00-23:59',
                       ),
                       InstructionItem(
-                        text: 'Inday Remaining Withdrawal Times3',
+                        text: 'In day Remaining Withdrawal Times3',
                       ),
                       InstructionItem(
-                        text: 'Withdrawal amount range ₹110.00-₹50,000.00',
+                        text: 'Withdrawal amount range 🪙110.00-🪙50,000.00',
                       ),
                       InstructionItem(
                         text:
@@ -499,7 +554,7 @@ class InstructionItem extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: Colors.white,
                   height: 1.5,
                   fontFamily: "SitkaSmall"),

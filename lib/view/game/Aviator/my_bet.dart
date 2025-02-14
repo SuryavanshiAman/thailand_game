@@ -158,8 +158,8 @@
 //                               height: 25,
 //                               alignment: Alignment.centerRight,
 //                               width: width * 0.3,
-//                               child: Text(bets[index].cashoutAmount =="null"?'₹ 0.0':
-//                               '₹ ${bets[index].cashoutAmount}',
+//                               child: Text(bets[index].cashoutAmount =="null"?'🪙 0.0':
+//                               '🪙 ${bets[index].cashoutAmount}',
 //                                   style: const TextStyle(
 //                                       color: Colors.white, fontSize: 12))),
 //                         ],

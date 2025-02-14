@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final TextAlign textAlign = TextAlign.start;
   final TextAlignVertical? textAlignVertical;
   final TextDirection? textDirection;
-  final bool readOnly = false;
+  final bool readOnly;
   final int? maxLines;
   final int? minLines;
   final bool expands = false;
@@ -61,6 +61,7 @@ class CustomTextField extends StatelessWidget {
     this.strutStyle,
     this.textAlignVertical,
     this.textDirection,
+    this.readOnly=false,
     this.minLines,
     this.maxLength,
     this.obscureText = false,

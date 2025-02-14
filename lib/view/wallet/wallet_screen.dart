@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/main_wallet_transfer_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +34,29 @@ class _WalletScreenState extends State<WalletScreen> {
           .userProfileApi(context);
     });
   }
-
+  int _seconds = 5;
+  Timer? _timer;
+bool recalling =false;
+  void startTimer() {
+    setState(() {
+      recalling=true;
+    });
+    _timer?.cancel(); // Cancel any existing timer
+    _seconds = 5; // Reset timer
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_seconds > 0) {
+        setState(() {
+          _seconds--;
+        });
+      } else {
+        setState(() {
+          recalling=false;
+        });
+        timer.cancel();
+        Provider.of<MainWalletTransferViewModel>(context,listen: false).mainWalletTransferApi(context);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
@@ -43,7 +67,7 @@ class _WalletScreenState extends State<WalletScreen> {
       appBar: GradientAppBar(
         centerTitle: true,
         title: Text(
-          "Wallet",
+          "Wallet".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
       ),
@@ -87,7 +111,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               color: AppColor.white,
                             ),
                             Text(
-                              "₹${profile?.totalBalance ?? "0.0"}",
+                              "🪙${profile?.totalBalance ?? "0.0"}",
                               style: TextStyle(
                                   color: AppColor.white,
                                   fontFamily: "SitkaSmall",
@@ -149,13 +173,14 @@ class _WalletScreenState extends State<WalletScreen> {
                     constantbutton(
                       // height: height * 0.07,
                       width: width,
-                      text: 'Main wallet transfer',
+                      text:recalling==false? 'Main wallet transfer':"Recalling $_seconds",
                       style: TextStyle(
                           fontSize: 17,
                           fontFamily: "SitkaSmall",
                           color: AppColor.white),
                       onTap: () {
-                        walletTransfer.mainWalletTransferApi(context);
+                        startTimer();
+
                         // mainWalletTransfer(context);
                       },
                     ),

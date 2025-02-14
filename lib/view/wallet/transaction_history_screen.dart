@@ -213,7 +213,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Detail",data.description.toString(), AppColors.whiteColor),
+          buildRow("Detail",data.description?.toString()??"", AppColors.whiteColor),
           buildRow("Time", data.createdAt!, AppColors.whiteColor),
           buildRow("balance",data.amount.toString(),  Colors.green),
 

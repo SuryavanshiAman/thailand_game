@@ -11,16 +11,16 @@ import 'package:iconly/iconly.dart';
 
 class WithdrawHistoryViewModel with ChangeNotifier {
   final List<Map<String, dynamic>> paymentOptions = [
-    {
-      'title': 'All',
-      'image': Assets.imagesAll,
-      'bgColor': Colors.black,
-    },
-    {
-      'title': 'Bank Card',
-      'image': Assets.imagesBankCard,
-      'bgColor': Colors.black,
-    },
+    // {
+    //   'title': 'All',
+    //   'image': Assets.imagesAll,
+    //   'bgColor': Colors.black,
+    // },
+    // {
+    //   'title': 'Bank Card',
+    //   'image': Assets.imagesBankCard,
+    //   'bgColor': Colors.black,
+    // },
     {
       'title': 'USDT',
       'image': Assets.imagesUsdt,
@@ -28,38 +28,38 @@ class WithdrawHistoryViewModel with ChangeNotifier {
       'badge': '+2%',
     },
   ];
-  final List<Map<String, String>> transactionsHistory = [
-    {
-      "balance": "₹200.00",
-      "type": "INR",
-      "time": "28-Jan-2025, 12:21 PM",
-      "orderNumber": "202501281221572681"
-    },
-    {
-      "balance": "₹200.00",
-      "type": "INR",
-      "time": "28-Jan-2025, 12:21 PM",
-      "orderNumber": "2025012812215774378"
-    },
-    {
-      "balance": "₹200.00",
-      "type": "INR",
-      "time": "28-Jan-2025, 12:21 PM",
-      "orderNumber": "2025012812215774378"
-    },
-    {
-      "balance": "₹200.00",
-      "type": "INR",
-      "time": "28-Jan-2025, 12:21 PM",
-      "orderNumber": "2025012812215774378"
-    },
-    {
-      "balance": "₹200.00",
-      "type": "INR",
-      "time": "28-Jan-2025, 12:21 PM",
-      "orderNumber": "2025012812215774378"
-    }
-  ];
+  // final List<Map<String, String>> transactionsHistory = [
+  //   {
+  //     "balance": "🪙200.00",
+  //     "type": "INR",
+  //     "time": "28-Jan-2025, 12:21 PM",
+  //     "orderNumber": "202501281221572681"
+  //   },
+  //   {
+  //     "balance": "🪙200.00",
+  //     "type": "INR",
+  //     "time": "28-Jan-2025, 12:21 PM",
+  //     "orderNumber": "2025012812215774378"
+  //   },
+  //   {
+  //     "balance": "🪙200.00",
+  //     "type": "INR",
+  //     "time": "28-Jan-2025, 12:21 PM",
+  //     "orderNumber": "2025012812215774378"
+  //   },
+  //   {
+  //     "balance": "🪙200.00",
+  //     "type": "INR",
+  //     "time": "28-Jan-2025, 12:21 PM",
+  //     "orderNumber": "2025012812215774378"
+  //   },
+  //   {
+  //     "balance": "🪙200.00",
+  //     "type": "INR",
+  //     "time": "28-Jan-2025, 12:21 PM",
+  //     "orderNumber": "2025012812215774378"
+  //   }
+  // ];
   final _withdrawHistoryRepo = WithdrawHistoryRepo();
 
 

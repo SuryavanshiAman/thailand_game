@@ -3,10 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
+import 'package:game/res/api_url.dart';
 import 'package:game/res/app_colors.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/view/game/Aviator/model/betting_history_model.dart';
-import 'package:game/view/game/Aviator/res/api_url.dart';
+// import 'package:game/view/game/Aviator/res/api_url.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/user_view_model.dart';
 import 'package:http/http.dart' as http;
@@ -175,8 +176,8 @@ class _AndarBaharHistoryState extends State<AndarBaharHistory> {
                                   itemsDataHistory[index].status == 0
                                       ? '--'
                                       : itemsDataHistory[index].status == 2
-                                          ? '- ₹${itemsDataHistory[index].amount.toStringAsFixed(2)}'
-                                          : '+ ₹${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
+                                          ? '- 🪙${itemsDataHistory[index].amount.toStringAsFixed(2)}'
+                                          : '+ 🪙${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -317,7 +318,7 @@ class _AndarBaharHistoryState extends State<AndarBaharHistory> {
                                         'Win/Loss',
                                         itemsDataHistory[index].status == 0
                                             ? '--'
-                                            : '₹${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
+                                            : '🪙${itemsDataHistory[index].winAmount.toStringAsFixed(2)}',
                                         itemsDataHistory[index].status == 0
                                             ? Colors.white
                                             : itemsDataHistory[index].status ==

@@ -23,6 +23,10 @@ class RoutesName{
   static const String changeAvtar = '/changeAvtar';
   static const String commonAboutPage = '/commonAboutPage';
   static const String chooseBankScreen = '/chooseBankScreen';
+  static const String customerCareService = '/customerCareService';
+  static const String usdtDepositScreen = '/usdtDepositScreen';
+  static const String referEarn = '/referEarn';
+  static const String languageScreen = '/languageScreen';
 
 
 }

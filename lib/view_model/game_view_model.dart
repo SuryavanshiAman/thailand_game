@@ -5,20 +5,17 @@ class GameViewModel with ChangeNotifier{
   List<Map<String, String>>gameCategories=[
     {
       "images":Assets.categoryLottery,
-      "title":"Lottery",
-    },
-    {
-      "images":Assets.categoryMiniGame,
-      "title":"Mini games",
+      "title":"Wingo",
     },
     {
       "images":Assets.categoryPopular,
-      "title":"Popular",
+      "title":"AndarBahar",
     },
     {
-      "images":Assets.categoryFishing,
-      "title":"Fishing",
+      "images":Assets.categoryMiniGame,
+      "title":"Aviator",
     },
+
 
   ];
 }

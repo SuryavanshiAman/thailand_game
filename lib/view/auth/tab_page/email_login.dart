@@ -146,7 +146,7 @@ class _EmailLoginState extends State<EmailLogin> {
           width: width,
           onTap: () {
             if (_emailController.text.isEmpty) {
-              Utils.setSnackBar("Please enter Phone no.",AppColor.red, context);
+              Utils.setSnackBar("Please enter Email",AppColor.red, context);
             } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(_emailController.text)) {
               Utils.setSnackBar("You can only enter mail here",AppColor.red, context);
             }

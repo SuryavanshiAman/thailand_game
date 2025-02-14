@@ -6,6 +6,8 @@ import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
+import 'package:game/view_model/usdt_bank_address_view_model.dart';
+import 'package:provider/provider.dart';
 
 
 class UsdtAddress extends StatefulWidget {
@@ -16,10 +18,12 @@ class UsdtAddress extends StatefulWidget {
 }
 
 class _UsdtAddressState extends State<UsdtAddress> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _aliasController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final usdt=Provider.of<UsdtBankViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: GradientAppBar(
@@ -93,8 +97,8 @@ class _UsdtAddressState extends State<UsdtAddress> {
           rowWidget(Assets.imagesPeople,'Full recipient\'s name'),
           SizedBox(height: height*0.02),
           CustomTextField(
-            controller: _addressController,
-            label: "Enter the USDT address",
+            controller: _nameController,
+            label: "Enter your name",
             hintColor: AppColor.lightGray,
             hintSize: 16,
             height: 55,
@@ -107,15 +111,14 @@ class _UsdtAddressState extends State<UsdtAddress> {
             border: Border.all(color: AppColor.gray.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(15),
             fieldRadius: BorderRadius.circular(15),
-            prefix: Icon(Icons.currency_rupee, color: AppColor.white),
           ),
           SizedBox(height: height*0.03),
           // Recipient's name section
-          rowWidget(Assets.imagesBankCard,'Bank account number'),
+          rowWidget(Assets.imagesBankCard,'USDT Address'),
           SizedBox(height: height*0.02),
           CustomTextField(
-            controller: _aliasController,
-            label: "Enter the remark ot the withdrawal address",
+            controller: _addressController,
+            label: "Enter the usdt address",
             hintColor: AppColor.lightGray,
             hintSize: 16,
             height: 55,
@@ -128,11 +131,12 @@ class _UsdtAddressState extends State<UsdtAddress> {
             border: Border.all(color: AppColor.gray.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(15),
             fieldRadius: BorderRadius.circular(15),
-            prefix: Icon(Icons.currency_rupee, color: AppColor.white),
           ),
 
           SizedBox(height: height*0.03),
-          constantbutton(onTap: () {  }, text: 'Save',),
+          constantbutton(onTap: () {
+            usdt.usdtBankApi(_nameController.text, _addressController.text, context);
+          }, text: 'Save',),
         ],
       ),
     );

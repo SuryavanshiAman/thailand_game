@@ -33,19 +33,31 @@ class WinGoResultViewModel with ChangeNotifier {
 
   Future<void> wingoResultApi(context, int status, dynamic index) async {
     setLoading(true);
+    print("🪙🪙🪙");
     final wga = Provider.of<WinGoPopUpViewModel>(context, listen: false);
     _winGoResultRepo
         .gameResultApi(context, (index + 1).toString())
         .then((value) {
       if (value.status == 200) {
+        print(
+            "😓😓"
+        );
+        print(
+          "QQQQ:${ value.data}"
+        );
         setPeriodNo(value.data!.first.gamesNo! + 1);
+        // setPeriodNo(value.data!.last.gamesNo! + 1);
         setLoading(false);
         setWingoResultData(value);
         if (status == 1) {
           wga.winAmountApi(
               context, (index + 1).toString(), value.data!.first.gamesNo);
+              // context, (index + 1).toString(), value.data!.last.gamesNo);
         }
       } else {
+        print(
+            "✌️✌️✌️"
+        );
         setLoading(false);
         Utils.setSnackBar(
             value.message.toString(),AppColor.red, context);

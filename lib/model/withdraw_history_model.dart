@@ -30,6 +30,7 @@ class Data {
   dynamic status;
   dynamic usdtAmount;
   dynamic createdAt;
+  dynamic reason;
   dynamic orderId;
 
   Data(
@@ -39,6 +40,7 @@ class Data {
         this.status,
         this.usdtAmount,
         this.createdAt,
+        this.reason,
         this.orderId});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class Data {
     status = json['status'];
     usdtAmount = json['usdt_amount'];
     createdAt = json['created_at'];
+    reason = json['reason'];
     orderId = json['order_id'];
   }
 
@@ -57,6 +60,7 @@ class Data {
     data['status'] = status;
     data['usdt_amount'] = usdtAmount;
     data['created_at'] = createdAt;
+    data['reason'] = reason;
     data['order_id'] = orderId;
     return data;
   }

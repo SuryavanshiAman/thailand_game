@@ -252,13 +252,17 @@
 class ProfileModel {
   int? status;
   String? message;
+  String? aviatorLink;
+  String? aviatorEventName;
   Data? data;
 
-  ProfileModel({this.status, this.message, this.data});
+  ProfileModel({this.status, this.message, this.data, this.aviatorLink,this.aviatorEventName});
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    aviatorLink = json['aviator_link'];
+    aviatorEventName = json['aviator_event_name'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -266,6 +270,8 @@ class ProfileModel {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = status;
     data['message'] = message;
+    data['aviator_link'] = aviatorLink;
+    data['aviator_event_name'] = aviatorEventName;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }

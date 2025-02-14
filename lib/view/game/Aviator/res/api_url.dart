@@ -29,10 +29,10 @@ class ApiUrl {
   static const String vipRewardReceive = "${baseUrl}add_money";
   static const String vipRewardHis = "${baseUrl}vip_level_history?userid=";
 
-  static const String dragonBet = "${baseUrl}dragon_bet";
-  static const String gameHistory = '${baseUrl}bet_history';
-  static const String resultList = "${baseUrl}results?game_id=";
-  static const String game_win = "${baseUrl}win_amount?userid=";
+  // static const String dragonBet = "${baseUrl}dragon_bet";
+  // static const String gameHistory = '${baseUrl}bet_history';
+  // static const String resultList = "${baseUrl}results?game_id=";
+  // static const String game_win = "${baseUrl}win_amount?userid=";
 
   static const String plinkoBet = "${baseUrl}plinko_bet";
   static const String plinkoList = "${baseUrl}plinko_index_list?type=";
@@ -54,9 +54,9 @@ class AviatorApiUrl{
   // base url
   static const String baseUrl = ApiUrl.baseUrl;
   //aviator url
-  static const String aviatorHistory = '${baseUrl}aviator_history';
-  static const String aviatorBet = "${baseUrl}aviator_bet?game_id=5&uid=";
-  static const String aviatorBetCancel = "${baseUrl}aviator_bet_cancel?userid=";
-  static const String aviatorBetCashOut = "${baseUrl}aviator_cashout?salt=";
-  static const String aviatorResult = "${baseUrl}aviator_last_five_result";
+  // static const String aviatorHistory = '${baseUrl}aviator_history';
+  // static const String aviatorBet = "${baseUrl}aviator_bet?game_id=5&uid=";
+  // static const String aviatorBetCancel = "${baseUrl}aviator_bet_cancel?userid=";
+  // static const String aviatorBetCashOut = "${baseUrl}aviator_cashout?salt=";
+  // static const String aviatorResult = "${baseUrl}aviator_last_five_result";
 }

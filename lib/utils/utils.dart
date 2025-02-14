@@ -2,8 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
+import 'package:game/res/constantButton.dart';
+import 'package:game/view_model/user_view_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'routes/routes_name.dart';
 
 class Utils {
@@ -38,262 +42,190 @@ class Utils {
     );
   }
 
+  static showExitConfirmation(BuildContext context) async {
+    return await showModalBottomSheet(
+      elevation: 5,
+      backgroundColor: AppColor.darkGray,
+      shape: const RoundedRectangleBorder(
+          // side: BorderSide(width: 2, color: Colors.white),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+      context: context,
+      builder: (context) {
+        return Container(
+          height: height * 0.4,
+          padding: EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 28.0, top: 28),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      color: AppColor.white,
+                    )),
+              ),
+              SizedBox(height: height / 30),
+              const Center(
+                child: Text("Exit App",
+                    style: TextStyle(
+                        color: AppColor.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: height * 0.02),
+              const Center(
+                child: Text("Are you sure want to exit app?",
+                    style: TextStyle(
+                        color: AppColor.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600)),
+              ),
+              SizedBox(height: height * 0.04),
+              Center(
+                child: SizedBox(
+                  width: width * 4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Center(child: constantbutton(
+                          // width: width*0.8,
+                          onTap: (){  SystemNavigator.pop();}, text: "Yes")),
+                      SizedBox(height: height * 0.03),
+                      Center(child: constantbutton(
+                          // width: width*0.8,
+                          onTap: (){Navigator.pop(context);}, text: "No")),
 
-  // static showExitConfirmation(BuildContext context) async {
-  //   return await showModalBottomSheet(
-  //     elevation: 5,
-  //     shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //             topLeft: Radius.circular(35), topRight: Radius.circular(35))),
-  //     context: context,
-  //     builder: (context) {
-  //       return Container(
-  //         height: height * 0.4,
-  //         decoration: const BoxDecoration(
-  //             borderRadius: BorderRadius.only(
-  //                 topLeft: Radius.circular(35),
-  //                 topRight: Radius.circular(35))),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.end,
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.only(right: 28.0, top: 28),
-  //               child: InkWell(
-  //                   onTap: () {
-  //                     Navigator.pop(context);
-  //                   },
-  //                   child: Icon(
-  //                     Icons.close,
-  //                     color: AppColor.black,
-  //                   )),
-  //             ),
-  //             SizedBox(height: height * 0.02),
-  //             Center(
-  //               child: Text("Exit App",
-  //                   style: TextStyle(
-  //                       color: AppColor.black,
-  //                       fontSize: 20,
-  //                       fontFamily: "NewYork",
-  //                       fontWeight: FontWeight.bold)),
-  //             ),
-  //             SizedBox(height: height * 0.02),
-  //             Center(
-  //               child: Text("Are you sure want to exit app?",
-  //                   style: TextStyle(
-  //                       color: AppColor.black,
-  //                       fontSize: 16,
-  //                       fontFamily: "nunito",
-  //                       fontWeight: FontWeight.w700)),
-  //             ),
-  //             SizedBox(height: height * 0.02),
-  //             Center(
-  //               child: SizedBox(
-  //                 width: width * 4,
-  //                 child: Column(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                   children: [
-  //                     CustomContainer(
-  //                       margin: const EdgeInsets.all(18),
-  //                       alignment: Alignment.center,
-  //                       height: height * 0.05,
-  //                       gradient: const LinearGradient(
-  //                           colors: [
-  //                             AppColor.primaryColor,
-  //                             AppColor.secondaryColor
-  //                           ],
-  //                           begin: Alignment.topLeft,
-  //                           end: Alignment.bottomRight),
-  //                       borderRadius: const BorderRadius.only(
-  //                         topLeft: Radius.circular(5),
-  //                         topRight: Radius.circular(25),
-  //                         bottomRight: Radius.circular(25),
-  //                         bottomLeft: Radius.circular(25),
-  //                       ),
-  //                       child: const Text(
-  //                         "Yes",
-  //                         style: TextStyle(
-  //                             color: AppColor.white,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 16),
-  //                       ),
-  //                       onTap: () {
-  //                         SystemNavigator.pop();
-  //                       },
-  //                     ),
-  //                     CustomContainer(
-  //                       margin: const EdgeInsets.all(18),
-  //                       alignment: Alignment.center,
-  //                       height: height * 0.05,
-  //                       gradient: const LinearGradient(
-  //                           colors: [
-  //                             AppColor.primaryColor,
-  //                             AppColor.secondaryColor
-  //                           ],
-  //                           begin: Alignment.topLeft,
-  //                           end: Alignment.bottomRight),
-  //                       borderRadius: const BorderRadius.only(
-  //                         topLeft: Radius.circular(5),
-  //                         topRight: Radius.circular(25),
-  //                         bottomRight: Radius.circular(25),
-  //                         bottomLeft: Radius.circular(25),
-  //                       ),
-  //                       child: const Text(
-  //                         "No",
-  //                         style: TextStyle(
-  //                             color: AppColor.white,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 16),
-  //                       ),
-  //                       onTap: () {
-  //                         Navigator.pop(context, false);
-  //                       },
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   ) ??
-  //       false;
-  // }
-  //
-  // static Future<bool?> showLogOutConfirmation(BuildContext context) async {
-  //   return await showModalBottomSheet(
-  //     elevation: 5,
-  //     // backgroundColor: AppColor.black,
-  //     shape: const RoundedRectangleBorder(
-  //       side: BorderSide(width: 2, color: Colors.white),
-  //       borderRadius: BorderRadius.only(
-  //         topLeft: Radius.circular(35),
-  //         topRight: Radius.circular(35),
-  //       ),
-  //     ),
-  //     context: context,
-  //     builder: (context) {
-  //       return Container(
-  //         decoration: const BoxDecoration(
-  //           borderRadius: BorderRadius.only(
-  //             topLeft: Radius.circular(35),
-  //             topRight: Radius.circular(35),
-  //           ),
-  //         ),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min, // Adjust height dynamically
-  //           crossAxisAlignment: CrossAxisAlignment.end,
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.only(right: 28.0, top: 28),
-  //               child: InkWell(
-  //                 onTap: () {
-  //                   Navigator.pop(context);
-  //                 },
-  //                 child: Icon(
-  //                   Icons.close,
-  //                   color: AppColor.black,
-  //                 ),
-  //               ),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             Center(
-  //               child: CircleAvatar(
-  //                 radius: 40,
-  //                 backgroundColor: AppColor.secondaryColor,
-  //                 child: Image.asset(
-  //                   Assets.iconLogout,
-  //                   color: AppColor.white,
-  //                   scale: 2,
-  //                 ),
-  //               ),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             Center(
-  //               child: Text(
-  //                 "Logging out?",
-  //                 style: TextStyle(
-  //                   color: AppColor.black,
-  //                   fontSize: 22,
-  //                   fontFamily: "NewYork",
-  //                   fontWeight: FontWeight.w600,
-  //                 ),
-  //               ),
-  //             ),
-  //             const SizedBox(height: 8),
-  //             Center(
-  //               child: Text(
-  //                 "Are you sure you want to log out of this\naccount?",
-  //                 textAlign: TextAlign.center,
-  //                 style: TextStyle(
-  //                   color: AppColor.black,
-  //                   fontSize: 16,
-  //                   fontFamily: "nunito",
-  //                   fontWeight: FontWeight.w700,
-  //                 ),
-  //               ),
-  //             ),
-  //             // const SizedBox(height: 24),
-  //             CustomContainer(
-  //               margin: const EdgeInsets.all(18),
-  //               alignment: Alignment.center,
-  //               height: height * 0.05,
-  //               gradient: const LinearGradient(
-  //                   colors: [AppColor.primaryColor, AppColor.secondaryColor],
-  //                   begin: Alignment.topLeft,
-  //                   end: Alignment.bottomRight),
-  //               borderRadius: const BorderRadius.only(
-  //                 topLeft: Radius.circular(5),
-  //                 topRight: Radius.circular(25),
-  //                 bottomRight: Radius.circular(25),
-  //                 bottomLeft: Radius.circular(25),
-  //               ),
-  //               child: const Text(
-  //                 "Yes, Logout",
-  //                 style: TextStyle(
-  //                     color: AppColor.white,
-  //                     fontFamily: "nunito",
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 16),
-  //               ),
-  //               onTap: () {
-  //                 Navigator.of(context, rootNavigator: true).pop();
-  //                 Navigator.pushReplacementNamed(
-  //                     context, RoutesName.loginScreen);
-  //               },
-  //             ),
-  //             CustomContainer(
-  //               margin: const EdgeInsets.all(18),
-  //               alignment: Alignment.center,
-  //               height: height * 0.05,
-  //               gradient: const LinearGradient(
-  //                   colors: [AppColor.primaryColor, AppColor.secondaryColor],
-  //                   begin: Alignment.topLeft,
-  //                   end: Alignment.bottomRight),
-  //               borderRadius: const BorderRadius.only(
-  //                 topLeft: Radius.circular(5),
-  //                 topRight: Radius.circular(25),
-  //                 bottomRight: Radius.circular(25),
-  //                 bottomLeft: Radius.circular(25),
-  //               ),
-  //               child: const Text(
-  //                 "Cancel",
-  //                 style: TextStyle(
-  //                     color: AppColor.white,
-  //                     fontFamily: "nunito",
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 16),
-  //               ),
-  //               onTap: () {
-  //                 Navigator.pop(context, false);
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    ) ??
+        false;
+  }
+  static Future<bool?> showLogOutConfirmation(BuildContext context) async {
+    return await showModalBottomSheet(
+      elevation: 5,
+      backgroundColor: AppColor.darkGray,
+      shape: const RoundedRectangleBorder(
+        // side: BorderSide(width: 2, color: Colors.white),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35),
+              topRight: Radius.circular(35),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Adjust height dynamically
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 28.0, top: 28),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    color: AppColor.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundColor: AppColor.gray,
+                  child: Image.asset(
+                    Assets.imagesLogOut,
+                    color: AppColor.white,
+                    scale: 2,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Center(
+                child: Text(
+                  "Logging out?",
+                  style: TextStyle(
+                    color: AppColor.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Center(
+                child: Text(
+                  "Are you sure you want to log out of this\naccount?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColor.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: constantbutton(
+                    // width: width*0.8,
+                    onTap:( ){
+                      UserViewModel userViewModel = UserViewModel();
+                      userViewModel.remove();
+                      Navigator.of(context, rootNavigator: true).pop();
+                      Navigator.pushReplacementNamed(
+                          context, RoutesName.loginScreen);
+                    }, text: "Yes, Logout"),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: constantbutton(
+                    // width: width*0.8,
+                    onTap:( ){
+                      Navigator.pop(context, false);
+                    }, text: "Cancel"),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  static Future<void> launchURL(String url) async {
+    try {
+      Uri uri = Uri.parse(url);
+      debugPrint("Trying to launch: $uri");
 
-
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        debugPrint("Could not launch: $uri");
+      }
+    } catch (e) {
+      debugPrint("Error launching URL: $e");
+    }
+  }
 }

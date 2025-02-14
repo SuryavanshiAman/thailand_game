@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final splashServices =
       Provider.of<SplashServices>(context, listen: false);
       splashServices.checkAuthentication(context);
+      // language.updateLanguage(const Locale('hi', 'IN')  );
     });
 
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
+import 'package:get/get.dart';
 
 import 'tab_page/email_login.dart';
 import 'tab_page/phone_number_login.dart';
@@ -34,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Welcome Back!",
+                      "Welcome Back!".tr,
                       style: TextStyle(
                           color: AppColor.white,
                           fontWeight: FontWeight.w500,
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: height*0.02,),
                   Text(
-                    "Please sign in to your account",
+                    "Please sign in to your account".tr,
                     style: TextStyle(
                         color: AppColor.lightGray,
                         fontWeight: FontWeight.w500,
