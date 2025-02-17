@@ -13,6 +13,7 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -126,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       children: [
                         Text(
                           profile?.name??""
-                          "Nanacy Momoland",
+                          "",
                           style: TextStyle(
                               color: AppColor.white,
                               fontSize: 18,
@@ -154,26 +155,31 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                   color: AppColor.white,
                                 ),
                                 Text(
-                                 profile?.uId?? "420",
+                                 profile?.uId?? "",
                                   style: TextStyle(
                                       color: AppColor.white,
                                       fontSize: 16,
                                       fontFamily: "SitkaSmall"),
                                 ),
-                                Icon(
-                                  Icons.copy,
-                                  color: AppColor.white,
-                                  size: 18,
+                                InkWell(
+                                  onTap: (){
+                                    Utils.copyToClipboard(profile?.uId??"", context);
+                                  },
+                                  child: Icon(
+                                    Icons.copy,
+                                    color: AppColor.white,
+                                    size: 18,
+                                  ),
                                 ),
                               ],
                             )),
-                        Text(
-                          "Last login: Jan 10 11:19",
-                          style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 16,
-                              fontFamily: "SitkaSmall"),
-                        ),
+                        // Text(
+                        //   "Last login: Jan 10 11:19",
+                        //   style: TextStyle(
+                        //       color: AppColor.white,
+                        //       fontSize: 16,
+                        //       fontFamily: "SitkaSmall"),
+                        // ),
                       ],
                     )
                   ],
@@ -190,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Total balance",
+                      "Total balance".tr,
                       style: TextStyle(
                           color: AppColor.white,
                           fontSize: 18,
@@ -211,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         InkWell(
                             onTap: (){
                               elementList.userProfileApi(context).then((_){
-                                Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                                Utils.setSnackBar("Wallet update successfully".tr, AppColor.green, context);
                               });
                             },
                             child: Image.asset(Assets.imagesTotalBal))
@@ -245,14 +251,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       children: [
                         groups(
                           Assets.imagesDeposit,
-                          'Deposit',
+                          'Deposit'.tr,
                           () {
                             Navigator.pushNamed(context, RoutesName.depositScreen);
                           },
                         ),
                         groups(
                           Assets.imagesWithdraw,
-                          'Withdrawal',
+                          'Withdrawal'.tr,
                           () {
                             Navigator.pushNamed(context, RoutesName.withdrawScreen);
 
@@ -313,7 +319,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                       MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          data.name,
+                                          data.name.tr,
                                           style: TextStyle(
                                               color: AppColor.white,
                                               fontSize: 14,
@@ -321,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                               fontWeight: FontWeight.w600),
                                         ),
                                         Text(
-                                          data.subTitle,
+                                          data.subTitle.tr,
                                           style: TextStyle(
                                               color: AppColor.white,
                                               fontSize: 12,
@@ -391,7 +397,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             scale: index == 1 ? 3 : 2,
                           ), // Use 'images' key to get the image asset
                           title: Text(
-                            elementListTwo['title'].toString(),
+                            elementListTwo['title'].toString().tr,
                             style: TextStyle(color: AppColor.white),
                           ), // Use 'title' key to get the title text
                           trailing: Icon(
@@ -464,7 +470,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           alignment: Alignment.center,
                           width: width * 0.35,
                           child: Text(
-                            data['title'].toString(),
+                            data['title'].toString().tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
 
@@ -489,7 +495,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 // userViewModel.remove();
                 // Navigator.pushReplacementNamed(context, RoutesName.loginScreen);
               },
-              text: "Logout"),
+              text: "Logout".tr),
           SizedBox(
             height: height * 0.02,
           ),

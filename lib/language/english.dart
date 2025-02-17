@@ -116,7 +116,26 @@ class LocaleStringEn extends Translations {
       'Setting center':"Setting center",
       'Change Avatar ':"Change Avatar ",
       'Security Information':"Security Information",
-
+      'Withdraw':"Withdraw",
+      'Withdrawal history':"Withdrawal history",
+      'Game History':"Game History",
+      'My game history':"My game history",
+      'Transaction':"Transaction",
+      'My transaction history':"My transaction history",
+      'My deposit history':"My deposit history",
+      'My withdraw history':"My withdraw history",
+      'Notification':"Notification",
+      'Language':"Language",
+      'Refer':"Refer",
+      'Settings':"Settings",
+      'Feedback':"Feedback",
+      'Customer Service':"Customer Service",
+      'About us':"About us",
+      'Refer & Earn':"Refer & Earn",
+      'SHARE AND EARN MORE!':"SHARE AND EARN MORE!",
+      'Share the code':"Share the code",
+      'Confirm new password':"Confirm new password",
+      "Invite your friend to use our app and you'll get 5% of the first deposit first time .This will be added to your bonus balance so,you use it to purchase any product.":"Invite your friend to use our app and you'll get 5% of the first deposit first time .This will be added to your bonus balance so,you use it to purchase any product.",
     }
   };
 }

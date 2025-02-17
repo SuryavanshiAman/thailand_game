@@ -25,9 +25,9 @@ class TransactionHistoryModel {
 }
 
 class Transaction {
-  int? amount;
-  String? description;
-  String? createdAt;
+  dynamic amount;
+  dynamic description;
+  dynamic createdAt;
 
   Transaction({this.amount, this.description, this.createdAt});
 

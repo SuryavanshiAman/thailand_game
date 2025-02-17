@@ -12,6 +12,7 @@ import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/payment_limit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +78,7 @@ class _DepositScreenState extends State<DepositScreen> {
         centerTitle: true,
         leading: AppBackBtn(),
         title: Text(
-          "Deposit",
+          "Deposit".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
         actions: [
@@ -86,7 +87,7 @@ class _DepositScreenState extends State<DepositScreen> {
               Navigator.pushNamed(context, RoutesName.depositHistoryScreen);
             },
             child: Text(
-              "Deposit history",
+              "Deposit history".tr,
               style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
             ),
           ),
@@ -119,7 +120,7 @@ class _DepositScreenState extends State<DepositScreen> {
                       width: width * 0.05,
                     ),
                     Text(
-                      "Balance",
+                      "Balance".tr,
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 21,
@@ -150,7 +151,7 @@ class _DepositScreenState extends State<DepositScreen> {
                       onTap: (){
                         Provider.of<ProfileViewModel>(context,listen: false)
                             .userProfileApi(context).then((_){
-                          Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                          Utils.setSnackBar("Wallet update successfully".tr, AppColor.green, context);
                         });
                       },
                       child: Image.asset(
@@ -293,7 +294,7 @@ class _DepositScreenState extends State<DepositScreen> {
                     SizedBox(
                       width: width * 0.03,
                     ),
-                    Text("Deposit amount",
+                    Text("Deposit amount".tr,
                         style: TextStyle(
                             fontFamily: "SitkaSmall",
                             fontSize: 18,
@@ -452,7 +453,7 @@ class _DepositScreenState extends State<DepositScreen> {
 readOnly: true,
                   controller: _convertedController,
                   keyboardType: TextInputType.number,
-                  label: "INR amount ",
+                  label: "INR amount ".tr,
                   hintColor: AppColor.lightGray,
                   hintSize: 16,
                   height: 55,
@@ -471,7 +472,7 @@ readOnly: true,
                 CustomTextField(
                   controller: amountCont,
                   keyboardType: TextInputType.number,
-                  label: "Enter the amount",
+                  label: "Enter the amount".tr,
                   hintColor: AppColor.lightGray,
                   hintSize: 16,
                   height: 55,
@@ -495,7 +496,7 @@ readOnly: true,
                 constantbutton(
                     width: width * 0.8, onTap: () {
                       if (_usdtController.text.isEmpty){
-                        Utils.setSnackBar("Please enter the usdt amount", AppColor.red, context);
+                        Utils.setSnackBar("Please enter the usdt amount".tr, AppColor.red, context);
                       }else{
                         selectedIndex==3?Navigator.pushNamed(context, RoutesName.usdtDepositScreen,arguments: {
                           "amount":_convertedController.text,
@@ -503,7 +504,7 @@ readOnly: true,
                         }):null;
                       }
 
-                }, text: "Deposit"),
+                }, text: "Deposit".tr),
               ],
             ),
           ),
@@ -524,7 +525,7 @@ readOnly: true,
                     Icon(IconlyBroken.info_circle, color: AppColor.white),
                     SizedBox(width: 8),
                     Text(
-                      'Recharge instructions',
+                      'Recharge instructions'.tr,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -536,19 +537,19 @@ readOnly: true,
                 SizedBox(height: 16),
                 InstructionItem(
                   text:
-                      'If the transfer time is up, please fill out the deposit form again.',
+                      'If the transfer time is up, please fill out the deposit form again.'.tr,
                 ),
                 InstructionItem(
                   text:
-                      'The transfer amount must match the order you created, otherwise the money cannot be credited successfully.',
+                      'The transfer amount must match the order you created, otherwise the money cannot be credited successfully.'.tr,
                 ),
                 InstructionItem(
                   text:
-                      'If you transfer the wrong amount, our company will not be responsible for the lost amount!',
+                      'If you transfer the wrong amount, our company will not be responsible for the lost amount!'.tr,
                 ),
                 InstructionItem(
                   text:
-                      'Note: do not cancel the deposit order after the money has been transferred.',
+                      'Note: do not cancel the deposit order after the money has been transferred.'.tr,
                 ),
               ],
             ),

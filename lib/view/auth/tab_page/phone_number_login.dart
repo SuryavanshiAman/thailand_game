@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
@@ -10,6 +11,7 @@ import 'package:game/res/custom_text_field.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/auth_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class PhoneNumberLogin extends StatefulWidget {
@@ -48,7 +50,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               width: width * 0.03,
             ),
             Text(
-              "Phone number",
+              "Phone number".tr,
               style: TextStyle(
                   color: AppColor.white,
                   fontSize: 16,
@@ -108,7 +110,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
             CustomTextField(
               controller: _phoneController,
               keyboardType: TextInputType.number,
-              label: "Enter your phone number",
+              label: "Enter your phone number".tr,
               hintColor: AppColor.lightGray,
               hintSize: 16,
               height: 55,
@@ -122,6 +124,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               border: Border.all(color: AppColor.gray.withOpacity(0.3)),
               borderRadius: BorderRadius.circular(15),
               fieldRadius: BorderRadius.circular(15),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
           ],
         ),
@@ -140,7 +143,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               width: width * 0.03,
             ),
             Text(
-              "Password",
+              "Password".tr,
               style: TextStyle(
                   color: AppColor.white,
                   fontSize: 16,
@@ -154,7 +157,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
         ),
         CustomTextField(
           controller: _passController,
-          label: "Password",
+          label: "Password".tr,
           hintColor: AppColor.lightGray,
           hintSize: 16,
           maxLines: 1,
@@ -217,7 +220,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               width: width * 0.03,
             ),
             Text(
-              "Remember password",
+              "Remember password".tr,
               style: TextStyle(
                   color: AppColor.white,
                   fontSize: 14,
@@ -233,14 +236,14 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
         constantbutton(
           onTap: () {
             if (_phoneController.text.isEmpty) {
-              Utils.setSnackBar("Please enter Phone no.",AppColor.red, context);
+              Utils.setSnackBar("Please enter Phone no.".tr,AppColor.red, context);
             } else if (_phoneController.text.length != 10) {
-              Utils.setSnackBar("Please enter proper Phone no.",AppColor.red, context);
+              Utils.setSnackBar("Please enter proper Phone no.".tr,AppColor.red, context);
             } else if (_passController.text.isEmpty) {
-              Utils.setSnackBar("Please enter your password",AppColor.red, context);
+              Utils.setSnackBar("Please enter your password".tr,AppColor.red, context);
             } else if (_passController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.",AppColor.red, context);
+                  "The password must be at least 6 digits long.".tr,AppColor.red, context);
             } else {
               Map data = {
                 "email": _phoneController.text,
@@ -249,7 +252,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
               login.authApi(data, context);
             }
           },
-          text: 'Login',
+          text: 'Login'.tr,
         ):CircularButton(),
         SizedBox(
           height: height * 0.03,
@@ -258,7 +261,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
           onTap: () {
             Navigator.pushNamed(context, RoutesName.registerScreen);
           },
-          text: 'Register',
+          text: 'Register'.tr,
         ),
       ],
     );

@@ -10,6 +10,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_history_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,7 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
       appBar: GradientAppBar(
         centerTitle: true,
         leading: AppBackBtn(),
-        title: Text("Deposit History",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+        title: Text("Deposit History".tr,style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
 
       ),
       body: ListView(
@@ -184,7 +185,7 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textWidget(
-                            text:   _selectedDate==null?'Select date':
+                            text:   _selectedDate==null?'Select date'.tr:
                             '   ${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}',
                             fontSize: 18,
                             color: AppColors.primaryTextColor),
@@ -196,8 +197,6 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
                               _selectedDate = selectedDate;
                             });
                             depositHistory.depositHistoryApi("", "", selectedDate, context);
-                            // depositHistory();
-                            // commissionDetailsApi();
                             if (kDebugMode) {
                               print('Selected Date: $selectedDate');
                               print('object');
@@ -254,11 +253,11 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Deposit",
+                "Deposit".tr,
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                data.status.toString()=="1"?"To be Paid":data.status.toString()=="2"?"Completed":"Rejected",
+                data.status.toString()=="1"?"To be Paid".tr:data.status.toString()=="2"?"Completed".tr:"Rejected".tr,
                 style: TextStyle(color: Colors.lightBlueAccent, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
@@ -284,18 +283,18 @@ class _DepositHistoryScreenState extends State<DepositHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Coin", data.amount.toString()??"", Colors.green),
-          buildRow("USDT Balance", data.usdtAmount.toString()??"", Colors.green),
-          buildRow("Type","USDT", Colors.white),
+          buildRow("Coin".tr, data.amount.toString()??"", Colors.green),
+          buildRow("USDT Balance".tr, data.usdtAmount.toString()??"", Colors.green),
+          buildRow("Type","USDT".tr, Colors.white),
           // buildRow("Type", data.type!=1?"INR":"USDT", Colors.white),
-          buildRow("Time", DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
-          buildRow("Order number", data.orderNumer?.toString()??"", Colors.white,icon:Icons.copy,onIconPressed: (){
+          buildRow("Time".tr, DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
+          buildRow("Order number".tr, data.orderNumer?.toString()??"", Colors.white,icon:Icons.copy,onIconPressed: (){
             Clipboard.setData(ClipboardData(text:  data.orderNumer?.toString()??""));
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Copied Order Number!")),
             );
           }),
-          data.reason!=null?  buildRow("Reason", data.reason?.toString()??"", Colors.white,):Container(),
+          data.reason!=null?  buildRow("Reason".tr, data.reason?.toString()??"", Colors.white,):Container(),
 
         ],
       ),
@@ -378,7 +377,7 @@ Spacer(),
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Cancel',
+                      text: 'Cancel'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColors.dividerColor,
@@ -390,7 +389,7 @@ Spacer(),
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Confirm',
+                      text: 'Confirm'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColor.white,

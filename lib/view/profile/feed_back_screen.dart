@@ -10,6 +10,7 @@ import 'package:game/utils/utils.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/feed_back_view_model.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
         leading: AppBackBtn(),
         centerTitle: true,
         title: textWidget(
-          text: 'Feedback',
+          text: 'Feedback'.tr,
           fontFamily: "SitkaSmall",
           fontWeight: FontWeight.w900,
           fontSize: 20,
@@ -64,7 +65,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
           ),
           Text(
               textAlign: TextAlign.center,
-              "Send helpful feedback\n Chance to win Mystery Rewards",
+              "Send helpful feedback\n Chance to win Mystery Rewards".tr,
               style: TextStyle(
                   fontFamily: "SitkaSmall",
                   color: AppColor.white,
@@ -74,12 +75,12 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
             onTap: () {
               if (_feedBackController.text.isEmpty) {
                 Utils.setSnackBar(
-                    "Please enter the feedback", AppColor.red, context);
+                    "Please enter the feedback".tr, AppColor.red, context);
               } else {
                 feedBack.feedBackApi(_feedBackController.text, context);
               }
             },
-            text: 'Submit',
+            text: 'Submit'.tr,
           ):CircularButton()
         ],
       ),

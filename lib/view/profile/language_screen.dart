@@ -3,6 +3,9 @@ import 'package:game/res/color-const.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import '../../view_model/update_language_view_model.dart';
 
 
 
@@ -15,7 +18,7 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  String selectedLanguage = "English"; // Default selected language
+  String selectedLanguage = "en"; // Default selected language
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +41,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
   }
 
   Widget _buildLanguageTile(String value, String flag, String language, Locale locale) {
+    final lang=Provider.of<UpdateLanguageViewModel>(context);
     return ListTile(
       tileColor: Colors.grey[900], // Dark grey tile background
       leading: Text(flag, style: TextStyle(fontSize: 24)), // Flag icon
       title: Text(language, style: TextStyle(fontSize: 18, color: Colors.white)),
       trailing: Radio<String>(
         value: value,
-        groupValue: selectedLanguage,
+        groupValue: lang.currentLang,
         onChanged: (String? newValue) {
           setState(() {
             selectedLanguage = newValue!;
-            Get.updateLocale(locale);
           });
+          Get.updateLocale(locale);
+          lang.saveLanguagePreference(value);
+          lang.getSavedLang();
         },
         activeColor: Colors.amber, // Selected color
       ),

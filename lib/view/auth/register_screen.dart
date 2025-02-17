@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:game/generated/assets.dart';
 import 'package:game/main.dart';
@@ -10,10 +11,9 @@ import 'package:game/res/constantButton.dart';
 import 'package:game/res/custom_text_field.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/auth_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import 'tab_page/email_login.dart';
-import 'tab_page/phone_number_login.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "Sign up ",
+                "Sign up ".tr,
                 style: TextStyle(
                     color: AppColor.white,
                     fontWeight: FontWeight.w500,
@@ -60,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: height*0.02,),
             Text(
-              "Welcome Let's create your account ",
+              "Welcome Let's create your account ".tr,
               style: TextStyle(
                   color: AppColor.lightGray,
                   fontWeight: FontWeight.w500,
@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         SizedBox(height: height*0.01,),
         Center(
           child: Text(
-            "Register your phone",
+            "Register your phone".tr,
             style: TextStyle(
                 color: AppColor.white,
                 fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: width * 0.03,
                 ),
                 Text(
-                  "Phone number",
+                  "Phone number".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -175,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 CustomTextField(
                   controller: _phoneController,
                   keyboardType: TextInputType.number,
-                  label: "Enter your phone number",
+                  label: "Enter your phone number".tr,
 
                   hintColor: AppColor.lightGray,
                   hintSize: 16,
@@ -190,6 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   border: Border.all(color: AppColor.gray.withOpacity(0.3)),
                   borderRadius: BorderRadius.circular(15),
                   fieldRadius: BorderRadius.circular(15),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ],
             ),
@@ -208,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: width * 0.03,
                 ),
                 Text(
-                  "Email",
+                  "Email".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -222,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             CustomTextField(
               controller: _mailController,
-              label: "Enter your email",
+              label: "Enter your email".tr,
               hintColor: AppColor.lightGray,
               hintSize: 16,
               height: 55,
@@ -250,7 +251,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: width * 0.03,
                 ),
                 Text(
-                  "Set password",
+                  "Set password".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -264,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             CustomTextField(
               controller: _passController,
-              label: "Set password",
+              label: "Set password".tr,
               hintColor: AppColor.lightGray,
               hintSize: 16,
               maxLines: 1,
@@ -308,7 +309,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: width * 0.03,
                 ),
                 Text(
-                  "Confirm password",
+                  "Confirm password".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -322,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             CustomTextField(
               controller: _confirmPassController,
-              label: "Confirm password",
+              label: "Confirm password".tr,
               hintColor: AppColor.lightGray,
               hintSize: 16,
               maxLines: 1,
@@ -366,7 +367,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: width * 0.03,
                 ),
                 Text(
-                  "Invite code",
+                  "Invite code".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -381,11 +382,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             CustomTextField(
               controller: _inviteController,
-              label: "Enter invitation code",
+              label: "Enter invitation code".tr,
               hintColor: AppColor.lightGray,
               hintSize: 16,
               maxLines: 1,
-              obscureText: !_passwordVisible,
               height: 55,
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -445,10 +445,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: const TextStyle(fontSize: 14, color: Colors.black),
                     children: [
                       TextSpan(
-                          text: "I have read and agree ",
+                          text: "I have read and agree ".tr,
                           style: TextStyle(color: AppColor.white)),
                       TextSpan(
-                        text: '⟬Privacy Agreement⟭',
+                        text: '⟬Privacy Agreement⟭'.tr,
                         style: TextStyle(
                           color: AppColor.red,
                           fontWeight: FontWeight.w600,
@@ -471,27 +471,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             register.loading==false?
             constantbutton(onTap: () {
               if (_phoneController.text.isEmpty){
-                Utils.setSnackBar("Please enter your phone number ",AppColor.red, context);
+                Utils.setSnackBar("Please enter your phone number ".tr,AppColor.red, context);
               } else if(_phoneController.text.length<10){
-                Utils.setSnackBar("Please enter proper phone number ",AppColor.red, context);
+                Utils.setSnackBar("Please enter proper phone number ".tr,AppColor.red, context);
               } else if (_mailController.text.isEmpty){
-                Utils.setSnackBar("Please enter your email",AppColor.red, context);
+                Utils.setSnackBar("Please enter your email".tr,AppColor.red, context);
               } else if (
               _passController.text.isEmpty
               ){
-                Utils.setSnackBar("Password must ",AppColor.red, context);
+                Utils.setSnackBar("Password must ".tr,AppColor.red, context);
               }  else if (
               _passController.text.length<6
               ){
-                Utils.setSnackBar("The password must be at least 6 digits long.",AppColor.red, context);
+                Utils.setSnackBar("The password must be at least 6 digits long.".tr,AppColor.red, context);
               }
               else if (_confirmPassController.text.isEmpty){
-                Utils.setSnackBar("Re-enter  your password",AppColor.red, context);
+                Utils.setSnackBar("Re-enter  your password".tr,AppColor.red, context);
               }  else if (_passController.text!=_confirmPassController.text){
-                Utils.setSnackBar("Your password is not same",AppColor.red, context);
+                Utils.setSnackBar("Your password is not same".tr,AppColor.red, context);
               }
               else if (!isChecked){
-                Utils.setSnackBar("Please agree privacy agreement",AppColor.red, context);
+                Utils.setSnackBar("Please agree privacy agreement".tr,AppColor.red, context);
               }
               else{
                 Map data={
@@ -499,11 +499,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   "mobile":_phoneController.text,
                   "password": _passController.text,
                   "confirm_password": _confirmPassController.text,
-                  "invite_code": _inviteController.text
+                  "referral_code": _inviteController.text
                 };
+                print("ppppp:$data");
                 register.registerApi(data, context);
               }
-            }, text: 'Register',):CircularButton(),
+            }, text: 'Register'.tr,):CircularButton(),
             SizedBox(
               height: height * 0.02,
             ),
@@ -513,10 +514,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: const TextStyle(fontSize: 14, color: Colors.black),
                 children: [
                   TextSpan(
-                      text: "I have an account ",
+                      text: "I have an account ".tr,
                       style: TextStyle(color: AppColor.white)),
                   TextSpan(
-                    text: 'Login',
+                    text: 'Login'.tr,
                     style: TextStyle(
                       color: AppColor.yellow,
                       fontSize: 16,

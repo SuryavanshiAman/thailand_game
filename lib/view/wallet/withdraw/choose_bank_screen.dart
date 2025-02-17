@@ -106,6 +106,7 @@ import 'package:game/res/custom_text_field.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/choose_bank_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -157,7 +158,7 @@ class _ChooseBankScreenState extends State<ChooseBankScreen> {
         leading: AppBackBtn(),
         centerTitle: true,
         title: Text(
-          "Choose a bank",
+          "Choose a bank".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
       ),
@@ -167,7 +168,7 @@ class _ChooseBankScreenState extends State<ChooseBankScreen> {
         children: [
           CustomTextField(
             controller: _bankController,
-            label: "Search bank",
+            label: "Search bank".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             height: 55,
@@ -192,7 +193,7 @@ class _ChooseBankScreenState extends State<ChooseBankScreen> {
             child: Column(
               children: [
                 Text(
-                  "Choose a bank",
+                  "Choose a bank".tr,
                   style: TextStyle(
                     color: AppColor.white,
                     fontFamily: "SitkaSmall",
@@ -211,7 +212,7 @@ class _ChooseBankScreenState extends State<ChooseBankScreen> {
                       if (banks.isEmpty) {
                         return Center(
                           child: Text(
-                            "No banks available",
+                            "No banks available".tr,
                             style: TextStyle(color: AppColor.white),
                           ),
                         );

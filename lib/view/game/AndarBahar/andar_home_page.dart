@@ -14,8 +14,6 @@ import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/game/AndarBahar/constant/app_assets.dart';
 import 'package:game/view/game/AndarBahar/constant/image_toast_wingo.dart';
-// import 'package:game/view/game/Aviator/res/api_url.dart';
-// // import 'package:game/view/game/Aviator/res/api_url.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/Aviator/res/image_tost.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
@@ -313,7 +311,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
                     children: [
                       /// Middle
                       Padding(
-                        padding: EdgeInsets.only(top: height * 0.05),
+                        padding: EdgeInsets.only(top:kIsWeb? height * 0.1: height * 0.08),
                         child: SizedBox(
                           height: height * 0.3,
                           width: width * 0.97,
@@ -509,7 +507,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.1,
+                        height:kIsWeb? height * 0.1:height * 0.07,
                       ),
 
                       /// bottom
@@ -1060,7 +1058,7 @@ class _AndarBaharHomeState extends State<AndarBaharHome>
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: height * 0.20),
+                padding: EdgeInsets.only(bottom:kIsWeb? height * 0.17:height * 0.15),
                 child: Center(
                     child: Image.asset(
                       Assets.andarbaharGirlCharSeven,

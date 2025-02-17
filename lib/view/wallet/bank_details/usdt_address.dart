@@ -7,6 +7,7 @@ import 'package:game/res/custom_text_field.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/usdt_bank_address_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 
@@ -30,7 +31,7 @@ class _UsdtAddressState extends State<UsdtAddress> {
         centerTitle: true,
         leading: AppBackBtn(),
         title: Text(
-          "Add USDT address",
+          "Add USDT address".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
       ),
@@ -52,7 +53,7 @@ class _UsdtAddressState extends State<UsdtAddress> {
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'To ensure the safety of your funds, please bind your bank account',
+                    'To ensure the safety of your funds, please bind your bank account'.tr,
                     style: TextStyle(color: AppColor.red, fontSize: 14,fontFamily: "SitkaSmall"),
                   ),
                 ),
@@ -67,7 +68,7 @@ class _UsdtAddressState extends State<UsdtAddress> {
               Icon(Icons.account_balance, color: AppColor.white),
               SizedBox(width: 10),
               Text(
-                'Select main network',
+                'Select main network'.tr,
                 style: TextStyle(color: AppColor.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
@@ -85,7 +86,7 @@ class _UsdtAddressState extends State<UsdtAddress> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'TRC',
+                  'TRC'.tr,
                   style: TextStyle(color: AppColor.white, fontSize: 16),
                 ),
                 Icon(Icons.keyboard_arrow_down_outlined, color:AppColor.white, size: 18),
@@ -94,11 +95,11 @@ class _UsdtAddressState extends State<UsdtAddress> {
           ),
           SizedBox(height: height*0.03),
           // Recipient's name section
-          rowWidget(Assets.imagesPeople,'Full recipient\'s name'),
+          rowWidget(Assets.imagesPeople,'Full recipient\'s name'.tr),
           SizedBox(height: height*0.02),
           CustomTextField(
             controller: _nameController,
-            label: "Enter your name",
+            label: "Enter your name".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             height: 55,
@@ -114,11 +115,11 @@ class _UsdtAddressState extends State<UsdtAddress> {
           ),
           SizedBox(height: height*0.03),
           // Recipient's name section
-          rowWidget(Assets.imagesBankCard,'USDT Address'),
+          rowWidget(Assets.imagesBankCard,'USDT Address'.tr),
           SizedBox(height: height*0.02),
           CustomTextField(
             controller: _addressController,
-            label: "Enter the usdt address",
+            label: "Enter the usdt address".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             height: 55,
@@ -136,7 +137,7 @@ class _UsdtAddressState extends State<UsdtAddress> {
           SizedBox(height: height*0.03),
           constantbutton(onTap: () {
             usdt.usdtBankApi(_nameController.text, _addressController.text, context);
-          }, text: 'Save',),
+          }, text: 'Save'.tr,),
         ],
       ),
     );

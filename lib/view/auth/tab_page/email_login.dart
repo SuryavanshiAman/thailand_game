@@ -11,6 +11,7 @@ import 'package:game/res/custom_text_field.dart';
 import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view_model/auth_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class EmailLogin extends StatefulWidget {
@@ -49,7 +50,7 @@ class _EmailLoginState extends State<EmailLogin> {
               width: width * 0.03,
             ),
             Text(
-              "Email/Account Log in",
+              "Email/Account Log in".tr,
               style: TextStyle(
                   color: AppColor.white,
                   fontSize: 16,
@@ -63,7 +64,7 @@ class _EmailLoginState extends State<EmailLogin> {
         ),
         CustomTextField(
           controller: _emailController,
-          label: "Enter your email",
+          label: "Enter your email".tr,
           hintColor: AppColor.lightGray,
           hintSize: 16,
           height: 55,
@@ -95,7 +96,7 @@ class _EmailLoginState extends State<EmailLogin> {
               width: width * 0.03,
             ),
             Text(
-              "Password",
+              "Password".tr,
               style: TextStyle(
                   color: AppColor.white,
                   fontSize: 16,
@@ -109,7 +110,7 @@ class _EmailLoginState extends State<EmailLogin> {
         ),
         CustomTextField(
           controller: _passController,
-          label: "Password",
+          label: "Password".tr,
           hintColor: AppColor.lightGray,
           hintSize: 16,
           maxLines: 1,
@@ -146,15 +147,15 @@ class _EmailLoginState extends State<EmailLogin> {
           width: width,
           onTap: () {
             if (_emailController.text.isEmpty) {
-              Utils.setSnackBar("Please enter Email",AppColor.red, context);
+              Utils.setSnackBar("Please enter Email".tr,AppColor.red, context);
             } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(_emailController.text)) {
-              Utils.setSnackBar("You can only enter mail here",AppColor.red, context);
+              Utils.setSnackBar("You can only enter mail here".tr,AppColor.red, context);
             }
             else if (_passController.text.isEmpty) {
-              Utils.setSnackBar("Please enter your password",AppColor.red, context);
+              Utils.setSnackBar("Please enter your password".tr,AppColor.red, context);
             } else if (_passController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.",AppColor.red, context);
+                  "The password must be at least 6 digits long.".tr,AppColor.red, context);
             } else {
               Map data = {
                 "email": _emailController.text,
@@ -163,7 +164,7 @@ class _EmailLoginState extends State<EmailLogin> {
               login.authApi(data, context);
             }
           },
-          text: 'Login',
+          text: 'Login'.tr,
         ):CircularButton(),
         SizedBox(
           height: height * 0.03,
@@ -173,7 +174,7 @@ class _EmailLoginState extends State<EmailLogin> {
           onTap: () {
             Navigator.pushNamed(context, RoutesName.registerScreen);
           },
-          text: 'Register',
+          text: 'Register'.tr,
         ),
         SizedBox(
           height: height * 0.03,
@@ -190,7 +191,7 @@ class _EmailLoginState extends State<EmailLogin> {
                       BlendMode.srcIn,
                     )),
                 Text(
-                  "Forgot password",
+                  "Forgot password".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,
@@ -208,7 +209,7 @@ class _EmailLoginState extends State<EmailLogin> {
                       BlendMode.color,
                     )),
                 Text(
-                  "Customer service",
+                  "Customer service".tr,
                   style: TextStyle(
                       color: AppColor.white,
                       fontSize: 16,

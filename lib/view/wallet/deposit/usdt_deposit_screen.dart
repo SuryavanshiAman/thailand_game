@@ -14,6 +14,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/pay_usdt_view_model.dart';
 import 'package:game/view_model/usdt_deposit_view_model.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +61,7 @@ class _UsdtDepositScreenState extends State<UsdtDepositScreen> {
         centerTitle: true,
         leading: AppBackBtn(),
         title: Text(
-          "USDT QR Deposit",
+          "USDT QR Deposit".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
       ),
@@ -85,7 +86,7 @@ InkWell(
     onTap: (){
       Clipboard.setData(ClipboardData(text: pay?[0].usdtWalletAddress??""));
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Wallet address copied successfully!")),
+        SnackBar(content: Text("Wallet address copied successfully!".tr)),
       );
     },
     child: Image(image: AssetImage(Assets.imagesCopy),color: AppColor.gray,)),
@@ -122,7 +123,7 @@ InkWell(
                 onTap: (){
                   _settingModalBottomSheet(context);
                 },
-                child: Text("Upload screenshot",style: TextStyle(color: AppColors.whiteColor),)),
+                child: Text("Upload screenshot".tr,style: TextStyle(color: AppColors.whiteColor),)),
           ),
           SizedBox(height: height*0.02,),
 
@@ -132,7 +133,7 @@ InkWell(
            ):Container(),
           usdtDeposit.loading==false?  constantbutton(onTap: () {
             base64Image!=null? usdtDeposit.usdtDpositApi(amount,usdt, base64Image??"", context):Utils.setSnackBar("Upload your screenshot", AppColor.red, context);
-          }, text: 'Deposit',):CircularButton()
+          }, text: 'Deposit'.tr,):CircularButton()
         ],
       ),
     );
@@ -167,9 +168,9 @@ InkWell(
                         // color: Colors.blue,
                           border: Border.all(color: AppColors.whiteColor, width: 2),
                           borderRadius: BorderRadius.circular(10)),
-                      child: const Center(
+                      child:  Center(
                           child: Text(
-                            'Camera',
+                            'Camera'.tr,
                             style: TextStyle(color: AppColors.whiteColor),
                           )),
                     ),
@@ -187,9 +188,9 @@ InkWell(
 
                           // color: AppColors.whiteColor,
                           borderRadius: BorderRadius.circular(10)),
-                      child: const Center(
+                      child:  Center(
                           child: Text(
-                            'Gallery',
+                            'Gallery'.tr,
                             style: TextStyle(color: Colors.white),
                           )),
                     ),

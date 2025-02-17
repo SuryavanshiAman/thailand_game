@@ -16,6 +16,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/gift_card_view_model.dart';
 import 'package:game/view_model/gift_history_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class GiftScreen extends StatefulWidget {
@@ -112,7 +113,7 @@ class GiftScreenState extends State<GiftScreen> {
                           height: height * 0.02,
                         ),
                         textWidget(
-                            text: '   We have a gift for you',
+                            text: '   We have a gift for you'.tr,
                             fontFamily: "SitkaSmall",
                             fontSize: 14,
                             color: AppColor.white),
@@ -120,7 +121,7 @@ class GiftScreenState extends State<GiftScreen> {
                           height: 25,
                         ),
                         textWidget(
-                            text: '   Please enter the gift code below',
+                            text: '   Please enter the gift code below'.tr,
                             fontFamily: "SitkaSmall",
                             fontSize: 14,
                             color:AppColor.white),
@@ -129,7 +130,7 @@ class GiftScreenState extends State<GiftScreen> {
                         ),
                         CustomTextField(
                           controller: giftcode,
-                          label: "Please enter gift code",
+                          label: "Please enter gift code".tr,
                           hintColor: AppColor.lightGray,
                           hintSize: 16,
                           height: 55,
@@ -144,7 +145,7 @@ class GiftScreenState extends State<GiftScreen> {
                         ),
                         SizedBox(height: height*0.03,),
                         gift.loading==false?  constantbutton(
-                          text: 'Receive',
+                          text: 'Receive'.tr,
                           onTap: () {
                             gift.giftCardApi(giftcode.text, context);
                           },
@@ -168,7 +169,7 @@ class GiftScreenState extends State<GiftScreen> {
                         SvgPicture.asset(Assets.svgFeedback,height: 30,),
 
                         textWidget(
-                            text: '   History',
+                            text: '   History'.tr,
                             fontSize: 18,
                             color: AppColor.white,
                             fontFamily: "SitkaSmall",
@@ -195,9 +196,9 @@ class GiftScreenState extends State<GiftScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("GiftCode",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
-                                      Text("Amount",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
-                                      Text("Date",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text("GiftCode".tr,style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text("Amount".tr,style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+                                      Text("Date".tr,style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
                                     ],
                                   ),
                                   Column(

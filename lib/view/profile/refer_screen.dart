@@ -1,6 +1,7 @@
 
 
 import 'package:game/generated/assets.dart';
+import 'package:game/res/api_url.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
@@ -8,8 +9,10 @@ import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game/view_model/profile_view_model.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
 
 class ReferEarn extends StatefulWidget {
   const ReferEarn({Key? key, }) : super(key: key);
@@ -20,13 +23,15 @@ class _ReferEarnState extends State<ReferEarn> {
   bool KIsweb=true;
   @override
   Widget build(BuildContext context) {
+    final elementList = Provider.of<ProfileViewModel>(context);
+    final profile=elementList.profileData?.data;
     return Scaffold(
     backgroundColor: AppColor.black,
       appBar: GradientAppBar(
           leading: AppBackBtn(),
           centerTitle: true,
           title: textWidget(
-            text: 'Refer & Earn',
+            text: 'Refer & Earn'.tr,
             fontWeight: FontWeight.w900,
             fontSize: 20,
             fontFamily: "SitkaSmall",
@@ -55,8 +60,8 @@ class _ReferEarnState extends State<ReferEarn> {
           const SizedBox(
             height: 15,
           ),
-          const Text(
-            'SHARE AND EARN MORE!',
+           Text(
+            'SHARE AND EARN MORE!'.tr,
             style: TextStyle(
                 color: AppColor.white,
                 fontSize: 20,
@@ -66,9 +71,9 @@ class _ReferEarnState extends State<ReferEarn> {
           const SizedBox(
             height: 15,
           ),
-          const Padding(
+           Padding(
             padding: EdgeInsets.fromLTRB(25, 0, 15, 0),
-            child: Text("Invite your friend to use our app and you'll get 5% of the first deposit first time .This will be added to your bonus balance so,you use it to purchase any product.",
+            child: Text("Invite your friend to use our app and you'll get 5% of the first deposit first time .This will be added to your bonus balance so,you use it to purchase any product.".tr,
                 style: TextStyle(color: AppColor.white, fontSize: 12,fontFamily: "SitkaSmall",)),
           ),
           const SizedBox(
@@ -91,7 +96,7 @@ class _ReferEarnState extends State<ReferEarn> {
 
                 color: AppColor.gray,
                 child: Text(
-                  "25468",
+                  profile?.referralCode??"",
 
                   style: const TextStyle(
 
@@ -121,9 +126,9 @@ class _ReferEarnState extends State<ReferEarn> {
                 child:
                 InkWell(
                   onTap: ()async {
-                    share();
+                    share(profile?.referralCode??"");
                   },
-                  child: const Row  (
+                  child:  Row  (
                     children: [
                       CircleAvatar(
                           radius: 20,
@@ -135,7 +140,7 @@ class _ReferEarnState extends State<ReferEarn> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Share the code",
+                      Text("Share the code".tr,
                           style: TextStyle(
                             color: AppColor.white,
                             fontSize: 15,
@@ -158,36 +163,15 @@ class _ReferEarnState extends State<ReferEarn> {
   }
   var map;
 
-  // REFER_EARN() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final userid = prefs.getString("userId");
-  //   final response =  await http.post(
-  //     Uri.parse(ApiConst.referEarn),
-  //     headers:<String ,String>{
-  //       "Content-Type":"application/json; charset=UTF-8",
-  //     },
-  //     body: jsonEncode(<String ,String>{
-  //       "userid": '$userid',
-  //
-  //     }),
-  //   );
-  //   var data = jsonDecode(response.body);
-  //   if (data['status'] == '200') {
-  //     setState(() {
-  //       map = data;
-  //
-  //     });
-  //
-  //   }
-  // }
-
-  // String referralCode = 'initialData';
-  Future<void> share() async {
-
+  Future<void> share(referralCode) async {
+    // FlutterShare.share(
+    //   title: "Join Now & Get Exiting Prizes. here is my Referral Code",
+    //   text: ' https://admin.xgamblur.com/?id=1',
+    // );
     await Share.share(
-        'Join Now & Get Exiting Prizes. here is my Referral Code'
-            ' https://root.worldtradeshiping.co.in/?id=${map['refer_code']}',
-        subject: 'Referral Code : ' + map['refer_code']);
+        'Join Now & Get Exiting Prizes. here is my Referral Code   '
+            '${"${ApiUrl.referralUrl}$referralCode"}',
+        subject: 'Referral Code : $referralCode ' );
 
   }
 

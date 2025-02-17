@@ -7,6 +7,7 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/aboutus_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         leading: AppBackBtn(),
         centerTitle: true,
         title: textWidget(
-          text: 'About Us',
+          text: 'About Us'.tr,
           fontFamily: "SitkaSmall",
           fontWeight: FontWeight.w900,
           fontSize: 20,
@@ -65,7 +66,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   color: AppColor.white,
                 ),
                 title: textWidget(
-                  text: 'Confidentiality Agreement',
+                  text: 'Confidentiality Agreement'.tr,
                   fontWeight: FontWeight.w600,
                   fontFamily: "SitkaSmall",
                   fontSize: 15,
@@ -93,7 +94,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   color: AppColor.white,
                 ),
                 title: textWidget(
-                  text: 'Risk Disclosure Agreement',
+                  text: 'Risk Disclosure Agreement'.tr,
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                   fontFamily: "SitkaSmall",

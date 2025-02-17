@@ -11,6 +11,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/withdraw_history_view_model.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -251,7 +252,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Withdraw",
+                "Withdraw".tr,
                 style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -281,18 +282,18 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Coin", data.amount.toString()??"", Colors.green),
-          data.type!=1? buildRow("USDT Balance", data.usdtAmount.toString()??"", Colors.green):Container(),
-          buildRow("Type","USDT", Colors.white),
+          buildRow("Coin".tr, data.amount.toString()??"", Colors.green),
+          data.type!=1? buildRow("USDT Balance".tr, data.usdtAmount.toString()??"", Colors.green):Container(),
+          buildRow("Type","USDT".tr, Colors.white),
           // buildRow("Type", data.type==1?"INR":"USDT", Colors.white),
-          buildRow("Time",DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
-          buildRow("Order number", data.orderId??"", Colors.white,icon:Icons.copy,onIconPressed: (){
+          buildRow("Time".tr,DateFormat("d MMM yyy, hh:mm a").format(DateTime.parse( data.createdAt??"")), Colors.white),
+          buildRow("Order number".tr, data.orderId??"", Colors.white,icon:Icons.copy,onIconPressed: (){
     Clipboard.setData(ClipboardData(text:  data.orderId?.toString()??""));
     ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text("Copied Order Number!")),
+    SnackBar(content: Text("Copied Order Number!".tr)),
     );
     }),
-          data.reason!=null?  buildRow("Reason", data.reason?.toString()??"", Colors.white,):Container(),
+          data.reason!=null?  buildRow("Reason".tr, data.reason?.toString()??"", Colors.white,):Container(),
 
         ],
       ),
@@ -391,7 +392,7 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Cancel',
+                      text: 'Cancel'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColors.dividerColor,
@@ -405,7 +406,8 @@ class _WithdrawHistoryScreenState extends State<WithdrawHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Confirm',
+                      text: 'Confirm'.tr
+                      ,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColor.white,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/utils/utils.dart';
 import 'package:game/view/home/home_screen.dart';
@@ -40,7 +41,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   }
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     return PopScope(
       canPop: false,
       onPopInvoked: (v) {
@@ -86,19 +86,19 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               children: [
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
-                  left: _getItemPosition(screenWidth, 0),
+                  left: _getItemPosition(width, 0),
                   top: _selectedIndex == 0 ? 0 : 20,
                   child: navItem(IconlyBold.wallet, "Wallet", 0),
                 ),
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
-                  left: _getItemPosition(screenWidth, 1),
+                  left: _getItemPosition(width, 1),
                   top: _selectedIndex == 1 ? 0 : 20,
                   child: profileItem("Home", 1),
                 ),
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
-                  left: _getItemPosition(screenWidth, 2),
+                  left: _getItemPosition(width, 2),
                   top: _selectedIndex == 2 ? 0 : 20,
                   child: navItem(IconlyBold.profile, "Profile", 2),
                 ),

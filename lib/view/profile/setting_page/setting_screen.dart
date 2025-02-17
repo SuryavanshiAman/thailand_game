@@ -11,6 +11,9 @@ import 'package:game/utils/routes/routes_name.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view/profile/setting_page/nickname_screen.dart';
+import 'package:game/view_model/profile_view_model.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 
 class SettingPageNew extends StatefulWidget {
@@ -40,29 +43,24 @@ class _SettingPageNewState extends State<SettingPageNew> {
     List<ListItem> settingList = [
       ListItem(
           image: Assets.imagesEditPswIcon,
-          name: 'Login Password',
+          name: 'Login Password'.tr,
           subTitle: 'Edit',
           onTap: () {
             Navigator.pushNamed(context, RoutesName.changeLoginPasswordScreen);
             // Navigator.push(context, MaterialPageRoute(builder: (context)=>const ChangePassword()));
           }
       ),
-      //   ListItem(
-      //       image: Assets.imagesEmailIcon,
-      //       name: 'Bind mailbox',
-      //       subTitle: 'to bind',
-      //       onTap: () {
-      //     // Navigator.push(context, MaterialPageRoute(builder: (context)=>const BindMailBoxScreen()));
-      // }
-      //   ),
+
       ListItem(
           image: Assets.imagesVersionUpdate,
-          name: 'Updated Version',
+          name: 'Updated Version'.tr,
           subTitle:"1.0.1",
           onTap: () {}
 
       ),
     ];
+    final elementList = Provider.of<ProfileViewModel>(context);
+    final profile=elementList.profileData?.data;
     // context.read<ProfileProvider>();
     return Scaffold(
         backgroundColor: AppColor.black,
@@ -70,7 +68,7 @@ class _SettingPageNewState extends State<SettingPageNew> {
             leading: AppBackBtn(),
             centerTitle: true,
             title: textWidget(
-              text: 'Setting center',
+              text: 'Setting center'.tr,
               fontWeight: FontWeight.w900,
               fontSize: 20,
               fontFamily: "SitkaSmall",
@@ -140,11 +138,6 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                   InkWell(
                                     onTap: () {
                                       Navigator.pushNamed(context, RoutesName.changeAvtar);
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //         const ChangeAvtar()));
                                     },
                                     child: Row(
                                       children: [
@@ -153,13 +146,13 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                             radius: 50,
                                             child: CircleAvatar(
                                               radius: 48,
-                                              backgroundImage: AssetImage(Assets.imagesProfile),
+                                              backgroundImage: NetworkImage(profile?.image??""),
                                             ),
                                           ),
                                         ),
                                         const Spacer(),
                                         textWidget(
-                                            text: 'Change Avatar ',
+                                            text: 'Change Avatar '.tr,
                                             color:
                                             AppColor.white,
                                             fontFamily: "SitkaSmall",
@@ -184,7 +177,7 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                     child: Row(
                                       children: [
                                         textWidget(
-                                            text: '    NickName',
+                                            text: '    NickName'.tr,
                                             color: AppColor.white,
                                             fontFamily: "SitkaSmall",
                                             fontWeight: FontWeight.w800,
@@ -192,7 +185,7 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                         const Spacer(),
                                         textWidget(
                                           // text:  context.read<ProfileProvider>().userName.toString().toUpperCase(),
-                                            text:  "NancyMomoLand",
+                                            text:  profile?.name??"",
                                             color: AppColor.white,
                                             fontFamily: "SitkaSmall",
                                             fontWeight: FontWeight.w500,
@@ -218,7 +211,7 @@ class _SettingPageNewState extends State<SettingPageNew> {
                                           fontSize: 15),
                                       const Spacer(),
                                       textWidget(
-                                          text: "1421886",
+                                          text: profile?.uId??"",
                                           color: AppColor.white,
                                           fontFamily: "SitkaSmall",
                                           fontWeight: FontWeight.w500,

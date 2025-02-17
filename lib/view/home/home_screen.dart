@@ -10,8 +10,10 @@ import 'package:game/utils/utils.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view/home/slider_page.dart';
 import 'package:game/view_model/jili_game_launcher_view_model.dart';
+import 'package:game/view_model/live_notification_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/update_jili_to_user_wallet_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver  {
   void initState() {
     super.initState();
     Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
+    Provider.of<LiveNotificationViewModel>(context,listen: false).liveNotificationApi(context);
     WidgetsBinding.instance.addObserver(this);
   }
   @override
@@ -51,6 +54,8 @@ jiliApi.setIsGameLaunched(false);
   int selectedIndex=1;
   @override
   Widget build(BuildContext context) {
+    final live=Provider.of<LiveNotificationViewModel>(context).profileData?.data;
+    print(live?[0].scrollnotification);
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar:
@@ -113,7 +118,8 @@ jiliApi.setIsGameLaunched(false);
                       alignment: Alignment.center,
                       width: width * 0.6,
                       child: Marquee(
-                        text: "Exactly equal parts red, green, and blue in the RGB color space.",
+                        text:live?[0].scrollnotification??"No Updates",
+                        // "Exactly equal parts red, green, and blue in the RGB color space.",
                         style: TextStyle(fontFamily: "SitkaSmall", color: AppColor.lightGray),
                         scrollAxis: Axis.horizontal,
                         blankSpace: 15.0,
@@ -125,7 +131,7 @@ jiliApi.setIsGameLaunched(false);
                     constantbutton(
                       width: width * 0.2,
                       onTap: () {},
-                      text: 'Details',
+                      text: 'Details'.tr,
                       style: TextStyle(
                         fontFamily: "SitkaSmall",
                         color: AppColor.lightGray,

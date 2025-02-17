@@ -118,7 +118,7 @@ bool recalling =false;
                                   fontSize: 25),
                             ),
                             Text(
-                              "Total Balance",
+                              "Total Balance".tr,
                               style: TextStyle(
                                   color: AppColor.white,
                                   fontFamily: "SitkaSmall",
@@ -153,7 +153,7 @@ bool recalling =false;
                               ? (double.parse(profile!.wallet.toString()) / (double.parse(profile!.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
                               : "0.00"), // Ensure result is a valid string
                           (double.tryParse(profile?.wallet.toString() ?? "0")?.toStringAsFixed(2) ?? "0.00"),
-                          'Main wallet',
+                          'Main wallet'.tr,
                         ),
                         percentage(
                           (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0") != null &&
@@ -162,7 +162,7 @@ bool recalling =false;
                               ? (double.parse(profile!.thirdPartyWallet.toString()) / (double.parse(profile.totalBalance.toString()) * 0.01)).toStringAsFixed(2)
                               : "0.00"), // Ensure result is a valid string
                           (double.tryParse(profile?.thirdPartyWallet.toString() ?? "0")?.toStringAsFixed(2) ?? "0.00"),
-                          '3rd party wallet',
+                          '3rd party wallet'.tr,
                         ),
                       ],
                     ),
@@ -173,7 +173,7 @@ bool recalling =false;
                     constantbutton(
                       // height: height * 0.07,
                       width: width,
-                      text:recalling==false? 'Main wallet transfer':"Recalling $_seconds",
+                      text:recalling==false? 'Main wallet transfer'.tr:"Recalling $_seconds",
                       style: TextStyle(
                           fontSize: 17,
                           fontFamily: "SitkaSmall",
@@ -193,7 +193,7 @@ bool recalling =false;
                       children: [
                         groups(
                           Assets.imagesDeposit,
-                          'Deposit',
+                          'Deposit'.tr,
                           () {
                             Navigator.pushNamed(
                                 context, RoutesName.depositScreen);
@@ -201,7 +201,7 @@ bool recalling =false;
                         ),
                         groups(
                           Assets.imagesWithdraw,
-                          'Withdrawal',
+                          'Withdrawal'.tr,
                           () {
                             Navigator.pushNamed(
                                 context, RoutesName.withdrawScreen);
@@ -209,7 +209,7 @@ bool recalling =false;
                         ),
                         groups(
                           Assets.imagesDepositHistory,
-                          'Deposit\n history',
+                          'Deposit\n history'.tr,
                           () {
                             Navigator.pushNamed(
                                 context, RoutesName.depositHistoryScreen);
@@ -217,7 +217,7 @@ bool recalling =false;
                         ),
                         groups(
                           Assets.imagesWithdrawHistory,
-                          'Withdrawal\n     history',
+                          'Withdrawal\n     history'.tr,
                           () {
                             Navigator.pushNamed(
                                 context, RoutesName.withdrawHistoryScreen);
@@ -308,22 +308,12 @@ bool recalling =false;
         const SizedBox(
           height: 10,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.currency_rupee,
-              size: 16,
-              color: AppColor.white,
-            ),
-            textWidget(
-              text: amount,
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              fontFamily: "SitkaSmall",
-              color: AppColor.white,
-            ),
-          ],
+        textWidget(
+          text: "🪙$amount",
+          fontWeight: FontWeight.w900,
+          fontSize: 16,
+          fontFamily: "SitkaSmall",
+          color: AppColor.white,
         ),
         const SizedBox(
           height: 10,

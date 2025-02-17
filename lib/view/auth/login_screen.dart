@@ -74,15 +74,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       tabs: [
                         Tab(
                           icon: Icon(Icons.phone_android),
-                          child: const Text(
-                            "Phone Number",
+                          child:  Text(
+                            "Phone Number".tr,
                             // style: TextStyle(fontSize: 12),
                           ),
                         ),
                         Tab(
                           icon: Icon(Icons.email,),
-                          child: const Text(
-                            "Email / Account",
+                          child:  Text(
+                            "Email / Account".tr,
                             // style: TextStyle(fontSize: 12),
                           ),
                         ),

@@ -14,6 +14,7 @@ import 'package:game/view_model/payment_limit_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/usdt_view_bank_view_model.dart';
 import 'package:game/view_model/withdraw_view_model.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
@@ -33,13 +34,15 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<ProfileViewModel>(context,listen: false).userProfileApi(context);
     Provider.of<PaymentLimitViewModel>(context, listen: false)
         .paymentLimitApi(context);
     Provider.of<USdtViewBankViewModel>(context, listen: false)
         .usdtBankViewApi(context);
   }
-
+  double balance=0.0;
   void _updateConvertedAmount(String value) {
+    final profile = Provider.of<ProfileViewModel>(context,listen: false).profileData?.charges;
     final paymentLimit =
         Provider.of<PaymentLimitViewModel>(context, listen: false)
             .limitData
@@ -48,14 +51,24 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
     double amount = double.tryParse(_usdtController.text) ?? 0.0;
     double convertedAmount =
         amount * (paymentLimit?.withdrawConversionRate ?? 1);
+   
+
     setState(() {
+
       _convertedController.text = convertedAmount.toStringAsFixed(2);
+      balance = double.parse(_convertedController.text)-(profile/100)*convertedAmount;
+      print(_convertedController.text);
+      print(profile);
+      print(balance);
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
     final profile = Provider.of<ProfileViewModel>(context).profileData?.data;
+    final charges = Provider.of<ProfileViewModel>(context,listen: false).profileData?.charges;
+
     final withdrawApi = Provider.of<WithdrawViewModel>(context);
     final usdtData =
         Provider.of<USdtViewBankViewModel>(context).usdtBankData?.data;
@@ -66,7 +79,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         centerTitle: true,
         leading: AppBackBtn(),
         title: Text(
-          "Withdraw",
+          "Withdraw".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
         actions: [
@@ -75,7 +88,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Navigator.pushNamed(context, RoutesName.withdrawHistoryScreen);
             },
             child: Text(
-              "Withdrawal history",
+              "Withdrawal history".tr,
               style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
             ),
           ),
@@ -108,7 +121,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       width: width * 0.05,
                     ),
                     Text(
-                      "Available balance",
+                      "Available balance".tr,
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 21,
@@ -139,7 +152,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       onTap: () {
                         Provider.of<ProfileViewModel>(context,listen: false)
                             .userProfileApi(context).then((_){
-                          Utils.setSnackBar("Wallet update successfully", AppColor.green, context);
+                          Utils.setSnackBar("Wallet update successfully".tr, AppColor.green, context);
                         });
                       },
                       child: Image.asset(
@@ -277,8 +290,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       ? Center(
                           child: Text(
                             selectedIndex != 1
-                                ? 'Add a bank account number'
-                                : "Add address",
+                                ? 'Add a bank account number'.tr
+                                : "Add address".tr,
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
@@ -298,7 +311,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           ),
           SizedBox(height: 10),
           Text(
-            'Need to add beneficiary information to be able to withdraw money',
+            'Need to add beneficiary information to be able to withdraw money'.tr,
             style: TextStyle(
                 color: Colors.red, fontSize: 14, fontFamily: "SitkaSmall"),
           ),
@@ -325,7 +338,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                             width: width * 0.03,
                           ),
                           Text(
-                            'Select amount of USDT',
+                            'Select amount of USDT'.tr,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -341,7 +354,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     ? CustomTextField(
                         controller: _usdtController,
                         keyboardType: TextInputType.number,
-                        label: "Enter USDT amount",
+                        label: "Enter USDT amount".tr,
                         hintColor: AppColor.lightGray,
                         hintSize: 16,
                         height: 55,
@@ -372,7 +385,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         readOnly: true,
                         controller: _convertedController,
                         keyboardType: TextInputType.number,
-                        label: "INR  amount ",
+                        label: "INR  amount ".tr,
                         hintColor: AppColor.lightGray,
                         hintSize: 16,
                         height: 55,
@@ -392,7 +405,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     : CustomTextField(
                         controller: _amountController,
                         keyboardType: TextInputType.number,
-                        label: "Enter the amount",
+                        label: "Enter the amount".tr,
                         hintColor: AppColor.lightGray,
                         hintSize: 16,
                         height: 55,
@@ -417,7 +430,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Withdrawable balance 🪙${profile?.wallet ?? "0.0"}',
+                      'Withdrawable balance 🪙${balance.toStringAsFixed(2)}',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -441,7 +454,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        'All',
+                        'All'.tr,
                         style: TextStyle(
                             color: AppColor.white,
                             fontSize: 14,
@@ -450,6 +463,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     ),
                   ],
                 ),
+                Text(
+                  'Platform Fees ${charges}%',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontFamily: "SitkaSmall"),
+                ),
                 SizedBox(height: height * 0.02),
                 selectedIndex == 1
                     ? Container()
@@ -457,7 +477,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Withdrawal amount received',
+                            'Withdrawal amount received'.tr,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -479,7 +499,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     width: width,
                     onTap: () {
                       if (_usdtController.text.isEmpty) {
-                        Utils.setSnackBar("Please enter the usdt amount",
+                        Utils.setSnackBar("Please enter the usdt amount".tr,
                             AppColor.red, context);
                       } else {
                         withdrawApi.withdrawApi(
@@ -491,7 +511,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                             context);
                       }
                     },
-                    text: "Withdraw"):CircularButton(),
+                    text: "Withdraw".tr):CircularButton(),
                 SizedBox(height: height * 0.03),
                 Container(
                   width: double.infinity,
@@ -504,24 +524,24 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InstructionItem(
-                        text: 'Need to bet 🪙0.00 to be able to withdraw',
+                        text: 'Need to bet 🪙0.00 to be able to withdraw'.tr,
                       ),
                       InstructionItem(
-                        text: 'Withdraw time 00:00-23:59',
+                        text: 'Withdraw time 00:00-23:59'.tr,
                       ),
                       InstructionItem(
-                        text: 'In day Remaining Withdrawal Times3',
+                        text: 'In day Remaining Withdrawal Times3'.tr,
                       ),
                       InstructionItem(
-                        text: 'Withdrawal amount range 🪙110.00-🪙50,000.00',
-                      ),
-                      InstructionItem(
-                        text:
-                            'Please confirm your beneficial account information before withdrawing. If your information is incorrect, our company will not be liable for the amount of loss',
+                        text: 'Withdrawal amount range 🪙110.00-🪙50,000.00'.tr,
                       ),
                       InstructionItem(
                         text:
-                            'If your beneficial information is incorrect, please contact customer service',
+                            'Please confirm your beneficial account information before withdrawing. If your information is incorrect, our company will not be liable for the amount of loss'.tr,
+                      ),
+                      InstructionItem(
+                        text:
+                            'If your beneficial information is incorrect, please contact customer service'.tr,
                       ),
                     ],
                   ),

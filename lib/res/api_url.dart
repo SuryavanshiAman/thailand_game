@@ -3,6 +3,7 @@
 class ApiUrl{
   // static const String baseUrl = 'https://thailand.mobileappdemo.net/api/';
   static const String baseUrl = 'https://admin.xgamblur.com/api/';
+  static const String referralUrl = 'https://admin.xgamblur.com/referral_code/';
   static const String registerApi = '${baseUrl}register';
   static const String loginApi = '${baseUrl}login';
   static const String profileApi = '${baseUrl}profile/';
@@ -33,6 +34,7 @@ class ApiUrl{
   static const String depositHistoriesApi = '${baseUrl}depositHistories/';
   static const String updateJilliWalletApi = '${baseUrl}update_jilli_wallet';
   static const String updateJilliToUserWalletApi = '${baseUrl}update_jilli_to_user_wallet';
+  static const String liveNotificationApi = '${baseUrl}live_notification';
 
   /// wingo game api
   static const String wingoBet = "${baseUrl}bets";

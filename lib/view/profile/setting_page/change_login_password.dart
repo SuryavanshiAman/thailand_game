@@ -12,6 +12,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/edit_password_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ChangeLoginPasswordScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
           leading: AppBackBtn(),
           centerTitle: true,
           title: textWidget(
-            text: 'Change login password',
+            text: 'Change login password'.tr,
             fontWeight: FontWeight.w900,
             fontSize: 20,
             fontFamily: "SitkaSmall",
@@ -61,7 +62,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
                 width: width * 0.03,
               ),
               Text(
-                "Login password",
+                "Login password".tr,
                 style: TextStyle(
                     color: AppColor.white,
                     fontSize: 16,
@@ -75,7 +76,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
           ),
           CustomTextField(
             controller: _passController,
-            label: "Password",
+            label: "Password".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             maxLines: 1,
@@ -119,7 +120,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
                 width: width * 0.03,
               ),
               Text(
-                "New login password",
+                "New login password".tr,
                 style: TextStyle(
                     color: AppColor.white,
                     fontSize: 16,
@@ -133,7 +134,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
           ),
           CustomTextField(
             controller: _newController,
-            label: "Password",
+            label: "Password".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             maxLines: 1,
@@ -177,7 +178,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
                 width: width * 0.03,
               ),
               Text(
-                "Confirm new password",
+                "Confirm new password".tr,
                 style: TextStyle(
                     color: AppColor.white,
                     fontSize: 16,
@@ -191,7 +192,7 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
           ),
           CustomTextField(
             controller: _confirmController,
-            label: "Password",
+            label: "Password".tr,
             hintColor: AppColor.lightGray,
             hintSize: 16,
             maxLines: 1,
@@ -226,28 +227,28 @@ class _ChangeLoginPasswordScreenState extends State<ChangeLoginPasswordScreen> {
           update.loading==false?
           constantbutton(onTap: () {
             if (_passController.text.isEmpty) {
-              Utils.setSnackBar("Please enter login password",AppColor.red, context);
+              Utils.setSnackBar("Please enter login password".tr,AppColor.red, context);
             } else if (_passController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.",AppColor.red, context);
+                  "The password must be at least 6 digits long.".tr,AppColor.red, context);
             }else if (_newController.text.isEmpty) {
               Utils.setSnackBar(
-                  "Please enter new password",AppColor.red, context);
+                  "Please enter new password".tr,AppColor.red, context);
             }
             else if (_newController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.",AppColor.red, context);
+                  "The password must be at least 6 digits long.".tr,AppColor.red, context);
             } else if (_confirmController.text.isEmpty) {
               Utils.setSnackBar(
-                  "Please enter confirm password",AppColor.red, context);
+                  "Please enter confirm password".tr,AppColor.red, context);
             } else if (_confirmController.text.length < 6) {
               Utils.setSnackBar(
-                  "The password must be at least 6 digits long.",AppColor.red, context);
+                  "The password must be at least 6 digits long.".tr,AppColor.red, context);
             }else{
               update.editPasswordApi(_passController.text,_newController.text,_confirmController.text, context) ;
             }
 
-          }, text: 'Save changes',):
+          }, text: 'Save changes'.tr,):
           CircularButton()
         ],
       ),

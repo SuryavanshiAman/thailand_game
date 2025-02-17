@@ -17,14 +17,17 @@ import 'package:game/view_model/avtar_view_model.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/gift_card_view_model.dart';
 import 'package:game/view_model/jili_game_launcher_view_model.dart';
+import 'package:game/view_model/live_notification_view_model.dart';
 import 'package:game/view_model/pay_usdt_view_model.dart';
 import 'package:game/view_model/profile_view_model.dart';
 import 'package:game/view_model/update_jili_to_user_wallet_view_model.dart';
+import 'package:game/view_model/update_language_view_model.dart';
 import 'package:game/view_model/usdt_deposit_view_model.dart';
 import 'package:game/view_model/user_view_model.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/internacionalization.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_name.dart';
@@ -69,11 +72,44 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLang();
+  }
+
+  getLang() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final currentLang =  prefs.getString('lang') ?? 'en';
+    Locale locale;
+    switch (currentLang) {
+      case 'Hindi':
+        locale = const Locale('hi', 'IN');
+        break;
+      case 'Thai':
+        locale = const Locale('th', 'TH');
+        break;
+      default:
+        locale = const Locale('en', 'US');
+    }
+
+    Get.updateLocale(locale);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // final lang=Provider.of<UpdateLanguageViewModel>(context);
+
     height=MediaQuery.of(context).size.height;
     width=kIsWeb?400:MediaQuery.of(context,).size.width;
     return MultiProvider(
@@ -118,6 +154,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DepositHistoryViewModel()),
         ChangeNotifierProvider(create: (context) => UpdateJiliToUserWalletViewModel()),
         ChangeNotifierProvider(create: (context) => UpdateJiliWalletViewModel()),
+        ChangeNotifierProvider(create: (context) => UpdateLanguageViewModel()),
+        ChangeNotifierProvider(create: (context) => LiveNotificationViewModel()),
       ],
       child: Center(
         child: Container(

@@ -919,7 +919,7 @@ class _GameAviatorState extends State<GameAviator>
       setState(() {
         amount.text = (selectedAmount * value).toString();
       });
-      // context.read<ProfileViewModel>().profileData!.data!.wallet;
+      context.read<ProfileViewModel>().profileData!.data!.wallet;
       print("OOOOOO:${context.read<ProfileViewModel>().profileData!.data!.wallet}");
     } else {
       Utils.setSnackBar('Insufficient funds',AppColor.red, context);
@@ -2390,6 +2390,7 @@ print("Anurag:${data['message']}");
   }
 
   addBet(String amount, String betNo, String period, String status) async {
+    print("😊😊😊😊");
     UserViewModel userViewModel = UserViewModel();
     String? userid = await userViewModel.getUser();
     String perios = period;
@@ -2435,7 +2436,6 @@ print("Anurag:${data['message']}");
         });
       }
     }
-print('Dhakelu:${ApiUrl.aviatorBet}$userid&number=$betNo&amount=$amount&game_id=5&game_sr_num=$perios');
     final response = await http.post(Uri.parse(ApiUrl.aviatorBet),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',

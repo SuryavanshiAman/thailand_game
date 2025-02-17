@@ -6,6 +6,7 @@ import 'package:game/res/text_widget.dart';
 import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/notification_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         centerTitle: true,
         leading: AppBackBtn(),
         title: Text(
-          "Notification",
+          "Notification".tr,
           style: TextStyle(color: AppColor.white, fontFamily: "SitkaSmall"),
         ),
       ),

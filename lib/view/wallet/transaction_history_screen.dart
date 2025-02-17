@@ -12,6 +12,7 @@ import 'package:game/view/game/Aviator/res/app_button.dart';
 import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view_model/transaction_history_view_model.dart';
 import 'package:game/view_model/transaction_type_view_model.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -147,7 +148,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               ],
             ),
           ),
-          history.transactionData!.data!.isNotEmpty?
+          history.transactionData?.data !=null&&history.transactionData!.data!.isNotEmpty?
           SizedBox(
             height: height*0.75,
             child: ListView.builder(
@@ -213,9 +214,9 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          buildRow("Detail",data.description?.toString()??"", AppColors.whiteColor),
-          buildRow("Time", data.createdAt!, AppColors.whiteColor),
-          buildRow("balance",data.amount.toString(),  Colors.green),
+          buildRow("Detail".tr,data.description?.toString()??"", AppColors.whiteColor),
+          buildRow("Time".tr, data.createdAt!, AppColors.whiteColor),
+          buildRow("balance".tr,data.amount.toString(),  Colors.green),
 
         ],
       ),
@@ -279,7 +280,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Cancel',
+                      text: 'Cancel'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColors.dividerColor,
@@ -292,7 +293,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Confirm',
+                      text: 'Confirm'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColor.white,

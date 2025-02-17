@@ -11,7 +11,21 @@ import 'package:url_launcher/url_launcher.dart';
 import 'routes/routes_name.dart';
 
 class Utils {
+  static copyToClipboard(String code, BuildContext context) {
+    Clipboard.setData(
+      ClipboardData(
+        text: code,
 
+      ),
+    ).then(
+          (value) => ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Copied to clipboard'),
+        ),
+      ),
+    );
+  }
   static setSnackBar(String msg,Color color, BuildContext context) {
     showToastWidget(
       Container(

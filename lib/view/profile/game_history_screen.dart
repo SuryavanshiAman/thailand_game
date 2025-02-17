@@ -16,6 +16,7 @@ import 'package:game/view/game/wingo/res/gradient_app_bar.dart';
 import 'package:game/view/game/wingo/widgets/my_history.dart';
 import 'package:game/view_model/deposit_view_model.dart';
 import 'package:game/view_model/game_view_model.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -160,7 +161,7 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Cancel',
+                      text: 'Cancel'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColors.dividerColor,
@@ -172,7 +173,7 @@ class _GameHistoryScreenState extends State<GameHistoryScreen> {
                       Navigator.pop(context);
                     },
                     child: textWidget(
-                      text: 'Confirm',
+                      text: 'Confirm'.tr,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       color: AppColor.white,
