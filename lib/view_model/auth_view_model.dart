@@ -32,6 +32,7 @@ class AuthViewModel with ChangeNotifier {
       }
       else {
         setLoading(false);
+        Navigator.pushReplacementNamed(context, RoutesName.registerScreen);
         Utils.setSnackBar(value['message'],AppColor.red, context);
       }
     }).onError((error, stackTrace) {

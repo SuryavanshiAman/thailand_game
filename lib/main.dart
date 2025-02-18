@@ -37,6 +37,7 @@ import 'view/game/wingo/view_model/win_go_my_his_view_model.dart';
 import 'view_model/aboutus_view_model.dart';
 import 'view_model/add_bank_view_model.dart';
 import 'view_model/all_game_list_view_model.dart';
+import 'view_model/banner_view_ model.dart';
 import 'view_model/choose_bank_view_model.dart';
 import 'view_model/customer_service_view_model.dart';
 import 'view_model/deposit_history_view_model.dart';
@@ -156,6 +157,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => UpdateJiliWalletViewModel()),
         ChangeNotifierProvider(create: (context) => UpdateLanguageViewModel()),
         ChangeNotifierProvider(create: (context) => LiveNotificationViewModel()),
+        ChangeNotifierProvider(create: (context) => BannerViewModel()),
       ],
       child: Center(
         child: Container(

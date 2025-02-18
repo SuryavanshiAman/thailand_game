@@ -246,7 +246,7 @@ class _PhoneNumberLoginState extends State<PhoneNumberLogin> {
                   "The password must be at least 6 digits long.".tr,AppColor.red, context);
             } else {
               Map data = {
-                "email": _phoneController.text,
+                "mobile": _phoneController.text,
                 "password": _passController.text
               };
               login.authApi(data, context);

@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:game/main.dart';
+import 'package:game/view_model/banner_view_%20model.dart';
+import 'package:provider/provider.dart';
 
 class SliderPage extends StatefulWidget {
   const SliderPage({Key? key}) : super(key: key);
@@ -15,10 +17,14 @@ class _SliderPageState extends State<SliderPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<BannerViewModel>(context,listen: false).bannerApi(context);
+
   }
   @override
 
   Widget build(BuildContext context) {
+    final banner= Provider.of<BannerViewModel>(context).bannerResponse;
+
     return Stack(
       children: [
         CarouselSlider(
@@ -42,7 +48,7 @@ class _SliderPageState extends State<SliderPage> {
             },
             scrollDirection: Axis.horizontal,
           ),
-          items: (state_data).map((i) {
+          items: (banner?.data??[]).map((i) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
@@ -51,7 +57,7 @@ class _SliderPageState extends State<SliderPage> {
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage(i.toString())
+                          image: NetworkImage(i.image??"")
                       )
                   ),
 

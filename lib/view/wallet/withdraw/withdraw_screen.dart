@@ -138,7 +138,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       width: width * 0.12,
                     ),
                     Text(
-                      "🪙${profile?.wallet ?? "0.0"}",
+                      "🪙${profile?.winningWallet ?? "0.0"}",
                       style: TextStyle(
                           fontFamily: "SitkaSmall",
                           fontSize: 22,
