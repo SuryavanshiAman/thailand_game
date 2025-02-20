@@ -7,6 +7,7 @@ import 'package:game/main.dart';
 import 'package:game/res/color-const.dart';
 import 'package:game/res/constantButton.dart';
 import 'package:game/view_model/user_view_model.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'routes/routes_name.dart';
 
@@ -19,9 +20,9 @@ class Utils {
       ),
     ).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+         SnackBar(
           backgroundColor: Colors.green,
-          content: Text('Copied to clipboard'),
+          content: Text('Copied to clipboard'.tr),
         ),
       ),
     );
@@ -88,16 +89,16 @@ class Utils {
                     )),
               ),
               SizedBox(height: height / 30),
-              const Center(
-                child: Text("Exit App",
+               Center(
+                child: Text("Exit App".tr,
                     style: TextStyle(
                         color: AppColor.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: height * 0.02),
-              const Center(
-                child: Text("Are you sure want to exit app?",
+               Center(
+                child: Text("Are you sure want to exit app?".tr,
                     style: TextStyle(
                         color: AppColor.white,
                         fontSize: 16,
@@ -112,11 +113,11 @@ class Utils {
                     children: [
                       Center(child: constantbutton(
                           // width: width*0.8,
-                          onTap: (){  SystemNavigator.pop();}, text: "Yes")),
+                          onTap: (){  SystemNavigator.pop();}, text: "Yes".tr)),
                       SizedBox(height: height * 0.03),
                       Center(child: constantbutton(
                           // width: width*0.8,
-                          onTap: (){Navigator.pop(context);}, text: "No")),
+                          onTap: (){Navigator.pop(context);}, text: "No".tr)),
 
                     ],
                   ),
@@ -179,9 +180,9 @@ class Utils {
                 ),
               ),
               const SizedBox(height: 16),
-              const Center(
+               Center(
                 child: Text(
-                  "Logging out?",
+                  "Logging out?".tr,
                   style: TextStyle(
                     color: AppColor.white,
                     fontSize: 22,
@@ -190,9 +191,9 @@ class Utils {
                 ),
               ),
               const SizedBox(height: 8),
-              const Center(
+               Center(
                 child: Text(
-                  "Are you sure you want to log out of this\naccount?",
+                  "Are you sure you want to log out of this\naccount?".tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColor.white,
@@ -211,7 +212,7 @@ class Utils {
                       Navigator.of(context, rootNavigator: true).pop();
                       Navigator.pushReplacementNamed(
                           context, RoutesName.loginScreen);
-                    }, text: "Yes, Logout"),
+                    }, text: "Yes, Logout".tr),
               ),
               const SizedBox(height: 16),
               Center(
@@ -219,7 +220,7 @@ class Utils {
                     // width: width*0.8,
                     onTap:( ){
                       Navigator.pop(context, false);
-                    }, text: "Cancel"),
+                    }, text: "Cancel".tr),
               ),
               const SizedBox(height: 16),
             ],
@@ -231,8 +232,6 @@ class Utils {
   static Future<void> launchURL(String url) async {
     try {
       Uri uri = Uri.parse(url);
-      debugPrint("Trying to launch: $uri");
-
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {

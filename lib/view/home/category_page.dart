@@ -11,6 +11,7 @@ import 'package:game/view/game/popular_categories.dart';
 import 'package:game/view/game/wingo/win_go.dart';
 import 'package:game/view/game/Aviator/home_page_aviator.dart';
 import 'package:game/view_model/all_game_list_view_model.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart'; // Import shimmer package
 
@@ -177,7 +178,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         SizedBox(height: 5),
                         // Category Name
                         Text(
-                          category,
+                          category.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 12,
@@ -246,7 +247,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              subcategory["title"]!,
+                                              subcategory["title"]!.tr,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -255,7 +256,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             ),
                                             SizedBox(height: 5),
                                             Text(
-                                              subcategory["subtitle"]!,
+                                              subcategory["subtitle"]!.tr,
                                               style: TextStyle(
                                                 color: Colors.white70,
                                                 fontSize: 12,

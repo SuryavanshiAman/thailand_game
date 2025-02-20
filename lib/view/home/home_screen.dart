@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game/main.dart';
+import 'package:game/res/app_constant.dart';
 import 'package:game/res/bubble_animation/Particles.dart';
 import 'package:game/res/bubble_animation/particle_engine.dart';
 import 'package:game/res/color-const.dart';
@@ -60,13 +62,19 @@ jiliApi.setIsGameLaunched(false);
       backgroundColor: AppColor.black,
       appBar:
       GradientAppBar(
-        title: Text("Xgamblur",style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
+        title: Text(AppConstants.appName,style: TextStyle(color: AppColor.white,fontFamily: "SitkaSmall"),),
         actions: [
           InkWell(
               onTap: (){
                 Navigator.pushNamed(context, RoutesName.notificationScreen);
               },
               child: Icon(IconlyBold.notification,color: AppColor.white,)),
+          kIsWeb? SizedBox(width: width*0.07,):Container(),
+          kIsWeb? InkWell(
+              onTap: (){
+                Utils.launchURL("http://admin.xgamblur.com/uploads/app-release.apk");
+              },
+              child: Icon(IconlyBold.download,color: AppColor.white,)):Container(),
           SizedBox(width: width*0.1,)
         ],
       ),

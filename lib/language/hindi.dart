@@ -136,7 +136,30 @@ class LocaleStringHi extends Translations {
   'Share the code':"कोड साझा करें",
   'Confirm new password':"नया पासवर्ड पुष्टि करें",
   "Invite your friend to use our app and you'll get 5% of the first deposit first time .This will be added to your bonus balance so,you use it to purchase any product.":
-  "अपने दोस्त को हमारे ऐप का उपयोग करने के लिए आमंत्रित करें और आपको पहली जमा राशि का 5% मिलेगा। यह आपकी बोनस शेष राशि में जोड़ा जाएगा ताकि आप इसे किसी भी उत्पाद की खरीद के लिए उपयोग कर सकें।"
+  "अपने दोस्त को हमारे ऐप का उपयोग करने के लिए आमंत्रित करें और आपको पहली जमा राशि का 5% मिलेगा। यह आपकी बोनस शेष राशि में जोड़ा जाएगा ताकि आप इसे किसी भी उत्पाद की खरीद के लिए उपयोग कर सकें।",
+          'Xgamblur': "Xgamblur",
+          'Win Go': "विन गो",
+          'Guess Number\nGreen/Red/Violet to win': "संख्या अनुमान लगाएं\nजीतने के लिए हरा/लाल/बैंगनी चुनें",
+          'AndarBahar': "अंदर बाहर",
+          'Place Bet\nAndar/Bahar': "शर्त लगाएं\nअंदर/बाहर",
+          'Aviator': "एविएटर",
+          'Place Bet': "शर्त लगाएं",
+          'Spin the Wheel': "पहिया घुमाएं",
+          'Card Match': "कार्ड मिलान",
+          'Memory Game': "मेमोरी गेम",
+          'Mini games': "मिनी गेम्स",
+          'Popular': "लोकप्रिय",
+          'Fishing': "मछली पकड़ना",
+          'View All': "सभी देखें",
+          'Lottery': "लॉटरी",
+          'Exit App': "ऐप से बाहर निकलें",
+          'Are you sure want to exit app?': "क्या आप वाकई ऐप से बाहर निकलना चाहते हैं?",
+          'Yes': "हाँ",
+          'No': "नहीं",
+          'Logging out?': "लॉगआउट कर रहे हैं?",
+          'Are you sure you want to log out of this\naccount?': "क्या आप वाकई इस खाते से लॉगआउट करना चाहते हैं?",
+          'Yes, Logout': "हाँ, लॉगआउट करें",
+          'Copied to clipboard': "क्लिपबोर्ड पर कॉपी किया गया",
 
 }
 
